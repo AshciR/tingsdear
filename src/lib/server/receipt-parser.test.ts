@@ -24,15 +24,9 @@ describe('parseReceipt', () => {
 		expect(result.confidence).toBe('high');
 	});
 
-	it('strips ```json fences if the model adds them anyway', async () => {
-		// Model echoes a full fenced block instead of continuing the prefill.
-		// parseReceipt always prepends `{`, so feed it the body minus the leading `{`.
+	it('strips ```json fences if the model ignores the prefill and returns a full fenced block', async () => {
 		const wrapped = '```json\n{' + validBody + '\n```';
-		const result = await parseReceipt(
-			Buffer.from('x'),
-			'image/jpeg',
-			fakeClient(wrapped.slice(1))
-		);
+		const result = await parseReceipt(Buffer.from('x'), 'image/jpeg', fakeClient(wrapped));
 		expect(result.supermarket_name).toBe('Hi-Lo');
 	});
 

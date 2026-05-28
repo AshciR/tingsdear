@@ -172,7 +172,7 @@ export async function parseReceipt(
 	mediaType: ReceiptImageMediaType,
 	client?: AnthropicLike
 ): Promise<ParsedReceipt> {
-	const c: AnthropicLike = client ?? new Anthropic();
+	const c: AnthropicLike = client ?? new Anthropic({ apiKey: process.env.RECEIPT_EXTRACTOR });
 	const response = await c.messages.create({
 		model: 'claude-sonnet-4-5',
 		max_tokens: 2048,
@@ -203,11 +203,11 @@ export async function parseReceipt(
 		);
 	}
 
-	let raw = '{' + textBlock.text;
-	raw = raw
+	let raw = textBlock.text
 		.replace(/^```(?:json)?\s*/i, '')
 		.replace(/\s*```$/i, '')
 		.trim();
+	if (!raw.startsWith('{')) raw = '{' + raw;
 
 	let parsed: unknown;
 	try {
