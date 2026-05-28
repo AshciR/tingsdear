@@ -1,0 +1,108 @@
+import {
+	bigserial,
+	bigint,
+	decimal,
+	index,
+	pgTable,
+	timestamp,
+	varchar,
+	type AnyPgColumn
+} from 'drizzle-orm/pg-core';
+
+const created = timestamp('created', { withTimezone: true }).notNull().defaultNow();
+const updated = timestamp('updated', { withTimezone: true }).notNull().defaultNow();
+
+export const manufacturer = pgTable('manufacturer', {
+	id: bigserial('id', { mode: 'number' }).primaryKey(),
+	name: varchar('name', { length: 255 }).notNull(),
+	created,
+	updated
+});
+
+export const category = pgTable(
+	'category',
+	{
+		id: bigserial('id', { mode: 'number' }).primaryKey(),
+		name: varchar('name', { length: 255 }).notNull().unique(),
+		parentId: bigint('parent_id', { mode: 'number' }).references((): AnyPgColumn => category.id),
+		created,
+		updated
+	},
+	(t) => [index('idx_category_parent').on(t.parentId)]
+);
+
+export const supermarketChain = pgTable('supermarket_chain', {
+	id: bigserial('id', { mode: 'number' }).primaryKey(),
+	name: varchar('name', { length: 255 }).notNull().unique(),
+	created,
+	updated
+});
+
+export const supermarketLocation = pgTable(
+	'supermarket_location',
+	{
+		id: bigserial('id', { mode: 'number' }).primaryKey(),
+		chainId: bigint('chain_id', { mode: 'number' })
+			.notNull()
+			.references(() => supermarketChain.id),
+		name: varchar('name', { length: 255 }),
+		address: varchar('address', { length: 500 }),
+		city: varchar('city', { length: 255 }),
+		region: varchar('region', { length: 255 }),
+		postalCode: varchar('postal_code', { length: 32 }),
+		country: varchar('country', { length: 64 }),
+		latitude: decimal('latitude', { precision: 9, scale: 6 }),
+		longitude: decimal('longitude', { precision: 9, scale: 6 }),
+		created,
+		updated
+	},
+	(t) => [index('idx_location_chain').on(t.chainId)]
+);
+
+export const item = pgTable(
+	'item',
+	{
+		id: bigserial('id', { mode: 'number' }).primaryKey(),
+		name: varchar('name', { length: 255 }).notNull(),
+		barcode: varchar('barcode', { length: 64 }).unique(),
+		manufacturerId: bigint('manufacturer_id', { mode: 'number' })
+			.notNull()
+			.references(() => manufacturer.id),
+		categoryId: bigint('category_id', { mode: 'number' }).references(() => category.id),
+		sizeAmount: decimal('size_amount', { precision: 10, scale: 3 }).notNull(),
+		sizeUnit: varchar('size_unit', { length: 16 }).notNull(),
+		unitType: varchar('unit_type', { length: 16 }).notNull().$type<'weight' | 'volume' | 'count'>(),
+		sizeInBaseUnit: decimal('size_in_base_unit', { precision: 14, scale: 4 }).notNull(),
+		created,
+		updated
+	},
+	(t) => [
+		index('idx_item_manufacturer').on(t.manufacturerId),
+		index('idx_item_category').on(t.categoryId),
+		index('idx_item_unit_type').on(t.unitType)
+	]
+);
+
+export const price = pgTable(
+	'price',
+	{
+		id: bigserial('id', { mode: 'number' }).primaryKey(),
+		locationId: bigint('location_id', { mode: 'number' })
+			.notNull()
+			.references(() => supermarketLocation.id),
+		itemId: bigint('item_id', { mode: 'number' })
+			.notNull()
+			.references(() => item.id),
+		amount: decimal('amount', { precision: 10, scale: 2 }).notNull(),
+		source: varchar('source', { length: 32 })
+			.notNull()
+			.$type<'user_submission' | 'scraper' | 'api' | 'receipt_ocr' | 'manual'>(),
+		sourceRef: varchar('source_ref', { length: 255 }),
+		timestamp: timestamp('timestamp', { withTimezone: true }).notNull().defaultNow()
+	},
+	(t) => [
+		index('idx_price_item_time').on(t.itemId, t.timestamp.desc()),
+		index('idx_price_location_item').on(t.locationId, t.itemId),
+		index('idx_price_source').on(t.source)
+	]
+);
