@@ -1,0 +1,62 @@
+import { describe, it, expect, vi } from 'vitest';
+import { parseReceipt } from './receipt-parser.ts';
+
+function fakeClient(text: string) {
+	return {
+		messages: {
+			create: vi.fn().mockResolvedValue({
+				content: [{ type: 'text', text }],
+				stop_reason: 'end_turn'
+			})
+		}
+	} as unknown as Parameters<typeof parseReceipt>[2];
+}
+
+const validBody = `"supermarket_name":"Hi-Lo","purchase_date":"2026-03-14","line_items":[{"name":"Grace Coconut Milk 400ml","quantity":2,"unit_price":385,"total":770}],"currency":"JMD","confidence":"high"}`;
+
+describe('parseReceipt', () => {
+	it('parses a valid JSON response that follows the assistant `{` prefill', async () => {
+		const result = await parseReceipt(Buffer.from('x'), 'image/jpeg', fakeClient(validBody));
+		expect(result.supermarket_name).toBe('Hi-Lo');
+		expect(result.line_items).toHaveLength(1);
+		expect(result.line_items[0].total).toBe(770);
+		expect(result.currency).toBe('JMD');
+		expect(result.confidence).toBe('high');
+	});
+
+	it('strips ```json fences if the model adds them anyway', async () => {
+		// Model echoes a full fenced block instead of continuing the prefill.
+		// parseReceipt always prepends `{`, so feed it the body minus the leading `{`.
+		const wrapped = '```json\n{' + validBody + '\n```';
+		const result = await parseReceipt(
+			Buffer.from('x'),
+			'image/jpeg',
+			fakeClient(wrapped.slice(1))
+		);
+		expect(result.supermarket_name).toBe('Hi-Lo');
+	});
+
+	it('throws with a useful message on malformed JSON', async () => {
+		await expect(
+			parseReceipt(Buffer.from('x'), 'image/jpeg', fakeClient('this is not json'))
+		).rejects.toThrow(/invalid JSON/);
+	});
+
+	it('throws when response fails schema validation', async () => {
+		const missingFields = `"supermarket_name":"Hi-Lo"}`;
+		await expect(
+			parseReceipt(Buffer.from('x'), 'image/jpeg', fakeClient(missingFields))
+		).rejects.toThrow(/did not match schema/);
+	});
+
+	it('throws when the response contains no text block', async () => {
+		const client = {
+			messages: {
+				create: vi.fn().mockResolvedValue({ content: [], stop_reason: 'max_tokens' })
+			}
+		} as unknown as Parameters<typeof parseReceipt>[2];
+		await expect(parseReceipt(Buffer.from('x'), 'image/jpeg', client)).rejects.toThrow(
+			/no text block/
+		);
+	});
+});
