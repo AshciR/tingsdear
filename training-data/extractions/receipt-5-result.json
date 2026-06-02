@@ -1,0 +1,36 @@
+{
+  "supermarket_name": "Super Valu Home Centre",
+  "purchase_date": "2026-05-24",
+  "line_items": [
+    {
+      "name": "Masonry Drill Bit 1x4\" Ind",
+      "quantity": 3,
+      "unit_price": 240,
+      "total": 720,
+      "flagged": false
+    },
+    {
+      "name": "SMS PHL PN Z 10x3 Doz",
+      "quantity": 10,
+      "unit_price": 264,
+      "total": 2640,
+      "flagged": false
+    },
+    {
+      "name": "Panel Grip #14-10x2.5\" Doz",
+      "quantity": 25,
+      "unit_price": 227,
+      "total": 5675,
+      "flagged": false
+    },
+    {
+      "name": "Hurricane Strap 8\"",
+      "quantity": 10,
+      "unit_price": 199,
+      "total": 1990,
+      "flagged": false
+    }
+  ],
+  "currency": "JMD",
+  "confidence": "high"
+}

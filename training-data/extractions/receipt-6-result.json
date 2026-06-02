@@ -1,0 +1,36 @@
+{
+  "supermarket_name": "Super Valu Fresh Foods",
+  "purchase_date": "2026-05-29",
+  "line_items": [
+    {
+      "name": "Nutella Choc Hazelnut 5p",
+      "quantity": 1,
+      "unit_price": 134.85,
+      "total": 134.85,
+      "flagged": false
+    },
+    {
+      "name": "Item",
+      "quantity": 1,
+      "unit_price": 2984.75,
+      "total": 2984.75,
+      "flagged": false
+    },
+    {
+      "name": "Café Blue Coffee 3M 100%",
+      "quantity": 1,
+      "unit_price": 293.75,
+      "total": 293.75,
+      "flagged": false
+    },
+    {
+      "name": "Kotex Tampons Super",
+      "quantity": 1,
+      "unit_price": 157.4,
+      "total": 157.4,
+      "flagged": false
+    }
+  ],
+  "currency": "JMD",
+  "confidence": "medium"
+}

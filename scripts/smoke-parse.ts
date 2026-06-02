@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { readdir, readFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { extname, join, basename } from 'node:path';
 import { parseReceipt, type ReceiptMediaType } from '../src/lib/server/receipt-parser.ts';
 
@@ -29,6 +29,9 @@ async function main() {
 		return;
 	}
 
+	const outDir = join(dir, 'extractions');
+	await mkdir(outDir, { recursive: true });
+
 	for (const file of files) {
 		const path = join(dir, file);
 		const buf = await readFile(path);
@@ -37,7 +40,10 @@ async function main() {
 		try {
 			const parsed = await parseReceipt(buf, mediaType);
 			const ms = Date.now() - started;
-			console.log(`\n=== ${basename(file)}  (${ms} ms) ===`);
+			const stem = basename(file, extname(file));
+			const outPath = join(outDir, `${stem}-result.json`);
+			await writeFile(outPath, JSON.stringify(parsed, null, 2) + '\n');
+			console.log(`\n=== ${basename(file)}  (${ms} ms) → ${outPath} ===`);
 			console.log(JSON.stringify(parsed, null, 2));
 		} catch (err) {
 			console.error(`\n=== ${basename(file)}  FAILED ===`);

@@ -1,0 +1,498 @@
+{
+  "supermarket_name": "Loshusan Supermarket",
+  "purchase_date": "2025-12-22",
+  "line_items": [
+    {
+      "name": "Ammens Powder For Baby 150g",
+      "quantity": 1,
+      "unit_price": 605.59,
+      "total": 605.59,
+      "flagged": false
+    },
+    {
+      "name": "Apples Royal Gala (kg)",
+      "quantity": 1.39,
+      "unit_price": 1167,
+      "total": 1622.13,
+      "flagged": false
+    },
+    {
+      "name": "Arm & Hmr Inv Solid Original 73g",
+      "quantity": 1,
+      "unit_price": 942.24,
+      "total": 942.24,
+      "flagged": false
+    },
+    {
+      "name": "Benjamins Flavour Vanilla 16oz",
+      "quantity": 1,
+      "unit_price": 378.2,
+      "total": 378.2,
+      "flagged": false
+    },
+    {
+      "name": "Bermudez Nibbles Choc Chip 60g",
+      "quantity": 6,
+      "unit_price": 82.99,
+      "total": 497.94,
+      "flagged": false
+    },
+    {
+      "name": "Betty Crkr Muffin Blueberry 184g",
+      "quantity": 2,
+      "unit_price": 461.34,
+      "total": 922.68,
+      "flagged": false
+    },
+    {
+      "name": "Betty Crkr Muffin Chocolate Chip 184g",
+      "quantity": 2,
+      "unit_price": 461.34,
+      "total": 922.68,
+      "flagged": false
+    },
+    {
+      "name": "Brunswick Sardine Sel Chunk 95g",
+      "quantity": 3,
+      "unit_price": 205.45,
+      "total": 616.35,
+      "flagged": false
+    },
+    {
+      "name": "Cb Chicken Whole A-Grade Frz (kg)",
+      "quantity": 3.58,
+      "unit_price": 909.65,
+      "total": 3256.49,
+      "flagged": false
+    },
+    {
+      "name": "Christmas House Bow Red 2pk",
+      "quantity": 1,
+      "unit_price": 545.53,
+      "total": 545.53,
+      "flagged": false
+    },
+    {
+      "name": "Container Aluminum Round 9in 1ct",
+      "quantity": 3,
+      "unit_price": 61.26,
+      "total": 183.78,
+      "flagged": false
+    },
+    {
+      "name": "D&g Kola Champagne 2l",
+      "quantity": 1,
+      "unit_price": 271.96,
+      "total": 271.96,
+      "flagged": false
+    },
+    {
+      "name": "Eve Mac Twist Tricolor 200g",
+      "quantity": 3,
+      "unit_price": 202.19,
+      "total": 606.57,
+      "flagged": false
+    },
+    {
+      "name": "Eve Penne Tricolor 200g",
+      "quantity": 3,
+      "unit_price": 204.57,
+      "total": 613.71,
+      "flagged": false
+    },
+    {
+      "name": "Goya Garlic Powder 8oz",
+      "quantity": 1,
+      "unit_price": 695.34,
+      "total": 695.34,
+      "flagged": false
+    },
+    {
+      "name": "Goya Onion Powder 6.75oz",
+      "quantity": 1,
+      "unit_price": 711.88,
+      "total": 711.88,
+      "flagged": false
+    },
+    {
+      "name": "Grace Beans Baked 300g",
+      "quantity": 1,
+      "unit_price": 255.94,
+      "total": 255.94,
+      "flagged": false
+    },
+    {
+      "name": "Grace Brown Sugar 2kg",
+      "quantity": 1,
+      "unit_price": 1005.06,
+      "total": 1005.06,
+      "flagged": false
+    },
+    {
+      "name": "Grace Brown Sugar 500g",
+      "quantity": 1,
+      "unit_price": 249.96,
+      "total": 249.96,
+      "flagged": false
+    },
+    {
+      "name": "Grace Corn Sweet Whole Kernel 220g",
+      "quantity": 3,
+      "unit_price": 257.71,
+      "total": 773.13,
+      "flagged": false
+    },
+    {
+      "name": "Grace Golden Cornmeal 400g",
+      "quantity": 3,
+      "unit_price": 156.57,
+      "total": 469.71,
+      "flagged": false
+    },
+    {
+      "name": "Grace Mixed Vegetables 425g",
+      "quantity": 3,
+      "unit_price": 309.24,
+      "total": 927.72,
+      "flagged": false
+    },
+    {
+      "name": "Holiday Big Foot 25g",
+      "quantity": 6,
+      "unit_price": 68.43,
+      "total": 410.58,
+      "flagged": false
+    },
+    {
+      "name": "Holiday Stiks Cheddar Cheeze 39g",
+      "quantity": 6,
+      "unit_price": 79.35,
+      "total": 476.1,
+      "flagged": false
+    },
+    {
+      "name": "Honeyghans Eggs Grade A Large 12s",
+      "quantity": 1,
+      "unit_price": 707.51,
+      "total": 707.51,
+      "flagged": false
+    },
+    {
+      "name": "Jf Mills Flour All Purpose 1kg",
+      "quantity": 1,
+      "unit_price": 340.96,
+      "total": 340.96,
+      "flagged": false
+    },
+    {
+      "name": "Jf Mills Syrup Pancake 24oz",
+      "quantity": 1,
+      "unit_price": 1122.16,
+      "total": 1122.16,
+      "flagged": false
+    },
+    {
+      "name": "Kelloggs Raisin Bran 43g",
+      "quantity": 6,
+      "unit_price": 127.56,
+      "total": 765.36,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Instant French Van Choc 1oz",
+      "quantity": 6,
+      "unit_price": 74.91,
+      "total": 449.46,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Jack Mackerel Tom Sauce 425g",
+      "quantity": 3,
+      "unit_price": 366.65,
+      "total": 1099.95,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Malt 80g",
+      "quantity": 6,
+      "unit_price": 213.41,
+      "total": 1280.46,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Original 80g",
+      "quantity": 6,
+      "unit_price": 212.11,
+      "total": 1272.66,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Vanilla 80g",
+      "quantity": 6,
+      "unit_price": 213.41,
+      "total": 1280.46,
+      "flagged": false
+    },
+    {
+      "name": "Lays Classic 1oz",
+      "quantity": 6,
+      "unit_price": 118.14,
+      "total": 708.84,
+      "flagged": false
+    },
+    {
+      "name": "M&m Milk Chocolate 47.9g",
+      "quantity": 2,
+      "unit_price": 324.32,
+      "total": 648.64,
+      "flagged": false
+    },
+    {
+      "name": "Malta Malt 284ml",
+      "quantity": 3,
+      "unit_price": 185.38,
+      "total": 556.14,
+      "flagged": false
+    },
+    {
+      "name": "Nabisco Oreo 36g",
+      "quantity": 3,
+      "unit_price": 66.77,
+      "total": 200.31,
+      "flagged": false
+    },
+    {
+      "name": "National Bread Hardo Bran Sliced 32oz",
+      "quantity": 1,
+      "unit_price": 582.4,
+      "total": 582.4,
+      "flagged": false
+    },
+    {
+      "name": "National Bread Weekender White 567g",
+      "quantity": 1,
+      "unit_price": 410.8,
+      "total": 410.8,
+      "flagged": false
+    },
+    {
+      "name": "Nature Val Crunchy Oats & Dark Choc 42g",
+      "quantity": 3,
+      "unit_price": 195.88,
+      "total": 587.64,
+      "flagged": false
+    },
+    {
+      "name": "Nature Val Crunchy Oats & Honey 42g",
+      "quantity": 3,
+      "unit_price": 195.88,
+      "total": 587.64,
+      "flagged": false
+    },
+    {
+      "name": "Pears Bosc (kg)",
+      "quantity": 0.945,
+      "unit_price": 1226,
+      "total": 1158.57,
+      "flagged": false
+    },
+    {
+      "name": "Popcorn Indiana Theater Butter 3oz",
+      "quantity": 3,
+      "unit_price": 742.4,
+      "total": 2227.2,
+      "flagged": false
+    },
+    {
+      "name": "Pringles Cheddar Cheese 21g",
+      "quantity": 6,
+      "unit_price": 123.14,
+      "total": 738.84,
+      "flagged": false
+    },
+    {
+      "name": "Pringles Original 19g",
+      "quantity": 6,
+      "unit_price": 123.14,
+      "total": 738.84,
+      "flagged": false
+    },
+    {
+      "name": "Protex Deep Clean 110g",
+      "quantity": 1,
+      "unit_price": 188.34,
+      "total": 188.34,
+      "flagged": false
+    },
+    {
+      "name": "Purelene Nursery Jelly Aloe 226g",
+      "quantity": 1,
+      "unit_price": 425.98,
+      "total": 425.98,
+      "flagged": false
+    },
+    {
+      "name": "Rainforest Ready California Mix Veg 340g",
+      "quantity": 3,
+      "unit_price": 326.25,
+      "total": 978.75,
+      "flagged": false
+    },
+    {
+      "name": "Rainforest Ready Corn On Cob 6pc",
+      "quantity": 1,
+      "unit_price": 1528.8,
+      "total": 1528.8,
+      "flagged": false
+    },
+    {
+      "name": "Salt Fish Bag Bone-In (kg)",
+      "quantity": 0.29,
+      "unit_price": 2659.95,
+      "total": 771.39,
+      "flagged": false
+    },
+    {
+      "name": "Salve Antiseptic Liquid 250ml",
+      "quantity": 1,
+      "unit_price": 459.16,
+      "total": 459.16,
+      "flagged": false
+    },
+    {
+      "name": "Scotch Brite Scrub Sponge Kitchen #8 1ct",
+      "quantity": 1,
+      "unit_price": 163.12,
+      "total": 163.12,
+      "flagged": false
+    },
+    {
+      "name": "Scott Bath Tissue 2en1 280s",
+      "quantity": 12,
+      "unit_price": 110.34,
+      "total": 1324.08,
+      "flagged": false
+    },
+    {
+      "name": "Soldanza Plantain Chips 45g",
+      "quantity": 6,
+      "unit_price": 117.21,
+      "total": 703.26,
+      "flagged": false
+    },
+    {
+      "name": "Soldanza Plantain Chips Ripe 42g",
+      "quantity": 9,
+      "unit_price": 117.21,
+      "total": 1054.89,
+      "flagged": false
+    },
+    {
+      "name": "Springtime Detergent Fab Soft 400g",
+      "quantity": 9,
+      "unit_price": 204.15,
+      "total": 1837.35,
+      "flagged": false
+    },
+    {
+      "name": "St Marys Banana Chips 36g",
+      "quantity": 6,
+      "unit_price": 103.74,
+      "total": 622.44,
+      "flagged": false
+    },
+    {
+      "name": "Sunshine Cheese Puffs 30g",
+      "quantity": 6,
+      "unit_price": 65.88,
+      "total": 395.28,
+      "flagged": false
+    },
+    {
+      "name": "Sunshine Chipsters Lightly Salted 32g",
+      "quantity": 6,
+      "unit_price": 126.98,
+      "total": 761.88,
+      "flagged": false
+    },
+    {
+      "name": "Sunshine Ripples 35g",
+      "quantity": 6,
+      "unit_price": 126.98,
+      "total": 761.88,
+      "flagged": false
+    },
+    {
+      "name": "Super Bright Cloths Dish 10s",
+      "quantity": 1,
+      "unit_price": 484.9,
+      "total": 484.9,
+      "flagged": false
+    },
+    {
+      "name": "Superfresh Toilet Cleanser Lavender 50g",
+      "quantity": 1,
+      "unit_price": 238.73,
+      "total": 238.73,
+      "flagged": false
+    },
+    {
+      "name": "Superfresh Toilet Cleanser Lemon 50g",
+      "quantity": 1,
+      "unit_price": 238.73,
+      "total": 238.73,
+      "flagged": false
+    },
+    {
+      "name": "Superfresh Toilet Cleanser Pine 50g",
+      "quantity": 1,
+      "unit_price": 238.73,
+      "total": 238.73,
+      "flagged": false
+    },
+    {
+      "name": "Superfresh Toilet Cleanser Potpourri 50g",
+      "quantity": 1,
+      "unit_price": 238.73,
+      "total": 238.73,
+      "flagged": false
+    },
+    {
+      "name": "Tru-Juice Sorrel Ginger 3.78l",
+      "quantity": 1,
+      "unit_price": 1584.18,
+      "total": 1584.18,
+      "flagged": false
+    },
+    {
+      "name": "Vo5 Conditioner Free Me Freesia 15oz",
+      "quantity": 1,
+      "unit_price": 416.05,
+      "total": 416.05,
+      "flagged": false
+    },
+    {
+      "name": "Vo5 Shampoo Free Me Freesia 15oz",
+      "quantity": 1,
+      "unit_price": 416.05,
+      "total": 416.05,
+      "flagged": false
+    },
+    {
+      "name": "Wibisco Shirley 3.7oz",
+      "quantity": 3,
+      "unit_price": 115.23,
+      "total": 345.69,
+      "flagged": false
+    },
+    {
+      "name": "Wibisco Shirley Coconut 3.5oz",
+      "quantity": 3,
+      "unit_price": 115.23,
+      "total": 345.69,
+      "flagged": false
+    }
+  ],
+  "currency": "JMD",
+  "confidence": "high"
+}

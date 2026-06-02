@@ -1,0 +1,211 @@
+{
+  "supermarket_name": "Fiorelli Approach Supermarket",
+  "purchase_date": "2026-05-20",
+  "line_items": [
+    {
+      "name": "Dharmin Ultra Soft 4rolls 20g",
+      "quantity": 2,
+      "unit_price": 548,
+      "total": 1560.26,
+      "flagged": false
+    },
+    {
+      "name": "National Honey Wheat 680g",
+      "quantity": 1,
+      "unit_price": 730.7,
+      "total": 730.7,
+      "flagged": false
+    },
+    {
+      "name": "Grace Jasmine Rice 1kg",
+      "quantity": 1,
+      "unit_price": 1030.09,
+      "total": 1030.09,
+      "flagged": false
+    },
+    {
+      "name": "Ivory Aloe B/wash 21oz",
+      "quantity": 1,
+      "unit_price": 1785.5,
+      "total": 1785.5,
+      "flagged": false
+    },
+    {
+      "name": "Brass French Vanilla Creamer",
+      "quantity": 1,
+      "unit_price": 654.02,
+      "total": 654.02,
+      "flagged": false
+    },
+    {
+      "name": "Rhino Ez Pull Garbage Bags Large",
+      "quantity": 4,
+      "unit_price": 274.33,
+      "total": 1097.32,
+      "flagged": false
+    },
+    {
+      "name": "Bruncher Tuna Smoke Flavor 14",
+      "quantity": 2,
+      "unit_price": 695.67,
+      "total": 1391.74,
+      "flagged": false
+    },
+    {
+      "name": "Grace Reduced Salt Corned Beef 12oz",
+      "quantity": 2,
+      "unit_price": 145.02,
+      "total": 290.04,
+      "flagged": false
+    },
+    {
+      "name": "Grace Mackerel In Tomato 5.5oz",
+      "quantity": 1,
+      "unit_price": 505.75,
+      "total": 505.75,
+      "flagged": false
+    },
+    {
+      "name": "Grace Spaghetti 400g",
+      "quantity": 1,
+      "unit_price": 750,
+      "total": 750,
+      "flagged": false
+    },
+    {
+      "name": "Coffee Barsnap 5",
+      "quantity": 0.34,
+      "unit_price": 660.79,
+      "total": 224.67,
+      "flagged": false
+    },
+    {
+      "name": "Red Irish Imported",
+      "quantity": 0.79,
+      "unit_price": 1650,
+      "total": 1303.5,
+      "flagged": false
+    },
+    {
+      "name": "Yellow Yam",
+      "quantity": 1,
+      "unit_price": 230.77,
+      "total": 230.77,
+      "flagged": false
+    },
+    {
+      "name": "Choice Baked Beans 400g",
+      "quantity": 2,
+      "unit_price": 910.01,
+      "total": 1820.02,
+      "flagged": false
+    },
+    {
+      "name": "Farms Parmesan Cheese 170g",
+      "quantity": 1,
+      "unit_price": 758.1,
+      "total": 758.1,
+      "flagged": false
+    },
+    {
+      "name": "Hunts Traditional P/sauce 24oz",
+      "quantity": 0.275,
+      "unit_price": 1815,
+      "total": 499.12,
+      "flagged": false
+    },
+    {
+      "name": "Plantain",
+      "quantity": 1,
+      "unit_price": 524.52,
+      "total": 524.52,
+      "flagged": false
+    },
+    {
+      "name": "Gold Barsheep Butter 100g",
+      "quantity": 1,
+      "unit_price": 1323.45,
+      "total": 1323.45,
+      "flagged": false
+    },
+    {
+      "name": "26-30 P&d Shrimp XL 12oz",
+      "quantity": 1,
+      "unit_price": 140.24,
+      "total": 140.24,
+      "flagged": false
+    },
+    {
+      "name": "Nadia Parsley 0.25oz",
+      "quantity": 0.255,
+      "unit_price": 1815,
+      "total": 468.27,
+      "flagged": false
+    },
+    {
+      "name": "Beef Mince",
+      "quantity": 0.226,
+      "unit_price": 1815,
+      "total": 752.46,
+      "flagged": false
+    },
+    {
+      "name": "Beef Jerk Chic Sausage 340g",
+      "quantity": 0.208,
+      "unit_price": 1815,
+      "total": 410.19,
+      "flagged": false
+    },
+    {
+      "name": "Beef Mince",
+      "quantity": 0.8,
+      "unit_price": 1987,
+      "total": 377.52,
+      "flagged": false
+    },
+    {
+      "name": "Beef Mince",
+      "quantity": 1,
+      "unit_price": 468.27,
+      "total": 468.27,
+      "flagged": false
+    },
+    {
+      "name": "Nest Dressed Chicken Thigh Dfb",
+      "quantity": 0.895,
+      "unit_price": 1587.6,
+      "total": 1599.6,
+      "flagged": false
+    },
+    {
+      "name": "Nest Dressed Chicken Thigh Deb",
+      "quantity": 0.19,
+      "unit_price": 1403,
+      "total": 1780.35,
+      "flagged": false
+    },
+    {
+      "name": "Garlic",
+      "quantity": 1,
+      "unit_price": 266.57,
+      "total": 266.57,
+      "flagged": false
+    },
+    {
+      "name": "Morgans Sunrise Farm Eggs 18oz",
+      "quantity": 1,
+      "unit_price": 850,
+      "total": 850,
+      "flagged": false
+    },
+    {
+      "name": "Shredded Cabbage",
+      "quantity": 1,
+      "unit_price": 300,
+      "total": 300,
+      "flagged": false
+    }
+  ],
+  "currency": "JMD",
+  "confidence": "medium"
+}

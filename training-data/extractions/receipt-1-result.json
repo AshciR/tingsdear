@@ -1,0 +1,64 @@
+{
+  "supermarket_name": "Loshusan",
+  "purchase_date": "2025-04-28",
+  "line_items": [
+    {
+      "name": "Margo Polo Spirals 200g",
+      "quantity": 1,
+      "unit_price": 133.6,
+      "total": 133.6,
+      "flagged": false
+    },
+    {
+      "name": "Prego Sauce Fresh Mushroom",
+      "quantity": 1,
+      "unit_price": 928.45,
+      "total": 928.45,
+      "flagged": false
+    },
+    {
+      "name": "Arizona Green Tea Ginseng",
+      "quantity": 1,
+      "unit_price": 325.1,
+      "total": 325.1,
+      "flagged": false
+    },
+    {
+      "name": "Onions Yellow Local (kg)",
+      "quantity": 0.195,
+      "unit_price": 729,
+      "total": 142.16,
+      "flagged": false
+    },
+    {
+      "name": "Garlic Imported (kg)",
+      "quantity": 1,
+      "unit_price": 186.42,
+      "total": 186.42,
+      "flagged": false
+    },
+    {
+      "name": "Pork Loin Chops Boneless",
+      "quantity": 1,
+      "unit_price": 1341.4,
+      "total": 1341.4,
+      "flagged": false
+    },
+    {
+      "name": "Beef Mince",
+      "quantity": 1,
+      "unit_price": 809.2,
+      "total": 809.2,
+      "flagged": false
+    },
+    {
+      "name": "Arizona Blueberry White Tea",
+      "quantity": 1,
+      "unit_price": 325.1,
+      "total": 325.1,
+      "flagged": false
+    }
+  ],
+  "currency": "JMD",
+  "confidence": "high"
+}

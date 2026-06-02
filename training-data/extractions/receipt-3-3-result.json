@@ -1,0 +1,141 @@
+{
+  "supermarket_name": "",
+  "purchase_date": "2026-05-26",
+  "line_items": [
+    {
+      "name": "Grace Mixed Vegetables 240g",
+      "quantity": 1,
+      "unit_price": 213.09,
+      "total": 213.09,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Butter Beans 400g",
+      "quantity": 1,
+      "unit_price": 228.22,
+      "total": 228.22,
+      "flagged": false
+    },
+    {
+      "name": "Sweet Potato (kg)",
+      "quantity": 1.73,
+      "unit_price": 1078,
+      "total": 1864.94,
+      "flagged": false
+    },
+    {
+      "name": "Potato Irish (kg)",
+      "quantity": 1.665,
+      "unit_price": 1078,
+      "total": 1794.97,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Milk-Free 80g",
+      "quantity": 1,
+      "unit_price": 200.12,
+      "total": 200.12,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Milk-Free 80g",
+      "quantity": 1,
+      "unit_price": 200.12,
+      "total": 200.12,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Milk-Free 80g",
+      "quantity": 1,
+      "unit_price": 190.52,
+      "total": 190.52,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Milk-Free 80g",
+      "quantity": 1,
+      "unit_price": 195.92,
+      "total": 195.92,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Milk-Free 80g",
+      "quantity": 1,
+      "unit_price": 196.92,
+      "total": 196.92,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Milk-Free 80g",
+      "quantity": 1,
+      "unit_price": 196.92,
+      "total": 196.92,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Milk-Free 80g",
+      "quantity": 1,
+      "unit_price": 196.92,
+      "total": 196.92,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Vanilla 80g",
+      "quantity": 1,
+      "unit_price": 201.35,
+      "total": 201.35,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Vanilla 80g",
+      "quantity": 1,
+      "unit_price": 201.35,
+      "total": 201.35,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Vanilla 80g",
+      "quantity": 1,
+      "unit_price": 191.69,
+      "total": 191.69,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Vanilla 80g",
+      "quantity": 1,
+      "unit_price": 198.13,
+      "total": 198.13,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Vanilla 80g",
+      "quantity": 1,
+      "unit_price": 201.35,
+      "total": 201.35,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Malt 80g",
+      "quantity": 1,
+      "unit_price": 201.35,
+      "total": 201.35,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Malt 80g",
+      "quantity": 1,
+      "unit_price": 201.35,
+      "total": 201.35,
+      "flagged": false
+    },
+    {
+      "name": "Lasco Lasoy Malt 80g",
+      "quantity": 1,
+      "unit_price": 191.69,
+      "total": 191.69,
+      "flagged": false
+    }
+  ],
+  "currency": "JMD",
+  "confidence": "medium"
+}

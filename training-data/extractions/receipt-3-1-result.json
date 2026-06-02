@@ -1,0 +1,113 @@
+{
+  "supermarket_name": "General Food Supermarket",
+  "purchase_date": "2025-02-23",
+  "line_items": [
+    {
+      "name": "White Rain 3-Wash C/Wave 3",
+      "quantity": 1,
+      "unit_price": 429.33,
+      "total": 429.33,
+      "flagged": false
+    },
+    {
+      "name": "White Rain Men 3in1 M/Spri",
+      "quantity": 1,
+      "unit_price": 429.33,
+      "total": 429.33,
+      "flagged": false
+    },
+    {
+      "name": "White Rain Men 3in1 M/Spri",
+      "quantity": 1,
+      "unit_price": 417.07,
+      "total": 417.07,
+      "flagged": false
+    },
+    {
+      "name": "Rhins Garbage Bag Large 30",
+      "quantity": 1,
+      "unit_price": 540.28,
+      "total": 540.28,
+      "flagged": false
+    },
+    {
+      "name": "Joyceplus S/Gel K/Bry Pmg",
+      "quantity": 1,
+      "unit_price": 603.4,
+      "total": 603.4,
+      "flagged": false
+    },
+    {
+      "name": "Medimex Surface Cleanser",
+      "quantity": 1,
+      "unit_price": 476.78,
+      "total": 476.78,
+      "flagged": false
+    },
+    {
+      "name": "Gatorade Pwj Lemon Lime 1",
+      "quantity": 1,
+      "unit_price": 5200,
+      "total": 5200,
+      "flagged": false
+    },
+    {
+      "name": "J.F.Mills Creamy Wheat Cere",
+      "quantity": 1,
+      "unit_price": 235,
+      "total": 235,
+      "flagged": false
+    },
+    {
+      "name": "Sophie Bathroom Tissue 400s",
+      "quantity": 1,
+      "unit_price": 95.15,
+      "total": 95.15,
+      "flagged": false
+    },
+    {
+      "name": "Sophie Bathroom Tissue 400s",
+      "quantity": 1,
+      "unit_price": 95.15,
+      "total": 95.15,
+      "flagged": false
+    },
+    {
+      "name": "Sophie Bathroom Tissue 400s",
+      "quantity": 1,
+      "unit_price": 90.59,
+      "total": 90.59,
+      "flagged": false
+    },
+    {
+      "name": "Sophie Bathroom Tissue 400s",
+      "quantity": 1,
+      "unit_price": 93.63,
+      "total": 93.63,
+      "flagged": false
+    },
+    {
+      "name": "Sophie Bathroom Tissue 400s",
+      "quantity": 1,
+      "unit_price": 93.63,
+      "total": 93.63,
+      "flagged": false
+    },
+    {
+      "name": "Sophie Bathroom Tissue 400s",
+      "quantity": 1,
+      "unit_price": 93.63,
+      "total": 93.63,
+      "flagged": false
+    },
+    {
+      "name": "Sophie Bathroom Tissue 400s",
+      "quantity": 1,
+      "unit_price": 91.63,
+      "total": 91.63,
+      "flagged": false
+    }
+  ],
+  "currency": "JMD",
+  "confidence": "medium"
+}

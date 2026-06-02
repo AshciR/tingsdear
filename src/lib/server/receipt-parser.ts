@@ -9,7 +9,8 @@ export const parsedReceiptSchema = z.object({
 			name: z.string().min(1),
 			quantity: z.number(),
 			unit_price: z.number(),
-			total: z.number()
+			total: z.number(),
+			flagged: z.boolean().default(false)
 		})
 	),
 	currency: z.string().length(3),
@@ -17,6 +18,12 @@ export const parsedReceiptSchema = z.object({
 });
 
 export type ParsedReceipt = z.infer<typeof parsedReceiptSchema>;
+
+// Lines whose name starts with one of these tokens are almost always not products:
+// section/department headers, subtotals, taxes, payment rows, bundle-pricing artifacts.
+// We flag rather than drop so the verify UI can show them and the user can confirm.
+const NON_ITEM_PATTERN =
+	/^(discount|sub[\s-]?total|total|tax|gct|vat|change|tender|cash|card|balance|payment|package\s+price|grocery[\s-]?(non[\s-]?)?foods?|produce|dairy|meat|frozen|bakery|deli)\b/i;
 
 export type ReceiptMediaType =
 	| 'image/jpeg'
@@ -66,7 +73,7 @@ Then return a single JSON object matching the schema below. Return ONLY the JSON
 
 **purchase_date**: Always ISO format \`YYYY-MM-DD\`. Jamaican receipts commonly print dates as DD/MM/YYYY or DD-MM-YYYY — interpret them as day-first, not month-first. If the date is ambiguous or missing, use today's date and set confidence to at most "medium".
 
-**line_items**: One entry per purchased product. Skip subtotals, taxes (GCT), discounts, totals, change due, payment method, and loyalty messages. If a single line shows a quantity multiplier (e.g. "2 @ 250.00"), record \`quantity: 2\`, \`unit_price: 250.00\`, \`total: 500.00\`. If quantity isn't shown, default to \`1\` and set \`unit_price\` equal to \`total\`. Strip trailing product codes, SKUs, and department numbers from \`name\` — keep just the human-readable product description, title-cased.
+**line_items**: One entry per purchased product. Skip subtotals, taxes (GCT), discounts, totals, change due, payment method, loyalty messages, **section/department headers** (e.g. "Grocery-Foods", "Grocery Non-Foods", "Produce", "Dairy", "Meat"), and **package/bundle pricing rows** (e.g. "Package Price", "Package Price Discount"). If a single line shows a quantity multiplier (e.g. "2 @ 250.00"), record \`quantity: 2\`, \`unit_price: 250.00\`, \`total: 500.00\`. If quantity isn't shown, default to \`1\` and set \`unit_price\` equal to \`total\`. Strip trailing product codes, SKUs, and department numbers from \`name\` — keep just the human-readable product description, title-cased.
 
 **unit_price** and **total**: Numeric values, no currency symbols, no thousand separators. Use a period as the decimal mark.
 
@@ -232,5 +239,11 @@ export async function parseReceipt(
 	if (!result.success) {
 		throw new Error(`Receipt parser: response did not match schema: ${result.error.message}`);
 	}
-	return result.data;
+	return {
+		...result.data,
+		line_items: result.data.line_items.map((item) => ({
+			...item,
+			flagged: NON_ITEM_PATTERN.test(item.name.trim())
+		}))
+	};
 }
