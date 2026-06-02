@@ -18,11 +18,12 @@ export const parsedReceiptSchema = z.object({
 
 export type ParsedReceipt = z.infer<typeof parsedReceiptSchema>;
 
-export type ReceiptImageMediaType =
+export type ReceiptMediaType =
 	| 'image/jpeg'
 	| 'image/png'
 	| 'image/webp'
-	| 'image/gif';
+	| 'image/gif'
+	| 'application/pdf';
 
 const SYSTEM_PROMPT = `You are a receipt-parsing assistant. Your job is to extract structured data from a photograph of a supermarket receipt and return it as valid JSON.
 
@@ -169,28 +170,36 @@ type AnthropicLike = Pick<Anthropic, 'messages'>;
 
 export async function parseReceipt(
 	image: Buffer,
-	mediaType: ReceiptImageMediaType,
+	mediaType: ReceiptMediaType,
 	client?: AnthropicLike
 ): Promise<ParsedReceipt> {
 	const c: AnthropicLike = client ?? new Anthropic({ apiKey: process.env.RECEIPT_EXTRACTOR });
+	const fileBlock =
+		mediaType === 'application/pdf'
+			? ({
+					type: 'document',
+					source: {
+						type: 'base64',
+						media_type: 'application/pdf',
+						data: image.toString('base64')
+					}
+				} as const)
+			: ({
+					type: 'image',
+					source: {
+						type: 'base64',
+						media_type: mediaType,
+						data: image.toString('base64')
+					}
+				} as const);
 	const response = await c.messages.create({
-		model: 'claude-sonnet-4-5',
-		max_tokens: 2048,
+		model: 'claude-haiku-4-5',
+		max_tokens: 8192,
 		system: SYSTEM_PROMPT,
 		messages: [
 			{
 				role: 'user',
-				content: [
-					{
-						type: 'image',
-						source: {
-							type: 'base64',
-							media_type: mediaType,
-							data: image.toString('base64')
-						}
-					},
-					{ type: 'text', text: 'Extract this receipt.' }
-				]
+				content: [fileBlock, { type: 'text', text: 'Extract this receipt.' }]
 			},
 			{ role: 'assistant', content: '{' }
 		]

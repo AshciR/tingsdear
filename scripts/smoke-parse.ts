@@ -1,14 +1,15 @@
 import 'dotenv/config';
 import { readdir, readFile } from 'node:fs/promises';
 import { extname, join, basename } from 'node:path';
-import { parseReceipt, type ReceiptImageMediaType } from '../src/lib/server/receipt-parser.ts';
+import { parseReceipt, type ReceiptMediaType } from '../src/lib/server/receipt-parser.ts';
 
-const MEDIA_TYPES: Record<string, ReceiptImageMediaType> = {
+const MEDIA_TYPES: Record<string, ReceiptMediaType> = {
 	'.jpg': 'image/jpeg',
 	'.jpeg': 'image/jpeg',
 	'.png': 'image/png',
 	'.webp': 'image/webp',
-	'.gif': 'image/gif'
+	'.gif': 'image/gif',
+	'.pdf': 'application/pdf'
 };
 
 async function main() {
