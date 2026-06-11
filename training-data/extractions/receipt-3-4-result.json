@@ -1,6 +1,6 @@
 {
-  "supermarket_name": "",
-  "purchase_date": "2025-05-26",
+  "supermarket": {},
+  "purchase_date": "2026-05-26",
   "line_items": [],
   "currency": "JMD",
   "confidence": "low"

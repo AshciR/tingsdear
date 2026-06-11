@@ -1,5 +1,11 @@
 {
-  "supermarket_name": "Loshusan",
+  "supermarket": {
+    "name": "Loshusan",
+    "address": "29 East Kings House Road",
+    "city": "Kingston",
+    "region": "St. Andrew",
+    "country": "Jamaica"
+  },
   "purchase_date": "2025-04-28",
   "line_items": [
     {
@@ -25,13 +31,13 @@
     },
     {
       "name": "Onions Yellow Local (kg)",
-      "quantity": 0.195,
+      "quantity": 0.265,
       "unit_price": 729,
-      "total": 142.16,
+      "total": 193.19,
       "flagged": false
     },
     {
-      "name": "Garlic Imported (kg)",
+      "name": "Garlic Imp (wt)",
       "quantity": 1,
       "unit_price": 186.42,
       "total": 186.42,
@@ -45,7 +51,7 @@
       "flagged": false
     },
     {
-      "name": "Beef Mince",
+      "name": "Beef Mince (wt)",
       "quantity": 1,
       "unit_price": 809.2,
       "total": 809.2,

@@ -1,12 +1,18 @@
 {
-  "supermarket_name": "Fiorelli Approach Supermarket",
+  "supermarket": {
+    "name": "Fresh Approach",
+    "address": "112 1/2 Constant Spring Road",
+    "city": "Kingston",
+    "region": "St. Andrew",
+    "country": "Jamaica"
+  },
   "purchase_date": "2026-05-20",
   "line_items": [
     {
-      "name": "Dharmin Ultra Soft 4rolls 20g",
+      "name": "Chamois Ultra Soft 4rolls 20g",
       "quantity": 2,
       "unit_price": 548,
-      "total": 1560.26,
+      "total": 1096,
       "flagged": false
     },
     {
@@ -24,14 +30,14 @@
       "flagged": false
     },
     {
-      "name": "Ivory Aloe B/wash 21oz",
+      "name": "Ivory Aloe B/Wash 210z",
       "quantity": 1,
       "unit_price": 1785.5,
       "total": 1785.5,
       "flagged": false
     },
     {
-      "name": "Brass French Vanilla Creamer",
+      "name": "Grace French Vanilla Creamer",
       "quantity": 1,
       "unit_price": 654.02,
       "total": 654.02,
@@ -45,14 +51,14 @@
       "flagged": false
     },
     {
-      "name": "Bruncher Tuna Smoke Flavor 14",
+      "name": "Cruncher Tuna Smoke Flavour 184g",
       "quantity": 2,
       "unit_price": 695.67,
       "total": 1391.74,
       "flagged": false
     },
     {
-      "name": "Grace Reduced Salt Corned Beef 12oz",
+      "name": "Grace Reduced Salt C/Beef 120z",
       "quantity": 2,
       "unit_price": 145.02,
       "total": 290.04,
@@ -61,8 +67,8 @@
     {
       "name": "Grace Mackerel In Tomato 5.5oz",
       "quantity": 1,
-      "unit_price": 505.75,
-      "total": 505.75,
+      "unit_price": 506.75,
+      "total": 506.75,
       "flagged": false
     },
     {
@@ -73,7 +79,7 @@
       "flagged": false
     },
     {
-      "name": "Coffee Barsnap 5",
+      "name": "Coffee Bammy 3",
       "quantity": 0.34,
       "unit_price": 660.79,
       "total": 224.67,
@@ -94,21 +100,21 @@
       "flagged": false
     },
     {
-      "name": "Choice Baked Beans 400g",
+      "name": "U/Choice Baked Beans 400g",
       "quantity": 2,
       "unit_price": 910.01,
       "total": 1820.02,
       "flagged": false
     },
     {
-      "name": "Farms Parmesan Cheese 170g",
+      "name": "U/Farms Parmesan Cheese 170g",
       "quantity": 1,
       "unit_price": 758.1,
       "total": 758.1,
       "flagged": false
     },
     {
-      "name": "Hunts Traditional P/sauce 24oz",
+      "name": "Hunts Traditional P/Sauce 24oz",
       "quantity": 0.275,
       "unit_price": 1815,
       "total": 499.12,
@@ -122,14 +128,14 @@
       "flagged": false
     },
     {
-      "name": "Gold Barsheep Butter 100g",
+      "name": "U/Gold Barschen Butter 100g",
       "quantity": 1,
       "unit_price": 1323.45,
       "total": 1323.45,
       "flagged": false
     },
     {
-      "name": "26-30 P&d Shrimp XL 12oz",
+      "name": "26-30 P&D Shrimp XL 120z",
       "quantity": 1,
       "unit_price": 140.24,
       "total": 140.24,
@@ -150,7 +156,7 @@
       "flagged": false
     },
     {
-      "name": "Beef Jerk Chic Sausage 340g",
+      "name": "U/Beef Mince",
       "quantity": 0.208,
       "unit_price": 1815,
       "total": 410.19,
@@ -164,23 +170,16 @@
       "flagged": false
     },
     {
-      "name": "Beef Mince",
-      "quantity": 1,
-      "unit_price": 468.27,
-      "total": 468.27,
-      "flagged": false
-    },
-    {
-      "name": "Nest Dressed Chicken Thigh Dfb",
+      "name": "Hest Dressed Chicken Thigh DEB",
       "quantity": 0.895,
       "unit_price": 1587.6,
-      "total": 1599.6,
+      "total": 1589.6,
       "flagged": false
     },
     {
-      "name": "Nest Dressed Chicken Thigh Deb",
+      "name": "Hest Dressed Chicken Thigh DEB",
       "quantity": 0.19,
-      "unit_price": 1403,
+      "unit_price": 1780.35,
       "total": 1780.35,
       "flagged": false
     },
@@ -192,7 +191,7 @@
       "flagged": false
     },
     {
-      "name": "Morgans Sunrise Farm Eggs 18oz",
+      "name": "Morgans Sunrise Farm Eggs 1doz",
       "quantity": 1,
       "unit_price": 850,
       "total": 850,

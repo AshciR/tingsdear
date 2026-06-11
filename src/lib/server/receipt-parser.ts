@@ -1,8 +1,19 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { z } from 'zod';
 
+const supermarketSchema = z
+	.object({
+		name: z.string().optional(),
+		branch: z.string().optional(),
+		address: z.string().optional(),
+		city: z.string().optional(),
+		region: z.string().optional(),
+		country: z.string().optional()
+	})
+	.default({});
+
 export const parsedReceiptSchema = z.object({
-	supermarket_name: z.string(),
+	supermarket: supermarketSchema,
 	purchase_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
 	line_items: z.array(
 		z.object({
@@ -40,7 +51,7 @@ The receipt is most likely from a Jamaican supermarket — common chains include
 
 Given the receipt image, extract:
 
-1. The supermarket name
+1. The supermarket — its name and, if printed, its location (branch, address, city, region, country)
 2. The purchase date
 3. Every line item with its quantity, unit price, and line total
 4. The currency
@@ -52,7 +63,14 @@ Then return a single JSON object matching the schema below. Return ONLY the JSON
 
 \`\`\`json
 {
-  "supermarket_name": "string",
+  "supermarket": {
+    "name": "string",
+    "branch": "string",
+    "address": "string",
+    "city": "string",
+    "region": "string",
+    "country": "string"
+  },
   "purchase_date": "YYYY-MM-DD",
   "line_items": [
     {
@@ -69,7 +87,13 @@ Then return a single JSON object matching the schema below. Return ONLY the JSON
 
 ## Field rules
 
-**supermarket_name**: Use the chain's recognizable name (e.g. "Hi-Lo", "MegaMart"), not the specific branch. If only a branch name is visible, use what you see. If unreadable, use the empty string and set confidence to "low".
+**supermarket**: An object describing the store. All fields are optional — include only what is legibly printed and omit any field you can't read (do not guess).
+- \`name\`: The chain's recognizable name (e.g. "Hi-Lo", "MegaMart"), not the specific branch.
+- \`branch\`: The specific branch or store label if shown (e.g. "Barbican", "Liguanea").
+- \`address\`: The street address line as printed.
+- \`city\`, \`region\`, \`country\`: Fill in if discernible from the address (region = parish/state).
+
+**Split receipts**: A long receipt may be photographed across multiple pages, and a continuation page often has NO store header. If this image has no readable supermarket information, return \`"supermarket": {}\` (an empty object) — this is expected and normal. Do NOT lower confidence just because the store header is absent on a continuation page.
 
 **purchase_date**: Always ISO format \`YYYY-MM-DD\`. Jamaican receipts commonly print dates as DD/MM/YYYY or DD-MM-YYYY — interpret them as day-first, not month-first. If the date is ambiguous or missing, use today's date and set confidence to at most "medium".
 
@@ -86,7 +110,7 @@ Then return a single JSON object matching the schema below. Return ONLY the JSON
 
 ## Edge cases
 
-- **Not a receipt**: Return \`confidence: "low"\`, \`line_items: []\`, and best-guess values for the other fields (empty strings are acceptable for \`supermarket_name\`).
+- **Not a receipt**: Return \`confidence: "low"\`, \`line_items: []\`, \`"supermarket": {}\`, and best-guess values for the remaining fields.
 - **Multiple receipts in one image**: Parse only the most prominent one.
 - **Weighed items** (e.g. "BANANAS 1.45 kg @ 220.00/kg = 319.00"): Use \`quantity: 1.45\`, \`unit_price: 220.00\`, \`total: 319.00\`. Include the unit in the name: "Bananas (kg)".
 - **Discount lines**: Skip them. Do not subtract discounts from item prices — record items at their listed prices.
@@ -102,7 +126,7 @@ Input: A clear photo of a Hi-Lo receipt dated 14/03/2026 with three items.
 Output:
 \`\`\`json
 {
-  "supermarket_name": "Hi-Lo",
+  "supermarket": { "name": "Hi-Lo", "branch": "Barbican", "address": "24 Barbican Rd", "city": "Kingston", "region": "St. Andrew", "country": "Jamaica" },
   "purchase_date": "2026-03-14",
   "line_items": [
     { "name": "Grace Coconut Milk 400ml", "quantity": 2, "unit_price": 385.00, "total": 770.00 },
@@ -121,7 +145,7 @@ Input: A PriceSmart receipt showing prices like "$24.99" with a USD subtotal.
 Output:
 \`\`\`json
 {
-  "supermarket_name": "PriceSmart",
+  "supermarket": { "name": "PriceSmart", "city": "Kingston", "country": "Jamaica" },
   "purchase_date": "2026-04-02",
   "line_items": [
     { "name": "Kirkland Almonds 1.36kg", "quantity": 1, "unit_price": 24.99, "total": 24.99 },
@@ -139,7 +163,7 @@ Input: A receipt where the chain name is cut off and two of four items are smudg
 Output:
 \`\`\`json
 {
-  "supermarket_name": "",
+  "supermarket": {},
   "purchase_date": "2026-05-20",
   "line_items": [
     { "name": "Excelsior Water Crackers", "quantity": 1, "unit_price": 380.00, "total": 380.00 },
@@ -159,11 +183,29 @@ Input: A photo of a cat.
 Output:
 \`\`\`json
 {
-  "supermarket_name": "",
+  "supermarket": {},
   "purchase_date": "2026-05-26",
   "line_items": [],
   "currency": "JMD",
   "confidence": "low"
+}
+\`\`\`
+
+### Example 5 — Continuation page of a split receipt (no store header)
+
+Input: The second page of a long receipt. It starts mid-list with items and shows a date, but the store name/header is not on this page.
+
+Output:
+\`\`\`json
+{
+  "supermarket": {},
+  "purchase_date": "2026-06-01",
+  "line_items": [
+    { "name": "Betty Crocker Brownie Mix", "quantity": 1, "unit_price": 620.00, "total": 620.00 },
+    { "name": "Grace Tomato Ketchup 400g", "quantity": 2, "unit_price": 310.00, "total": 620.00 }
+  ],
+  "currency": "JMD",
+  "confidence": "high"
 }
 \`\`\`
 
@@ -231,8 +273,9 @@ export async function parseReceipt(
 	} catch (err) {
 		const snippet = raw.length > 500 ? raw.slice(0, 500) + '…' : raw;
 		throw new Error(
-			`Receipt parser: model returned invalid JSON: ${(err as Error).message}. Raw: ${snippet}`
-		);
+      `Receipt parser: model returned invalid JSON: ${(err as Error).message}. Raw: ${snippet}`, {
+      cause: err
+    });
 	}
 
 	const result = parsedReceiptSchema.safeParse(parsed);

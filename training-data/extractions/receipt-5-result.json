@@ -1,5 +1,11 @@
 {
-  "supermarket_name": "Super Valu Home Centre",
+  "supermarket": {
+    "name": "Super Valu Home Centre",
+    "address": "137 Old Hope Road",
+    "city": "Liguanea",
+    "region": "Kingston 6",
+    "country": "Jamaica"
+  },
   "purchase_date": "2026-05-24",
   "line_items": [
     {
@@ -10,7 +16,7 @@
       "flagged": false
     },
     {
-      "name": "SMS PHL PN Z 10x3 Doz",
+      "name": "SMS PHL PN Z 10x3 Doz 80088",
       "quantity": 10,
       "unit_price": 264,
       "total": 2640,

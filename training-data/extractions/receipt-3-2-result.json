@@ -1,6 +1,6 @@
 {
-  "supermarket_name": "Grace Kennedy",
-  "purchase_date": "2024-01-15",
+  "supermarket": {},
+  "purchase_date": "2026-01-15",
   "line_items": [
     {
       "name": "J.F. Mills All Purpose Flour",
@@ -10,28 +10,28 @@
       "flagged": false
     },
     {
-      "name": "Kendel Long Grain Rice 4k",
+      "name": "Kendel Long Grain Rice 4K",
       "quantity": 1,
       "unit_price": 2335,
       "total": 2335,
       "flagged": false
     },
     {
-      "name": "Betapac Curry Powder 450g",
-      "quantity": 1,
-      "unit_price": 1375.68,
-      "total": 1375.68,
-      "flagged": false
-    },
-    {
-      "name": "Bread Basket Bulla 2pk",
+      "name": "Betapac Curry Powder 450G",
       "quantity": 1,
       "unit_price": 280,
       "total": 280,
       "flagged": false
     },
     {
-      "name": "Best Taste Bulla 2pk",
+      "name": "Bread Basket Bulla 2PK",
+      "quantity": 1,
+      "unit_price": 225,
+      "total": 225,
+      "flagged": false
+    },
+    {
+      "name": "Best Taste Bulla 2PK",
       "quantity": 1,
       "unit_price": 225,
       "total": 225,
@@ -39,9 +39,16 @@
     },
     {
       "name": "Thomas Leith Shred Callalo",
-      "quantity": 2,
+      "quantity": 1,
       "unit_price": 261,
-      "total": 522,
+      "total": 261,
+      "flagged": false
+    },
+    {
+      "name": "Thomas Leith Shred Callalo",
+      "quantity": 1,
+      "unit_price": 247.5,
+      "total": 247.5,
       "flagged": false
     },
     {
@@ -67,9 +74,9 @@
     },
     {
       "name": "Grace Whl Kernel Swt Corn",
-      "quantity": 2,
+      "quantity": 1,
       "unit_price": 243.14,
-      "total": 486.28,
+      "total": 243.14,
       "flagged": false
     },
     {
@@ -80,7 +87,7 @@
       "flagged": false
     },
     {
-      "name": "Lasco Butter Beans 400g",
+      "name": "Lasco Butter Beans 400G",
       "quantity": 1,
       "unit_price": 239.74,
       "total": 239.74,
@@ -94,28 +101,21 @@
       "flagged": false
     },
     {
-      "name": "Lasco Butter Beans 400g",
-      "quantity": 1,
-      "unit_price": 239.56,
-      "total": 239.56,
-      "flagged": false
-    },
-    {
-      "name": "Grace Corned Beef 340g",
+      "name": "Grace Corned Beef 340G",
       "quantity": 1,
       "unit_price": 244.11,
       "total": 244.11,
       "flagged": false
     },
     {
-      "name": "Grace Baked Beans 300g",
+      "name": "Grace Baked Beans 300G",
       "quantity": 1,
       "unit_price": 239.74,
       "total": 239.74,
       "flagged": false
     },
     {
-      "name": "Lasco Butter Beans 400g",
+      "name": "Lasco Butter Beans 400G",
       "quantity": 1,
       "unit_price": 239.56,
       "total": 239.56,
@@ -129,7 +129,7 @@
       "flagged": false
     },
     {
-      "name": "Covebay Plastic Cups 120z",
+      "name": "Covebay Plastic Cups 120Z",
       "quantity": 1,
       "unit_price": 247.5,
       "total": 247.5,
@@ -143,38 +143,45 @@
       "flagged": false
     },
     {
-      "name": "Shavuot S/sup Moringa Tea",
+      "name": "Shavuot S/Scp Moringa Tea",
       "quantity": 1,
       "unit_price": 700,
       "total": 700,
       "flagged": false
     },
     {
-      "name": "Coffee Ts Bammy Mini 8s",
-      "quantity": 2,
+      "name": "Coffee Ts Bammy Mini 8S",
+      "quantity": 1,
       "unit_price": 700,
-      "total": 1400,
+      "total": 700,
       "flagged": false
     },
     {
-      "name": "Coffee Ts Bammy Mini 8s",
+      "name": "Coffee Ts Bammy Mini 8S",
       "quantity": 1,
       "unit_price": 690,
       "total": 690,
       "flagged": false
     },
     {
-      "name": "Foska Oats 400g",
+      "name": "Coffee Ts Bammy Mini 8S",
+      "quantity": 1,
+      "unit_price": 732,
+      "total": 732,
+      "flagged": false
+    },
+    {
+      "name": "Forka Oats 400G",
       "quantity": 1,
       "unit_price": 304.27,
       "total": 304.27,
       "flagged": false
     },
     {
-      "name": "J.F. Mills Festival Mix 454",
+      "name": "J.F. Mills Festival Mix",
       "quantity": 1,
-      "unit_price": 516.04,
-      "total": 516.04,
+      "unit_price": 616.04,
+      "total": 616.04,
       "flagged": false
     }
   ],

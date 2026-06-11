@@ -1,16 +1,18 @@
 {
-  "supermarket_name": "General Food",
+  "supermarket": {
+    "name": "General Food"
+  },
   "purchase_date": "2026-05-26",
   "line_items": [
     {
-      "name": "Holiday Cheese Stiks 40g",
+      "name": "Holiday Cheese Stiks 40G",
       "quantity": 1,
       "unit_price": 64.15,
       "total": 64.15,
       "flagged": false
     },
     {
-      "name": "Holiday Cheese Stiks 40g",
+      "name": "Holiday Cheese Stiks 40G",
       "quantity": 1,
       "unit_price": 64.15,
       "total": 64.15,
@@ -61,8 +63,8 @@
     {
       "name": "B/Kist Vanilla S/Wich Ckie",
       "quantity": 1,
-      "unit_price": 53.23,
-      "total": 53.23,
+      "unit_price": 83.23,
+      "total": 83.23,
       "flagged": false
     },
     {
@@ -101,10 +103,10 @@
       "flagged": false
     },
     {
-      "name": "Biscuits 700g",
+      "name": "B/Kist Vanilla S/Wich Ckie",
       "quantity": 1,
-      "unit_price": 40.15,
-      "total": 40.15,
+      "unit_price": 56.03,
+      "total": 56.03,
       "flagged": false
     }
   ],

@@ -1,5 +1,8 @@
 {
-  "supermarket_name": "Loshusan Supermarket",
+  "supermarket": {
+    "name": "Loshusan Supermarket",
+    "country": "Jamaica"
+  },
   "purchase_date": "2025-12-22",
   "line_items": [
     {
@@ -11,9 +14,9 @@
     },
     {
       "name": "Apples Royal Gala (kg)",
-      "quantity": 1.39,
+      "quantity": 0.15,
       "unit_price": 1167,
-      "total": 1622.13,
+      "total": 175.05,
       "flagged": false
     },
     {
@@ -62,7 +65,7 @@
       "name": "Cb Chicken Whole A-Grade Frz (kg)",
       "quantity": 3.58,
       "unit_price": 909.65,
-      "total": 3256.49,
+      "total": 3256.54,
       "flagged": false
     },
     {
@@ -80,7 +83,7 @@
       "flagged": false
     },
     {
-      "name": "D&g Kola Champagne 2l",
+      "name": "D&G Kola Champagne 2L",
       "quantity": 1,
       "unit_price": 271.96,
       "total": 271.96,
@@ -241,7 +244,7 @@
       "flagged": false
     },
     {
-      "name": "M&m Milk Chocolate 47.9g",
+      "name": "M&M Milk Chocolate 47.9g",
       "quantity": 2,
       "unit_price": 324.32,
       "total": 648.64,
@@ -458,7 +461,7 @@
       "flagged": false
     },
     {
-      "name": "Tru-Juice Sorrel Ginger 3.78l",
+      "name": "Tru-Juice Sorrel Ginger 3.78L",
       "quantity": 1,
       "unit_price": 1584.18,
       "total": 1584.18,

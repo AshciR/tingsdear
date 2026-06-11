@@ -1,33 +1,39 @@
 {
-  "supermarket_name": "Super Valu Fresh Foods",
+  "supermarket": {
+    "name": "Super Valu Fresh Foods",
+    "address": "144 Constant Spring Road",
+    "city": "Kingston",
+    "region": "St. Andrew",
+    "country": "Jamaica"
+  },
   "purchase_date": "2026-05-29",
   "line_items": [
     {
       "name": "Nutella Choc Hazelnut 5p",
       "quantity": 1,
-      "unit_price": 134.85,
-      "total": 134.85,
+      "unit_price": 1345.85,
+      "total": 1345.85,
       "flagged": false
     },
     {
-      "name": "Item",
+      "name": "Nutella Choc Hazelnut 5p",
       "quantity": 1,
       "unit_price": 2984.75,
       "total": 2984.75,
       "flagged": false
     },
     {
-      "name": "Café Blue Coffee 3M 100%",
+      "name": "3M 100% Cafe Blue Coffee",
       "quantity": 1,
       "unit_price": 293.75,
       "total": 293.75,
       "flagged": false
     },
     {
-      "name": "Kotex Tampons Super",
+      "name": "Kotex Tampons Super Secure",
       "quantity": 1,
-      "unit_price": 157.4,
-      "total": 157.4,
+      "unit_price": 1157.4,
+      "total": 1157.4,
       "flagged": false
     }
   ],

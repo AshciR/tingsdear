@@ -1,12 +1,26 @@
 {
-  "supermarket_name": "General Food Supermarket",
+  "supermarket": {
+    "name": "General Food Supermarket",
+    "branch": "Shop 9 Liguanea Plaza",
+    "address": "134 Old Hope Road",
+    "city": "Kingston",
+    "region": "St. Andrew",
+    "country": "Jamaica"
+  },
   "purchase_date": "2025-11-03",
   "line_items": [
     {
+      "name": "Bash",
+      "quantity": 1,
+      "unit_price": 571.87,
+      "total": 571.87,
+      "flagged": false
+    },
+    {
       "name": "Lifespan Spring Water 5L",
       "quantity": 1,
-      "unit_price": 571.67,
-      "total": 571.67,
+      "unit_price": 244.32,
+      "total": 244.32,
       "flagged": false
     },
     {
@@ -24,21 +38,21 @@
       "flagged": false
     },
     {
-      "name": "Old Spice Men Vin",
+      "name": "Ha's Old Spice Men Zin",
       "quantity": 1,
       "unit_price": 1549.97,
       "total": 1549.97,
       "flagged": false
     },
     {
-      "name": "Cahn Ultra F250 Orig",
+      "name": "Dahn Ultra E730 Orig",
       "quantity": 1,
       "unit_price": 731.36,
       "total": 731.36,
       "flagged": false
     },
     {
-      "name": "Ajax Bleach 900ml",
+      "name": "Ajax Bleach 950 ML",
       "quantity": 1,
       "unit_price": 269.27,
       "total": 269.27,

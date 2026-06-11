@@ -8,24 +8,46 @@ The receipt parser already returns a validated `ParsedReceipt`. We now need the 
 
 ### `src/lib/server/repo.ts`
 
+Define and export a dedicated type whose sole responsibility is describing the data the repo needs to persist. It mirrors the relevant parts of `ParsedReceipt` but belongs entirely to the persistence layer — callers are responsible for mapping to it:
+
+```ts
+export type ReceiptSaveLineItem = {
+  name: string;
+  unit_price: number;
+};
+
+export type ReceiptSaveRequest = {
+  supermarket: {
+    name?: string;
+    branch?: string;
+    address?: string;
+    city?: string;
+    region?: string;
+    country?: string;
+  };
+  purchase_date: string; // YYYY-MM-DD
+  line_items: ReceiptSaveLineItem[];
+};
+```
+
 Export:
 
 ```ts
-export async function saveParsedReceipt(
+export async function saveReceipt(
   db: Db,
-  parsed: ParsedReceipt
+  receipt: ReceiptSaveRequest
 ): Promise<{ saved: number; chainId: number; locationId: number }>
 ```
 
 Inside `db.transaction(async (tx) => { ... })`:
 
 1. **Manufacturer** — find row where `lower(name) = 'unknown'`; insert if missing. → `unknownMfrId`.
-2. **Chain** — find row where `lower(name) = lower(parsed.supermarket_name)`; insert if missing. → `chainId`.
+2. **Chain** — find row where `lower(name) = lower(receipt.supermarket.name ?? 'Unknown')`; insert if missing. → `chainId`.
 3. **Location** — find row where `chain_id = chainId AND name = 'Default'`; insert if missing. → `locationId`.
 4. **For each `line_item`** (repo does not filter `flagged`; the UI decides what to send):
    - Find `item` where `lower(name) = lower(item.name)`; if missing, insert with `manufacturer_id = unknownMfrId`, `category_id = NULL`, `size_amount = '1'`, `size_unit = 'ct'`, `unit_type = 'count'`, `size_in_base_unit = '1'`. → `itemId`.
-   - Insert one `price` row: `location_id = locationId`, `item_id = itemId`, `amount = unit_price.toFixed(2)`, `source = 'receipt_ocr'`, `source_ref = NULL`, `timestamp = new Date(\`${parsed.purchase_date}T00:00:00Z\`)`.
-5. Return `{ saved: parsed.line_items.length, chainId, locationId }`.
+   - Insert one `price` row: `location_id = locationId`, `item_id = itemId`, `amount = unit_price.toFixed(2)`, `source = 'receipt_ocr'`, `source_ref = NULL`, `timestamp = new Date(\`${receipt.purchase_date}T00:00:00Z\`)`.
+5. Return `{ saved: receipt.line_items.length, chainId, locationId }`.
 
 Notes:
 - Use Drizzle helpers from `src/lib/server/db/schema.ts` (already in place).
@@ -35,8 +57,9 @@ Notes:
 
 ## Files
 
-- **New**: `src/lib/server/repo.ts`
-- **Reuse**: `ParsedReceipt` from `src/lib/server/receipt-parser.ts:20`; `Db`, `getDb`, `schema` from `src/lib/server/db/index.ts`; tables from `src/lib/server/db/schema.ts`.
+- **New**: `src/lib/server/repo.ts` (defines `ReceiptSaveRequest`, `ReceiptSaveLineItem`, `saveReceipt`)
+- **Reuse**: `Db`, `getDb`, `schema` from `src/lib/server/db/index.ts`; tables from `src/lib/server/db/schema.ts`.
+- **Note**: `ParsedReceipt` from `receipt-parser.ts` is intentionally **not** imported here. Callers (API routes, etc.) map `ParsedReceipt` → `ReceiptSaveRequest` before calling `saveReceipt`.
 
 ## Testing
 
