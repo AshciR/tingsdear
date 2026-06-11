@@ -28,7 +28,10 @@ export default defineConfig({
 					name: 'server',
 					environment: 'node',
 					include: ['src/**/*.{test,spec}.{js,ts}'],
-					exclude: ['src/**/*.svelte.{test,spec}.{js,ts}']
+					exclude: ['src/**/*.svelte.{test,spec}.{js,ts}'],
+					globalSetup: ['src/test-setup/global-setup.ts'],
+					testTimeout: 120_000,
+					pool: 'forks'
 				}
 			}
 		]

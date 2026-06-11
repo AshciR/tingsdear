@@ -3,14 +3,31 @@ import { Pool } from 'pg';
 import { migrate } from '../lib/server/db/migrate.ts';
 
 export default async function () {
+	console.log('[testcontainers] starting postgis/postgis:17-3.5...');
+	const startedAt = Date.now();
 	const container = await new PostgreSqlContainer('postgis/postgis:17-3.5')
 		.withStartupTimeout(120_000)
 		.start();
-	process.env.DATABASE_URL = container.getConnectionUri();
-	const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
+	const connectionUri = container.getConnectionUri();
+	process.env.DATABASE_URL = connectionUri;
+
+	console.log(
+		`[testcontainers] started in ${((Date.now() - startedAt) / 1000).toFixed(1)}s ` +
+			`host=${container.getHost()} port=${container.getPort()} ` +
+			`db=${container.getDatabase()} user=${container.getUsername()} pass=${container.getPassword()}`
+	);
+	console.log(`[testcontainers] DATABASE_URL=${connectionUri}`);
+
+	console.log('[testcontainers] running migrations from drizzle/migrations...');
+	const pool = new Pool({ connectionString: connectionUri });
 	await migrate(pool, 'drizzle/migrations');
 	await pool.end();
+	console.log('[testcontainers] migrations complete');
+
 	return async () => {
+		console.log('[testcontainers] stopping container...');
 		await container.stop();
+		console.log('[testcontainers] stopped');
 	};
 }
