@@ -3,9 +3,10 @@ import { Pool } from 'pg';
 import { migrate } from '../lib/server/db/migrate.ts';
 
 export default async function () {
-	console.log('[testcontainers] starting postgis/postgis:17-3.5...');
+  const databaseImage = "postgis/postgis:17-3.5"
+	console.log(`[testcontainers] starting ${databaseImage}...`);
 	const startedAt = Date.now();
-	const container = await new PostgreSqlContainer('postgis/postgis:17-3.5')
+	const container = await new PostgreSqlContainer(databaseImage)
 		.withStartupTimeout(120_000)
 		.start();
 

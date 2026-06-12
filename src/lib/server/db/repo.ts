@@ -37,6 +37,32 @@ export type SaveReceiptResult = {
 	lineItems: SavedLineItem[];
 };
 
+export async function saveReceipt(
+	db: Db,
+	receipt: ReceiptSaveRequest
+): Promise<SaveReceiptResult> {
+	return db.transaction(async (tx) => {
+		const unknownMfrId = await findOrCreateUnknownManufacturer(tx);
+		const chain = await findOrCreateChain(tx, receipt.supermarket.name ?? 'Unknown');
+		const location = await findOrCreateDefaultLocation(tx, chain.id);
+		const timestamp = new Date(`${receipt.purchase_date}T00:00:00Z`);
+
+		const lineItems = await Promise.all(
+			receipt.line_items.map((lineItem) =>
+				saveLineItem(tx, lineItem, location.id, unknownMfrId, timestamp)
+			)
+		);
+
+		return {
+			chainId: chain.id,
+			chainCreated: chain.created,
+			locationId: location.id,
+			locationCreated: location.created,
+			lineItems
+		};
+	});
+}
+
 async function findOrCreateUnknownManufacturer(tx: Tx): Promise<number> {
 	const existing = await tx
 		.select({ id: manufacturer.id })
@@ -85,6 +111,18 @@ async function findOrCreateDefaultLocation(
 	return { id: inserted[0].id, created: true };
 }
 
+async function saveLineItem(
+	tx: Tx,
+	lineItem: ReceiptSaveLineItem,
+	locationId: number,
+	unknownMfrId: number,
+	timestamp: Date
+): Promise<SavedLineItem> {
+	const { id: itemId, created } = await findOrCreateItem(tx, lineItem.name, unknownMfrId);
+	const priceId = await insertReceiptPrice(tx, locationId, itemId, lineItem.unit_price, timestamp);
+	return { itemId, itemName: lineItem.name, priceId, created };
+}
+
 async function findOrCreateItem(
 	tx: Tx,
 	name: string,
@@ -130,42 +168,4 @@ async function insertReceiptPrice(
 		})
 		.returning({ id: price.id });
 	return inserted[0].id;
-}
-
-async function saveLineItem(
-	tx: Tx,
-	lineItem: ReceiptSaveLineItem,
-	locationId: number,
-	unknownMfrId: number,
-	timestamp: Date
-): Promise<SavedLineItem> {
-	const { id: itemId, created } = await findOrCreateItem(tx, lineItem.name, unknownMfrId);
-	const priceId = await insertReceiptPrice(tx, locationId, itemId, lineItem.unit_price, timestamp);
-	return { itemId, itemName: lineItem.name, priceId, created };
-}
-
-export async function saveReceipt(
-	db: Db,
-	receipt: ReceiptSaveRequest
-): Promise<SaveReceiptResult> {
-	return db.transaction(async (tx) => {
-		const unknownMfrId = await findOrCreateUnknownManufacturer(tx);
-		const chain = await findOrCreateChain(tx, receipt.supermarket.name ?? 'Unknown');
-		const location = await findOrCreateDefaultLocation(tx, chain.id);
-		const timestamp = new Date(`${receipt.purchase_date}T00:00:00Z`);
-
-		const lineItems = await Promise.all(
-			receipt.line_items.map((lineItem) =>
-				saveLineItem(tx, lineItem, location.id, unknownMfrId, timestamp)
-			)
-		);
-
-		return {
-			chainId: chain.id,
-			chainCreated: chain.created,
-			locationId: location.id,
-			locationCreated: location.created,
-			lineItems
-		};
-	});
 }

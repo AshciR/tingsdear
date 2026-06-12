@@ -10,3 +10,11 @@ Keep functions small and single-purpose. If a function does multiple discrete st
 - **One level of abstraction per function**: the top-level function reads like a summary; the helpers do the work.
 
 Avoid 50+ line monoliths that mix orchestration with low-level query construction.
+
+## File layout: main function first
+
+In any file with a main exported function and supporting helpers, put the **main function at the top** and the **helpers below it**. Readers should see the high-level orchestration first and drill down into helpers only if they need detail.
+
+- Top of file: imports → types → main function.
+- Bottom of file: helper functions, in roughly the order they're called.
+- This applies to both source files (`repo.ts`, route handlers, etc.) and test files (test factory helpers / count helpers go below the `describe` block).
