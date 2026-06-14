@@ -86,6 +86,40 @@ describe('saveReceipt', () => {
 		});
 	});
 
+	it('persists branch and address fields and reuses the location on a second receipt at the same address', async () => {
+		await withRollback(async (db) => {
+			// Given a receipt with a fully-populated supermarket address
+			const supermarket = {
+				name: 'Loshusan',
+				branch: 'Barbican',
+				address: '29 East Kings House Road',
+				city: 'Kingston',
+				region: 'St. Andrew',
+				country: 'Jamaica'
+			};
+			await saveReceipt(db, makeReceipt({ supermarket }));
+
+			// When we save a second receipt at the same address
+			const result = await saveReceipt(
+				db,
+				makeReceipt({ supermarket, line_items: [{ name: 'Eggs', unit_price: 5.25 }] })
+			);
+
+			// Then the address row is reused (no duplicate location) and its fields are populated
+			const counts = await countRows(db);
+			expect(counts.locations).toBe(1);
+			expect(result.locationCreated).toBe(false);
+			const [loc] = await selectLocations(db);
+			expect(loc).toEqual({
+				name: 'Barbican',
+				address: '29 East Kings House Road',
+				city: 'Kingston',
+				region: 'St. Andrew',
+				country: 'Jamaica'
+			});
+		});
+	});
+
 	it('matches supermarket chain names case-insensitively', async () => {
 		await withRollback(async (db) => {
 			// Given a chain "HI-LO" already exists from a prior save
@@ -118,6 +152,18 @@ function makeReceipt(overrides: Partial<ReceiptSaveRequest> = {}): ReceiptSaveRe
 		],
 		...overrides
 	};
+}
+
+async function selectLocations(db: Db) {
+	return db
+		.select({
+			name: supermarketLocation.name,
+			address: supermarketLocation.address,
+			city: supermarketLocation.city,
+			region: supermarketLocation.region,
+			country: supermarketLocation.country
+		})
+		.from(supermarketLocation);
 }
 
 async function countRows(db: Db) {

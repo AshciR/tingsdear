@@ -44,7 +44,7 @@ export async function saveReceipt(
 	return db.transaction(async (tx) => {
 		const unknownMfrId = await findOrCreateUnknownManufacturer(tx);
 		const chain = await findOrCreateChain(tx, receipt.supermarket.name ?? 'Unknown');
-		const location = await findOrCreateDefaultLocation(tx, chain.id);
+		const location = await findOrCreateLocation(tx, chain.id, receipt.supermarket);
 		const timestamp = new Date(`${receipt.purchase_date}T00:00:00Z`);
 
 		const lineItems = await Promise.all(
@@ -94,19 +94,35 @@ async function findOrCreateChain(
 	return { id: inserted[0].id, created: true };
 }
 
-async function findOrCreateDefaultLocation(
+async function findOrCreateLocation(
 	tx: Tx,
-	chainId: number
+	chainId: number,
+	supermarket: ReceiptSaveRequest['supermarket']
 ): Promise<{ id: number; created: boolean }> {
+	const name = supermarket.branch ?? 'Default';
+	const address = supermarket.address ?? null;
+	const where = address
+		? and(
+				eq(supermarketLocation.chainId, chainId),
+				sql`lower(${supermarketLocation.address}) = lower(${address})`
+			)
+		: and(eq(supermarketLocation.chainId, chainId), eq(supermarketLocation.name, name));
 	const existing = await tx
 		.select({ id: supermarketLocation.id })
 		.from(supermarketLocation)
-		.where(and(eq(supermarketLocation.chainId, chainId), eq(supermarketLocation.name, 'Default')))
+		.where(where)
 		.limit(1);
 	if (existing[0]) return { id: existing[0].id, created: false };
 	const inserted = await tx
 		.insert(supermarketLocation)
-		.values({ chainId, name: 'Default' })
+		.values({
+			chainId,
+			name,
+			address,
+			city: supermarket.city ?? null,
+			region: supermarket.region ?? null,
+			country: supermarket.country ?? null
+		})
 		.returning({ id: supermarketLocation.id });
 	return { id: inserted[0].id, created: true };
 }
