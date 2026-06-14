@@ -36,12 +36,15 @@ export type ParsedReceipt = z.infer<typeof parsedReceiptSchema>;
 const NON_ITEM_PATTERN =
 	/^(discount|sub[\s-]?total|total|tax|gct|vat|change|tender|cash|card|balance|payment|package\s+price|grocery[\s-]?(non[\s-]?)?foods?|produce|dairy|meat|frozen|bakery|deli)\b/i;
 
-export type ReceiptMediaType =
-	| 'image/jpeg'
-	| 'image/png'
-	| 'image/webp'
-	| 'image/gif'
-	| 'application/pdf';
+export const RECEIPT_MEDIA_TYPES = [
+	'image/jpeg',
+	'image/png',
+	'image/webp',
+	'image/gif',
+	'application/pdf'
+] as const;
+
+export type ReceiptMediaType = (typeof RECEIPT_MEDIA_TYPES)[number];
 
 const SYSTEM_PROMPT = `You are a receipt-parsing assistant. Your job is to extract structured data from a photograph of a supermarket receipt and return it as valid JSON.
 
