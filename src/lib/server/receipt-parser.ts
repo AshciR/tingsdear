@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
+import { env } from '$env/dynamic/private';
 import { z } from 'zod';
 
 const supermarketSchema = z
@@ -225,7 +226,7 @@ export async function parseReceipt(
 	mediaType: ReceiptMediaType,
 	client?: AnthropicLike
 ): Promise<ParsedReceipt> {
-	const c: AnthropicLike = client ?? new Anthropic({ apiKey: process.env.RECEIPT_EXTRACTOR });
+	const c: AnthropicLike = client ?? new Anthropic({ apiKey: receiptExtractorKey() });
 	const fileBlock =
 		mediaType === 'application/pdf'
 			? ({
@@ -292,4 +293,12 @@ export async function parseReceipt(
 			flagged: NON_ITEM_PATTERN.test(item.name.trim())
 		}))
 	};
+}
+
+// The dev server and adapter-node load .env into $env/dynamic/private, not process.env;
+// the process.env fallback covers scripts and tests that run outside SvelteKit.
+function receiptExtractorKey(): string {
+	const key = env.RECEIPT_EXTRACTOR ?? process.env.RECEIPT_EXTRACTOR;
+	if (!key) throw new Error('RECEIPT_EXTRACTOR is not set');
+	return key;
 }
