@@ -47,11 +47,13 @@ export async function saveReceipt(
 		const location = await findOrCreateLocation(tx, chain.id, receipt.supermarket);
 		const timestamp = new Date(`${receipt.purchase_date}T00:00:00Z`);
 
-		const lineItems = await Promise.all(
-			receipt.line_items.map((lineItem) =>
-				saveLineItem(tx, lineItem, location.id, unknownMfrId, timestamp)
-			)
-		);
+		// Sequential, not Promise.all: a transaction is pinned to one connection, so
+		// concurrent queries interleave. Two lines naming the same product would both
+		// miss the find-or-create SELECT before either INSERT ran, duplicating the item.
+		const lineItems: SavedLineItem[] = [];
+		for (const lineItem of receipt.line_items) {
+			lineItems.push(await saveLineItem(tx, lineItem, location.id, unknownMfrId, timestamp));
+		}
 
 		return {
 			chainId: chain.id,

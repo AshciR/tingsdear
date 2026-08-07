@@ -120,6 +120,27 @@ describe('saveReceipt', () => {
 		});
 	});
 
+	it('creates a single item when the same product appears twice on one receipt', async () => {
+		await withRollback(async (db) => {
+			// Given a receipt listing the same product on two separate lines
+			const receipt = makeReceipt({
+				line_items: [
+					{ name: 'Bananas', unit_price: 220 },
+					{ name: 'Bananas', unit_price: 220 }
+				]
+			});
+
+			// When we save it
+			const result = await saveReceipt(db, receipt);
+
+			// Then both lines resolve to one item row, with a price recorded against each line
+			const counts = await countRows(db);
+			expect(counts.items).toBe(1);
+			expect(counts.prices).toBe(2);
+			expect(new Set(result.lineItems.map((li) => li.itemId)).size).toBe(1);
+		});
+	});
+
 	it('matches supermarket chain names case-insensitively', async () => {
 		await withRollback(async (db) => {
 			// Given a chain "HI-LO" already exists from a prior save
