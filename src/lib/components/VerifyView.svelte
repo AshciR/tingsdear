@@ -73,7 +73,7 @@
 			<h2 class="text-sm font-medium text-gray-700">
 				Line items — {included} of {receipt.line_items.length} will be saved
 			</h2>
-			<div class="flex gap-2 pr-8 text-xs text-gray-500">
+			<div class="hidden gap-2 pr-8 text-xs text-gray-500 sm:flex">
 				<span class="w-24 text-right">Qty</span>
 				<span class="w-24 text-right">Unit</span>
 				<span class="w-24 text-right">Total</span>

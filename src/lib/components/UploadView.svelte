@@ -32,18 +32,48 @@
 <section class="space-y-4">
 	<h1 class="text-2xl font-semibold">Scan a receipt</h1>
 
-	<input
-		type="file"
-		accept="image/*,application/pdf"
-		capture="environment"
-		onchange={handleChange}
-		class="block w-full cursor-pointer rounded border border-gray-300 p-2 text-sm"
-	/>
+	<div class="flex gap-2">
+		<label
+			for="camera-input"
+			class="cursor-pointer rounded bg-blue-600 px-4 py-2 text-sm text-white focus-within:ring-2 focus-within:ring-blue-400"
+		>
+			Take photo
+			<input
+				id="camera-input"
+				type="file"
+				accept="image/*"
+				capture="environment"
+				onchange={handleChange}
+				class="sr-only"
+			/>
+		</label>
+
+		<label
+			for="file-input"
+			class="cursor-pointer rounded border border-gray-300 px-4 py-2 text-sm focus-within:ring-2 focus-within:ring-blue-400"
+		>
+			Choose file
+			<input
+				id="file-input"
+				type="file"
+				accept="image/*,application/pdf"
+				onchange={handleChange}
+				class="sr-only"
+			/>
+		</label>
+	</div>
+
+	{#if file}
+		<p class="text-sm text-gray-600">{file.name}</p>
+	{/if}
 
 	{#if previewUrl}
-		<img src={previewUrl} alt="Receipt preview" class="max-h-96 rounded border border-gray-200" />
-	{:else if file}
-		<p class="text-sm text-gray-600">PDF: {file.name}</p>
+		<img
+			src={previewUrl}
+			alt="Receipt preview"
+			style="image-orientation: from-image"
+			class="max-h-96 rounded border border-gray-200"
+		/>
 	{/if}
 
 	{#if error}
