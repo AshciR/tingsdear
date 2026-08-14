@@ -1,7 +1,7 @@
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { parsedReceiptSchema, type ParsedReceipt } from '$lib/server/receipt-parser.ts';
-import { saveReceipt, type ReceiptSaveRequest } from '$lib/server/db/repo.ts';
+import { parsedReceiptSchema, type ParsedReceipt } from '$lib/server/receipt-parser';
+import { saveReceipt, type ReceiptSaveRequest } from '$lib/server/db/repo';
 
 export const POST: RequestHandler = async ({ request, locals }) => {
 	const body = await request.json();

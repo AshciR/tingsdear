@@ -2,11 +2,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 const { parseReceiptMock } = vi.hoisted(() => ({ parseReceiptMock: vi.fn() }));
 
-vi.mock('$lib/server/receipt-parser.ts', async () => {
-	const actual =
-		await vi.importActual<typeof import('$lib/server/receipt-parser.ts')>(
-			'$lib/server/receipt-parser.ts'
-		);
+vi.mock('$lib/server/receipt-parser', async () => {
+	const actual = await vi.importActual<typeof import('$lib/server/receipt-parser')>(
+		'$lib/server/receipt-parser'
+	);
 	return { ...actual, parseReceipt: parseReceiptMock };
 });
 
@@ -62,5 +61,4 @@ describe('POST /api/receipts/parse', () => {
 		// When / Then
 		await expect(invoke(makeForm(file))).rejects.toMatchObject({ status: 400 });
 	});
-
 });

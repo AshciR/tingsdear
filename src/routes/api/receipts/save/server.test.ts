@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { sql } from 'drizzle-orm';
 import { withRollback } from '../../../../test-setup/with-rollback.ts';
-import type { Db } from '$lib/server/db/index.ts';
-import type { ParsedReceipt } from '$lib/server/receipt-parser.ts';
-import { item, price, supermarketChain, supermarketLocation } from '$lib/server/db/schema.ts';
+import type { Db } from '$lib/server/db/index';
+import type { ParsedReceipt } from '$lib/server/receipt-parser';
+import { item, price, supermarketChain, supermarketLocation } from '$lib/server/db/schema';
 import { POST } from './+server.ts';
 
 function invoke(request: Request, db: Db) {

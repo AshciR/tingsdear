@@ -37,10 +37,7 @@ export type SaveReceiptResult = {
 	lineItems: SavedLineItem[];
 };
 
-export async function saveReceipt(
-	db: Db,
-	receipt: ReceiptSaveRequest
-): Promise<SaveReceiptResult> {
+export async function saveReceipt(db: Db, receipt: ReceiptSaveRequest): Promise<SaveReceiptResult> {
 	return db.transaction(async (tx) => {
 		const unknownMfrId = await findOrCreateUnknownManufacturer(tx);
 		const chain = await findOrCreateChain(tx, receipt.supermarket.name ?? 'Unknown');
@@ -79,10 +76,7 @@ async function findOrCreateUnknownManufacturer(tx: Tx): Promise<number> {
 	return inserted[0].id;
 }
 
-async function findOrCreateChain(
-	tx: Tx,
-	name: string
-): Promise<{ id: number; created: boolean }> {
+async function findOrCreateChain(tx: Tx, name: string): Promise<{ id: number; created: boolean }> {
 	const existing = await tx
 		.select({ id: supermarketChain.id })
 		.from(supermarketChain)

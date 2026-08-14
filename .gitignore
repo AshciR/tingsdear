@@ -18,6 +18,10 @@ Thumbs.db
 !.env.example
 !.env.test
 
+# Test artifacts (vitest browser mode writes these on failure)
+__screenshots__/
+.vitest-attachments/
+
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*

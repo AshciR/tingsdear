@@ -12,21 +12,21 @@ Define and export a dedicated type whose sole responsibility is describing the d
 
 ```ts
 export type ReceiptSaveLineItem = {
-  name: string;
-  unit_price: number;
+	name: string;
+	unit_price: number;
 };
 
 export type ReceiptSaveRequest = {
-  supermarket: {
-    name?: string;
-    branch?: string;
-    address?: string;
-    city?: string;
-    region?: string;
-    country?: string;
-  };
-  purchase_date: string; // YYYY-MM-DD
-  line_items: ReceiptSaveLineItem[];
+	supermarket: {
+		name?: string;
+		branch?: string;
+		address?: string;
+		city?: string;
+		region?: string;
+		country?: string;
+	};
+	purchase_date: string; // YYYY-MM-DD
+	line_items: ReceiptSaveLineItem[];
 };
 ```
 
@@ -34,9 +34,9 @@ Export:
 
 ```ts
 export async function saveReceipt(
-  db: Db,
-  receipt: ReceiptSaveRequest
-): Promise<{ saved: number; chainId: number; locationId: number }>
+	db: Db,
+	receipt: ReceiptSaveRequest
+): Promise<{ saved: number; chainId: number; locationId: number }>;
 ```
 
 Inside `db.transaction(async (tx) => { ... })`:
@@ -50,8 +50,9 @@ Inside `db.transaction(async (tx) => { ... })`:
 5. Return `{ saved: receipt.line_items.length, chainId, locationId }`.
 
 Notes:
+
 - Use Drizzle helpers from `src/lib/server/db/schema.ts` (already in place).
-- Case-insensitive matching via `sql\`lower(${col}) = lower(${value})\`` from `drizzle-orm`.
+- Case-insensitive matching via `sql\`lower(${col}) = lower(${value})\``from`drizzle-orm`.
 - All inserts use `.returning({ id: <table>.id })`.
 - The PostGIS `geog` column is maintained by the existing trigger — we never write it.
 
@@ -73,14 +74,16 @@ import { Pool } from 'pg';
 import { migrate } from '../lib/server/db/migrate.ts';
 
 export default async function () {
-  const container = await new PostgreSqlContainer('postgis/postgis:17-3.5')
-    .withStartupTimeout(120_000)
-    .start();
-  process.env.DATABASE_URL = container.getConnectionUri();
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-  await migrate(pool, 'drizzle/migrations');
-  await pool.end();
-  return async () => { await container.stop(); };
+	const container = await new PostgreSqlContainer('postgis/postgis:17-3.5')
+		.withStartupTimeout(120_000)
+		.start();
+	process.env.DATABASE_URL = container.getConnectionUri();
+	const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+	await migrate(pool, 'drizzle/migrations');
+	await pool.end();
+	return async () => {
+		await container.stop();
+	};
 }
 ```
 

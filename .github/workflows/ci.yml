@@ -1,0 +1,113 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '24'
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # `yarn run`, not bare `yarn check`/`yarn lint`: yarn 1 shadows some script names
+      # with its own builtins, and `yarn check` in particular runs its dependency-tree
+      # checker rather than svelte-check. `check` runs svelte-kit sync first, which
+      # generates the ./.svelte-kit types that eslint then reads.
+      - name: Check types
+        run: yarn run check
+
+      - name: Lint
+        run: yarn run lint
+
+  client-tests:
+    name: Client tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # Browser-mode tests run in real Chromium; the runner image has no Playwright
+      # browsers installed by default.
+      - name: Install Chromium
+        run: yarn playwright install --with-deps chromium
+
+      - name: Run client tests
+        run: yarn test:client
+
+      # Vitest writes a screenshot for every failing browser test — worth keeping when
+      # the run is red, since there is no other way to see what rendered.
+      - name: Upload failure screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-failure-screenshots
+          path: |
+            src/**/__screenshots__/**
+            .vitest-attachments/**
+          if-no-files-found: ignore
+          retention-days: 7
+
+  server-tests:
+    name: Server tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # The global setup starts postgis/postgis:17-3.5 via testcontainers and runs the
+      # migrations against it. Docker is preinstalled on ubuntu-latest, so no service
+      # container is needed here.
+      - name: Run server tests
+        run: yarn test:server
+
+  build:
+    name: Build
+    needs: [client-tests, server-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # No secrets required: the app reads DATABASE_URL and RECEIPT_EXTRACTOR through
+      # $env/dynamic/private, which is resolved at runtime rather than at build time.
+      - name: Build
+        run: yarn build
