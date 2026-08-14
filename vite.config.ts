@@ -19,7 +19,11 @@ export default defineConfig({
 					browser: {
 						enabled: true,
 						provider: playwright(),
-						instances: [{ browser: 'chromium', headless: true }]
+						// Headless lives here, not on the instance: `--browser.headless=false`
+						// overrides the browser-level option, but an instance-level one wins over
+						// the CLI and silently keeps the run headless.
+						headless: true,
+						instances: [{ browser: 'chromium' }]
 					},
 					include: ['src/**/*.svelte.{test,spec}.{js,ts}'],
 					exclude: ['src/lib/server/**']
