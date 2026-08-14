@@ -4,7 +4,7 @@ import {
 	parseReceipt,
 	RECEIPT_MEDIA_TYPES,
 	type ReceiptMediaType
-} from '$lib/server/receipt-parser.ts';
+} from '$lib/server/receipt-parser';
 
 export const POST: RequestHandler = async ({ request }) => {
 	const form = await request.formData();
