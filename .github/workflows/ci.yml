@@ -13,6 +13,29 @@ env:
   NODE_VERSION: '24'
 
 jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # svelte-kit sync generates ./.svelte-kit types, which eslint reads and which are
+      # not committed. `yarn run`, not bare `yarn lint`: yarn 1 shadows some script
+      # names with its own builtins.
+      - name: Sync generated types
+        run: yarn run prepare
+
+      - name: Lint
+        run: yarn run lint
+
   client-tests:
     name: Client tests
     runs-on: ubuntu-latest

@@ -14,23 +14,27 @@ import type { RequestHandler } from './$types';
 import { parseReceipt, type ReceiptMediaType } from '$lib/server/receipt-parser.ts';
 
 const ALLOWED: ReceiptMediaType[] = [
-  'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'
+	'image/jpeg',
+	'image/png',
+	'image/webp',
+	'image/gif',
+	'application/pdf'
 ];
 
 export const POST: RequestHandler = async ({ request }) => {
-  const form = await request.formData();
-  const file = form.get('file');
-  if (!(file instanceof File)) throw error(400, 'Missing "file" field');
-  if (!ALLOWED.includes(file.type as ReceiptMediaType)) {
-    throw error(400, `Unsupported content type: ${file.type}`);
-  }
-  const buf = Buffer.from(await file.arrayBuffer());
-  try {
-    const parsed = await parseReceipt(buf, file.type as ReceiptMediaType);
-    return json(parsed);
-  } catch (e) {
-    throw error(500, (e as Error).message);
-  }
+	const form = await request.formData();
+	const file = form.get('file');
+	if (!(file instanceof File)) throw error(400, 'Missing "file" field');
+	if (!ALLOWED.includes(file.type as ReceiptMediaType)) {
+		throw error(400, `Unsupported content type: ${file.type}`);
+	}
+	const buf = Buffer.from(await file.arrayBuffer());
+	try {
+		const parsed = await parseReceipt(buf, file.type as ReceiptMediaType);
+		return json(parsed);
+	} catch (e) {
+		throw error(500, (e as Error).message);
+	}
 };
 ```
 
@@ -44,11 +48,11 @@ import { getDb } from '$lib/server/db/index.ts';
 import { saveParsedReceipt } from '$lib/server/repo.ts';
 
 export const POST: RequestHandler = async ({ request }) => {
-  const body = await request.json();
-  const result = parsedReceiptSchema.safeParse(body);
-  if (!result.success) throw error(400, result.error.message);
-  const out = await saveParsedReceipt(getDb(), result.data);
-  return json(out);
+	const body = await request.json();
+	const result = parsedReceiptSchema.safeParse(body);
+	if (!result.success) throw error(400, result.error.message);
+	const out = await saveParsedReceipt(getDb(), result.data);
+	return json(out);
 };
 ```
 

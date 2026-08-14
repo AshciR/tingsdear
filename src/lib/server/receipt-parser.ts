@@ -277,9 +277,11 @@ export async function parseReceipt(
 	} catch (err) {
 		const snippet = raw.length > 500 ? raw.slice(0, 500) + '…' : raw;
 		throw new Error(
-      `Receipt parser: model returned invalid JSON: ${(err as Error).message}. Raw: ${snippet}`, {
-      cause: err
-    });
+			`Receipt parser: model returned invalid JSON: ${(err as Error).message}. Raw: ${snippet}`,
+			{
+				cause: err
+			}
+		);
 	}
 
 	const result = parsedReceiptSchema.safeParse(parsed);

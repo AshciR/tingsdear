@@ -6,15 +6,15 @@ Part 4 resolves an extracted address to a canonical `supermarket_location` row, 
 
 This is a **separate work effort** from Part 4 — Part 4 ships with lat/lng-based matching simply inactive (it falls back to address/branch matching) until this lands. Nothing here blocks Part 4.
 
-**Principle: geocode per *location*, never per *receipt*.** The same branch resolves to one row, so geocoding is a one-time cost per physical store. And treat the result as low-confidence: keep the raw address, store the provider's confidence, and let the existing human-in-the-loop verify step catch bad placements rather than trusting the point blindly.
+**Principle: geocode per _location_, never per _receipt_.** The same branch resolves to one row, so geocoding is a one-time cost per physical store. And treat the result as low-confidence: keep the raw address, store the provider's confidence, and let the existing human-in-the-loop verify step catch bad placements rather than trusting the point blindly.
 
 ## Provider choice
 
-| Provider | Cost | Jamaica coverage | Notes |
-|---|---|---|---|
-| **Google Geocoding** | ~$5/1k after free tier, needs billing + key | Best | Returns structured components + `location_type` confidence |
-| **LocationIQ** | Free tier, then cheap; key required | Good (hosted Nominatim) | Higher rate limits than raw Nominatim |
-| **Nominatim (OSM)** | Free, no key | Decent for major roads, spotty for small plazas | ~1 req/sec, must honor usage policy |
+| Provider             | Cost                                        | Jamaica coverage                                | Notes                                                      |
+| -------------------- | ------------------------------------------- | ----------------------------------------------- | ---------------------------------------------------------- |
+| **Google Geocoding** | ~$5/1k after free tier, needs billing + key | Best                                            | Returns structured components + `location_type` confidence |
+| **LocationIQ**       | Free tier, then cheap; key required         | Good (hosted Nominatim)                         | Higher rate limits than raw Nominatim                      |
+| **Nominatim (OSM)**  | Free, no key                                | Decent for major roads, spotty for small plazas | ~1 req/sec, must honor usage policy                        |
 
 Recommendation: **Google** for accuracy on Jamaican addresses; **LocationIQ/Nominatim** acceptable if cost must be zero. Wrap behind one interface so the provider is swappable.
 
@@ -24,17 +24,17 @@ Recommendation: **Google** for accuracy on Jamaican addresses; **LocationIQ/Nomi
 
 ```ts
 export type GeocodeResult = {
-  latitude: number;
-  longitude: number;
-  confidence: 'high' | 'medium' | 'low'; // mapped from provider's location_type/importance
-  formattedAddress: string;              // provider's normalized address, for display/audit
-  provider: string;
+	latitude: number;
+	longitude: number;
+	confidence: 'high' | 'medium' | 'low'; // mapped from provider's location_type/importance
+	formattedAddress: string; // provider's normalized address, for display/audit
+	provider: string;
 };
 
 // Returns null when the provider can't place the address confidently.
 export async function geocodeAddress(
-  query: string,           // composed from supermarket fields, see below
-  fetchImpl?: typeof fetch // injectable for tests
+	query: string, // composed from supermarket fields, see below
+	fetchImpl?: typeof fetch // injectable for tests
 ): Promise<GeocodeResult | null>;
 ```
 
@@ -45,6 +45,7 @@ export async function geocodeAddress(
 ### Where it runs
 
 At **location-create time** in `saveParsedReceipt` (Part 4's `createFrom` branch), not in the request hot path of parse/verify:
+
 - After inserting the new `supermarket_location`, call `geocodeAddress`. If it returns a point, update the row's `latitude`/`longitude`.
 - Prefer doing this **out of band** (after the save response, or a tiny job/queue) so the user isn't waiting on a third-party call. A synchronous call inside the transaction is acceptable for the tracer but adds latency + a failure mode — fire-and-forget update is better.
 - Existing rows with null coords: a one-off backfill script iterating locations where `latitude IS NULL`.
@@ -66,12 +67,14 @@ At **location-create time** in `saveParsedReceipt` (Part 4's `createFrom` branch
 ## Testing
 
 `src/lib/server/geocoder.test.ts` (unit, inject `fetchImpl`):
+
 - Stub a provider success payload → assert correct lat/lng, confidence mapping, `formattedAddress`.
 - Stub a zero-results / low-confidence payload → `null` or `confidence: 'low'` per design.
 - Stub a network error / quota 429 → returns `null`, does not throw.
 - Query composition: fields `{ address, city, country: undefined }` → query includes a defaulted "Jamaica".
 
 `repo` integration (Testcontainers, geocoder mocked):
+
 - Create a location → mocked geocoder returns a point → row has lat/lng populated and `geog` set by the trigger.
 - Geocoder returns `null` → location still created, lat/lng null, save succeeds.
 

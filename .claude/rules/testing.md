@@ -1,9 +1,9 @@
 ---
 paths:
-  - "**/*.test.ts"
-  - "**/*.test.tsx"
-  - "**/*.spec.ts"
-  - "**/*.spec.tsx"
+  - '**/*.test.ts'
+  - '**/*.test.tsx'
+  - '**/*.spec.ts'
+  - '**/*.spec.tsx'
 ---
 
 # Testing Rules
@@ -14,14 +14,14 @@ Every `it`/`test` body must follow Given/When/Then, with explicit comments:
 
 ```ts
 it('creates a chain when none exists', async () => {
-  // Given
-  const receipt = makeReceipt({ supermarket: { name: 'NewMart' } });
+	// Given
+	const receipt = makeReceipt({ supermarket: { name: 'NewMart' } });
 
-  // When
-  const result = await saveReceipt(db, receipt);
+	// When
+	const result = await saveReceipt(db, receipt);
 
-  // Then
-  expect(result.chainCreated).toBe(true);
+	// Then
+	expect(result.chainCreated).toBe(true);
 });
 ```
 
