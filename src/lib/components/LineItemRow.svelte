@@ -64,6 +64,7 @@
 			<button
 				type="button"
 				onclick={onDelete}
+				aria-label="Remove this line"
 				title="Remove this line"
 				class="shrink-0 self-end px-2 py-2 text-gray-500 hover:text-red-600 sm:self-auto sm:py-0"
 				>✕</button
