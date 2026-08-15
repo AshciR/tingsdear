@@ -3,6 +3,11 @@ import { defineConfig } from 'vitest/config';
 import { playwright } from '@vitest/browser-playwright';
 import { sveltekit } from '@sveltejs/kit/vite';
 
+// Suites that need a real browser rather than node: Svelte components, plus anything leaning
+// on browser-only APIs (OffscreenCanvas, createImageBitmap). The two projects share this list
+// — the client project runs exactly these, the server project runs everything else.
+const BROWSER_TESTS = ['src/**/*.svelte.{test,spec}.{js,ts}', 'src/lib/image-downscale.test.ts'];
+
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit()],
 	server: {
@@ -25,7 +30,7 @@ export default defineConfig({
 						headless: true,
 						instances: [{ browser: 'chromium' }]
 					},
-					include: ['src/**/*.svelte.{test,spec}.{js,ts}'],
+					include: BROWSER_TESTS,
 					exclude: ['src/lib/server/**']
 				}
 			},
@@ -36,7 +41,7 @@ export default defineConfig({
 					name: 'server',
 					environment: 'node',
 					include: ['src/**/*.{test,spec}.{js,ts}'],
-					exclude: ['src/**/*.svelte.{test,spec}.{js,ts}'],
+					exclude: BROWSER_TESTS,
 					globalSetup: ['src/test-setup/global-setup.ts'],
 					testTimeout: 120_000,
 					pool: 'forks'
