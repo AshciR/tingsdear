@@ -65,9 +65,24 @@ const SYSTEM_PROMPT = `You are a receipt-parsing assistant. Your job is to extra
 
 The receipt is most likely from a Jamaican supermarket — common chains include Hi-Lo Food Stores, MegaMart, PriceSmart, Progressive Grocers, Loshusan, General Food Supermarket, Shoppers Fair, and SuperPlus. It may also be from any other retailer worldwide. Do not assume the chain; read it from the receipt header.
 
+## Input
+
+You may be given **one image or several**. When there are several, they are consecutive
+photographs of a **single** receipt, in reading order: image 1 is the top of the paper, image 2
+continues where image 1 ended, and so on. Treat them as one continuous receipt and return
+**one** JSON object covering all of them.
+
+- The store header — name, branch, address — is printed once, at the top, so it appears **only
+  on the first image**. Apply it to the whole receipt.
+- Consecutive photos often **overlap**, repeating a line or two at the seam. If the same
+  product at the same price appears at the end of one image and the start of the next, it is
+  one purchase — record it **once**. Genuinely repeated purchases (the same product listed
+  twice within a single image) stay as two lines.
+- Read the line items in image order, so the output preserves the order printed on the paper.
+
 ## Your task
 
-Given the receipt image, extract:
+Given the receipt image(s), extract:
 
 1. The supermarket — its name and, if printed, its location (branch, address, city, region, country)
 2. The purchase date
@@ -111,7 +126,7 @@ Then return a single JSON object matching the schema below. Return ONLY the JSON
 - \`address\`: The street address line as printed.
 - \`city\`, \`region\`, \`country\`: Fill in if discernible from the address (region = parish/state).
 
-**Split receipts**: A long receipt may be photographed across multiple pages, and a continuation page often has NO store header. If this image has no readable supermarket information, return \`"supermarket": {}\` (an empty object) — this is expected and normal. Do NOT lower confidence just because the store header is absent on a continuation page.
+**Split receipts**: A long receipt may be photographed across several parts, and only the first carries the store header. If you were given several images, take the store details from the first one that shows them. If NONE of the images you were given has readable supermarket information — a lone continuation page, say — return \`"supermarket": {}\` (an empty object). This is expected and normal: do NOT invent a name, and do NOT lower confidence merely because the header is absent.
 
 **purchase_date**: Always ISO format \`YYYY-MM-DD\`. Jamaican receipts commonly print dates as DD/MM/YYYY or DD-MM-YYYY — interpret them as day-first, not month-first. If the date is ambiguous or missing, use today's date and set confidence to at most "medium".
 
@@ -235,30 +250,18 @@ Output:
 
 type AnthropicLike = Pick<Anthropic, 'messages'>;
 
+// One photograph of a receipt. Several of these, in reading order, make up one receipt.
+export type ReceiptPart = {
+	data: Buffer;
+	mediaType: ReceiptMediaType;
+};
+
 export async function parseReceipt(
-	image: Buffer,
-	mediaType: ReceiptMediaType,
+	parts: ReceiptPart[],
 	client?: AnthropicLike
 ): Promise<ParsedReceipt> {
+	if (parts.length === 0) throw new Error('Receipt parser: no images to parse');
 	const c: AnthropicLike = client ?? new Anthropic({ apiKey: receiptExtractorKey() });
-	const fileBlock =
-		mediaType === 'application/pdf'
-			? ({
-					type: 'document',
-					source: {
-						type: 'base64',
-						media_type: 'application/pdf',
-						data: image.toString('base64')
-					}
-				} as const)
-			: ({
-					type: 'image',
-					source: {
-						type: 'base64',
-						media_type: mediaType,
-						data: image.toString('base64')
-					}
-				} as const);
 	const response = await c.messages.create({
 		model: 'claude-haiku-4-5',
 		max_tokens: 8192,
@@ -266,7 +269,9 @@ export async function parseReceipt(
 		messages: [
 			{
 				role: 'user',
-				content: [fileBlock, { type: 'text', text: 'Extract this receipt.' }]
+				// All parts in one turn: the model needs the header from part 1 and the tail
+				// items from part 5 in a single context to return one merged receipt.
+				content: [...parts.map(toFileBlock), { type: 'text', text: extractionPrompt(parts.length) }]
 			},
 			{ role: 'assistant', content: '{' }
 		]
@@ -309,6 +314,24 @@ export async function parseReceipt(
 			flagged: NON_ITEM_PATTERN.test(item.name.trim())
 		}))
 	};
+}
+
+function toFileBlock(part: ReceiptPart) {
+	const data = part.data.toString('base64');
+	return part.mediaType === 'application/pdf'
+		? ({
+				type: 'document',
+				source: { type: 'base64', media_type: 'application/pdf', data }
+			} as const)
+		: ({
+				type: 'image',
+				source: { type: 'base64', media_type: part.mediaType, data }
+			} as const);
+}
+
+function extractionPrompt(count: number): string {
+	if (count === 1) return 'Extract this receipt.';
+	return `Extract this receipt. The ${count} images above are consecutive parts of ONE receipt, in order — merge them into a single result.`;
 }
 
 // The dev server and adapter-node load .env into $env/dynamic/private, not process.env;

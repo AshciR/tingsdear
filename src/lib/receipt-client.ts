@@ -1,14 +1,17 @@
 import type { ParsedReceipt } from '$lib/server/receipt-parser';
 import type { SaveReceiptResult } from '$lib/server/db/repo';
+import { downscaleImages } from '$lib/image-downscale';
 
 export type { ParsedReceipt, SaveReceiptResult };
 
-export async function parseReceiptFile(
-	file: File,
+// One receipt, in reading order. A long receipt spans several photos and only the first
+// carries the store header, so the parts go to the parser together, in the order given.
+export async function parseReceiptFiles(
+	files: File[],
 	fetchImpl: typeof fetch = fetch
 ): Promise<ParsedReceipt> {
 	const form = new FormData();
-	form.append('file', file);
+	for (const file of await downscaleImages(files)) form.append('file', file);
 	const res = await fetchImpl('/api/receipts/parse', { method: 'POST', body: form });
 	return readJson<ParsedReceipt>(res, 'Could not read the receipt');
 }
