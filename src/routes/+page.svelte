@@ -3,25 +3,26 @@
 	import VerifyView from '$lib/components/VerifyView.svelte';
 	import DoneView from '$lib/components/DoneView.svelte';
 	import {
-		parseReceiptFile,
+		parseReceiptFiles,
 		saveReceipt,
 		type ParsedReceipt,
 		type SaveReceiptResult
 	} from '$lib/receipt-client';
 
 	let view = $state<'upload' | 'parsing' | 'verify' | 'done'>('upload');
-	let file = $state<File | null>(null);
+	// One receipt, in reading order — a long one takes several photos to capture.
+	let files = $state<File[]>([]);
 	let receipt = $state<ParsedReceipt | null>(null);
 	let result = $state<SaveReceiptResult | null>(null);
 	let errorMsg = $state<string | null>(null);
 	let saving = $state(false);
 
 	async function handleParse() {
-		if (!file) return;
+		if (!files.length) return;
 		errorMsg = null;
 		view = 'parsing';
 		try {
-			receipt = await parseReceiptFile(file);
+			receipt = await parseReceiptFiles(files);
 			view = 'verify';
 		} catch (e) {
 			errorMsg = (e as Error).message;
@@ -45,7 +46,7 @@
 
 	function reset() {
 		view = 'upload';
-		file = null;
+		files = [];
 		receipt = null;
 		result = null;
 		errorMsg = null;
@@ -54,9 +55,11 @@
 
 <main class="mx-auto max-w-3xl p-6">
 	{#if view === 'upload'}
-		<UploadView {file} error={errorMsg} onFile={(f) => (file = f)} onSubmit={handleParse} />
+		<UploadView {files} error={errorMsg} onFiles={(f) => (files = f)} onSubmit={handleParse} />
 	{:else if view === 'parsing'}
-		<p class="animate-pulse text-sm text-gray-600">Reading {file?.name}…</p>
+		<p class="animate-pulse text-sm text-gray-600">
+			{files.length > 1 ? `Reading ${files.length} parts…` : `Reading ${files[0]?.name}…`}
+		</p>
 	{:else if view === 'verify' && receipt}
 		<VerifyView {receipt} error={errorMsg} {saving} onConfirm={handleConfirm} />
 	{:else if view === 'done' && result}
