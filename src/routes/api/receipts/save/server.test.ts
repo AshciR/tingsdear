@@ -40,6 +40,14 @@ async function countRows(db: Db) {
 	return { chains: chains.c, locations: locations.c, items: items.c, prices: prices.c };
 }
 
+async function countChainsNamed(db: Db, name: string) {
+	const [row] = await db
+		.select({ c: sql<number>`count(*)::int` })
+		.from(supermarketChain)
+		.where(sql`lower(${supermarketChain.name}) = lower(${name})`);
+	return row.c;
+}
+
 describe('POST /api/receipts/save', () => {
 	it('persists chain, location, items, and prices for a valid parsed receipt', async () => {
 		await withRollback(async (db) => {
@@ -89,6 +97,40 @@ describe('POST /api/receipts/save', () => {
 
 			// When / Then
 			await expect(invoke(jsonRequest(invalid), db)).rejects.toMatchObject({ status: 400 });
+		});
+	});
+
+	it('returns 400 when the supermarket has no name', async () => {
+		await withRollback(async (db) => {
+			// Given a continuation page of a split receipt — parsed fine, but no store header
+			const headerless = makeParsed({ supermarket: {} });
+
+			// When / Then — it must not save under an invented chain
+			await expect(invoke(jsonRequest(headerless), db)).rejects.toMatchObject({ status: 400 });
+		});
+	});
+
+	it('returns 400 when the store name is only whitespace', async () => {
+		await withRollback(async (db) => {
+			// Given a receipt whose store name is blank after trimming
+			const blank = makeParsed({ supermarket: { name: '   ' } });
+
+			// When / Then
+			await expect(invoke(jsonRequest(blank), db)).rejects.toMatchObject({ status: 400 });
+		});
+	});
+
+	it('writes no rows when the store name is missing', async () => {
+		await withRollback(async (db) => {
+			// Given a nameless receipt and an empty database
+			const headerless = makeParsed({ supermarket: {} });
+
+			// When the save is rejected
+			await expect(invoke(jsonRequest(headerless), db)).rejects.toBeDefined();
+
+			// Then nothing was persisted — in particular no chain named "Unknown"
+			expect(await countRows(db)).toEqual({ chains: 0, locations: 0, items: 0, prices: 0 });
+			expect(await countChainsNamed(db, 'Unknown')).toBe(0);
 		});
 	});
 

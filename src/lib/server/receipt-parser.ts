@@ -1,17 +1,20 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { env } from '$env/dynamic/private';
 import { z } from 'zod';
+import { STORE_NAME_REQUIRED } from '$lib/receipt-messages';
 
-const supermarketSchema = z
-	.object({
-		name: z.string().optional(),
-		branch: z.string().optional(),
-		address: z.string().optional(),
-		city: z.string().optional(),
-		region: z.string().optional(),
-		country: z.string().optional()
-	})
-	.default({});
+const supermarketFields = z.object({
+	name: z.string().optional(),
+	branch: z.string().optional(),
+	address: z.string().optional(),
+	city: z.string().optional(),
+	region: z.string().optional(),
+	country: z.string().optional()
+});
+
+// The parser keeps every field optional: "this page has no store header" is a legitimate
+// parse result for part 3 of a 5-part receipt.
+const supermarketSchema = supermarketFields.default({});
 
 export const parsedReceiptSchema = z.object({
 	supermarket: supermarketSchema,
@@ -30,6 +33,17 @@ export const parsedReceiptSchema = z.object({
 });
 
 export type ParsedReceipt = z.infer<typeof parsedReceiptSchema>;
+
+// Saving is a stricter boundary than parsing: a blank store name would otherwise be filed
+// under an invented chain, mixing unrelated supermarkets into one price history. Note the
+// absent `.default({})` — an omitted `supermarket` key must fail here, not default to `{}`.
+export const receiptSaveSchema = parsedReceiptSchema.extend({
+	supermarket: supermarketFields.extend({
+		name: z.string().trim().min(1, STORE_NAME_REQUIRED)
+	})
+});
+
+export type ReceiptSaveBody = z.infer<typeof receiptSaveSchema>;
 
 // Lines whose name starts with one of these tokens are almost always not products:
 // section/department headers, subtotals, taxes, payment rows, bundle-pricing artifacts.

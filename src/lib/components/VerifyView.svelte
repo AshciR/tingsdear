@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { ParsedReceipt } from '$lib/receipt-client';
+	import { STORE_NAME_REQUIRED } from '$lib/receipt-messages';
 	import LineItemRow from './LineItemRow.svelte';
 
 	let {
@@ -14,14 +15,24 @@
 		onConfirm: () => void;
 	} = $props();
 
-	const STORE_FIELDS = [
-		{ key: 'name', label: 'Name' },
+	type StoreField = {
+		key: keyof ParsedReceipt['supermarket'];
+		label: string;
+		required?: boolean;
+	};
+
+	const STORE_FIELDS: StoreField[] = [
+		{ key: 'name', label: 'Name', required: true },
 		{ key: 'branch', label: 'Branch' },
 		{ key: 'address', label: 'Address' },
 		{ key: 'city', label: 'City' },
 		{ key: 'region', label: 'Region' },
 		{ key: 'country', label: 'Country' }
-	] as const;
+	];
+
+	// The save route rejects a blank store name outright — a receipt filed under an invented
+	// chain poisons the price history — so block the round-trip here and say why.
+	const hasStoreName = $derived((receipt.supermarket.name ?? '').trim().length > 0);
 
 	const included = $derived(receipt.line_items.filter((li) => !li.flagged).length);
 
@@ -51,12 +62,19 @@
 					{field.label}
 					<input
 						type="text"
+						required={field.required}
+						aria-required={field.required}
 						bind:value={receipt.supermarket[field.key]}
 						class="mt-0.5 w-full rounded border border-gray-300 p-1 text-sm text-black"
 					/>
 				</label>
 			{/each}
 		</div>
+		{#if !hasStoreName}
+			<p class="rounded border border-amber-300 bg-amber-50 p-2 text-xs text-amber-900">
+				{STORE_NAME_REQUIRED}
+			</p>
+		{/if}
 	</fieldset>
 
 	<label class="block text-xs text-gray-600">
@@ -95,7 +113,7 @@
 
 	<button
 		type="button"
-		disabled={saving}
+		disabled={saving || !hasStoreName}
 		onclick={onConfirm}
 		class="rounded bg-green-600 px-4 py-2 text-white disabled:bg-gray-300"
 	>
