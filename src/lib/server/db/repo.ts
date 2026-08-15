@@ -1,5 +1,6 @@
 import { and, eq, sql } from 'drizzle-orm';
 import type { Db } from './index.ts';
+import { STORE_NAME_REQUIRED } from '$lib/receipt-messages';
 import { item, manufacturer, price, supermarketChain, supermarketLocation } from './schema.ts';
 
 type Tx = Parameters<Parameters<Db['transaction']>[0]>[0];
@@ -11,7 +12,7 @@ export type ReceiptSaveLineItem = {
 
 export type ReceiptSaveRequest = {
 	supermarket: {
-		name?: string;
+		name: string;
 		branch?: string;
 		address?: string;
 		city?: string;
@@ -38,9 +39,10 @@ export type SaveReceiptResult = {
 };
 
 export async function saveReceipt(db: Db, receipt: ReceiptSaveRequest): Promise<SaveReceiptResult> {
+	const chainName = requireChainName(receipt.supermarket);
 	return db.transaction(async (tx) => {
 		const unknownMfrId = await findOrCreateUnknownManufacturer(tx);
-		const chain = await findOrCreateChain(tx, receipt.supermarket.name ?? 'Unknown');
+		const chain = await findOrCreateChain(tx, chainName);
 		const location = await findOrCreateLocation(tx, chain.id, receipt.supermarket);
 		const timestamp = new Date(`${receipt.purchase_date}T00:00:00Z`);
 
@@ -60,6 +62,15 @@ export async function saveReceipt(db: Db, receipt: ReceiptSaveRequest): Promise<
 			lineItems
 		};
 	});
+}
+
+// Checked before the transaction opens so a nameless receipt writes nothing at all. There is
+// deliberately no placeholder here: filing prices under an invented chain merges unrelated
+// supermarkets into one price history, silently and irreversibly.
+function requireChainName(supermarket: ReceiptSaveRequest['supermarket']): string {
+	const name = supermarket.name?.trim();
+	if (!name) throw new Error(STORE_NAME_REQUIRED);
+	return name;
 }
 
 async function findOrCreateUnknownManufacturer(tx: Tx): Promise<number> {

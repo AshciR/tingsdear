@@ -2,6 +2,7 @@ import { render } from 'vitest-browser-svelte';
 import { describe, it, expect, vi } from 'vitest';
 import VerifyView from './VerifyView.svelte';
 import type { ParsedReceipt } from '$lib/receipt-client';
+import { STORE_NAME_REQUIRED } from '$lib/receipt-messages';
 
 describe('VerifyView', () => {
 	it('shows what the parser made of the receipt', async () => {
@@ -118,6 +119,31 @@ describe('VerifyView', () => {
 
 		// Then the button says so and refuses further clicks
 		await expect.element(screen.getByRole('button', { name: 'Saving…' })).toBeDisabled();
+	});
+
+	it('cannot be confirmed while the store name is empty', async () => {
+		// Given a continuation page of a split receipt, which carries no store header
+		const receipt = makeReceipt({ supermarket: {} });
+
+		// When the verify view is rendered
+		const screen = render(VerifyView, { receipt, error: null, saving: false, onConfirm: vi.fn() });
+
+		// Then saving is blocked and the user is told what to do about it
+		await expect.element(screen.getByRole('button', { name: 'Confirm and save' })).toBeDisabled();
+		await expect.element(screen.getByText(STORE_NAME_REQUIRED)).toBeInTheDocument();
+	});
+
+	it('can be confirmed once the user types a store name', async () => {
+		// Given a receipt with no store name
+		const receipt = makeReceipt({ supermarket: {} });
+		const screen = render(VerifyView, { receipt, error: null, saving: false, onConfirm: vi.fn() });
+
+		// When the user supplies one
+		await screen.getByLabelText('Name').fill('General Food Supermarket');
+
+		// Then the warning clears and the receipt can be saved
+		expect(screen.getByText(STORE_NAME_REQUIRED).query()).toBeNull();
+		await expect.element(screen.getByRole('button', { name: 'Confirm and save' })).toBeEnabled();
 	});
 
 	it('shows the error the parent reports and still allows a retry', async () => {
