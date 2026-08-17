@@ -89,6 +89,31 @@ describe('LineItemRow', () => {
 		await expect.element(screen.getByText(/non-product line/iu)).toBeInTheDocument();
 	});
 
+	it('shows a distinct note for a suspected seam duplicate, still included', async () => {
+		// Given a line the seam check thinks repeats the previous photo
+		const item = makeLineItem({ possible_duplicate: true });
+
+		// When the row is rendered
+		const screen = render(LineItemRow, { item, onDelete: vi.fn() });
+
+		// Then it stays ticked — the user decides — and the note is its own, not the
+		// non-product warning, which would wrongly imply the line is already excluded
+		await expect.element(screen.getByRole('checkbox')).toBeChecked();
+		await expect.element(screen.getByText(/repeat the line above/iu)).toBeInTheDocument();
+		await expect.element(screen.getByText(/non-product line/iu)).not.toBeInTheDocument();
+	});
+
+	it('shows no duplicate note for a line that stands on its own', async () => {
+		// Given a line with nothing suspicious about it
+		const item = makeLineItem({ possible_duplicate: false });
+
+		// When the row is rendered
+		const screen = render(LineItemRow, { item, onDelete: vi.fn() });
+
+		// Then no duplicate note appears
+		await expect.element(screen.getByText(/repeat the line above/iu)).not.toBeInTheDocument();
+	});
+
 	it('writes an edited name back to the line item', async () => {
 		// Given a line item the parser named badly
 		const item = makeLineItem({ name: 'MLK 2PT' });
@@ -112,6 +137,7 @@ function makeLineItem(overrides = {}) {
 		unit_price: 2.5,
 		total: 2.5,
 		flagged: false,
+		possible_duplicate: false,
 		...overrides
 	});
 	return item;

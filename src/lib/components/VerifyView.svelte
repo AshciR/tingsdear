@@ -36,8 +36,23 @@
 
 	const included = $derived(receipt.line_items.filter((li) => !li.flagged).length);
 
+	// Suspected seam duplicates stay checked, so they don't move the saved count — they are
+	// easy to miss in a 75-line receipt, which is the whole reason for saying how many there are.
+	const duplicates = $derived(receipt.line_items.filter((li) => li.possible_duplicate).length);
+
+	const duplicateHint = $derived(
+		`${duplicates} ${duplicates === 1 ? 'line looks' : 'lines look'} like a repeat from where two photos overlap. They are still ticked — untick any that is the same purchase read twice.`
+	);
+
 	function addRow() {
-		receipt.line_items.push({ name: '', quantity: 1, unit_price: 0, total: 0, flagged: false });
+		receipt.line_items.push({
+			name: '',
+			quantity: 1,
+			unit_price: 0,
+			total: 0,
+			flagged: false,
+			possible_duplicate: false
+		});
 	}
 
 	function deleteRow(index: number) {
@@ -97,6 +112,12 @@
 				<span class="w-24 text-right">Total</span>
 			</div>
 		</div>
+
+		{#if duplicates > 0}
+			<p class="rounded border border-sky-300 bg-sky-50 p-2 text-xs text-sky-900">
+				{duplicateHint}
+			</p>
+		{/if}
 
 		{#each receipt.line_items as item, i (i)}
 			<LineItemRow {item} onDelete={() => deleteRow(i)} />

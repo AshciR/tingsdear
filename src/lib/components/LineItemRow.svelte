@@ -11,7 +11,11 @@
 </script>
 
 <div
-	class="rounded border p-2 {item.flagged ? 'border-yellow-400 bg-yellow-50' : 'border-gray-200'}"
+	class="rounded border p-2 {item.flagged
+		? 'border-yellow-400 bg-yellow-50'
+		: item.possible_duplicate
+			? 'border-sky-400 bg-sky-50'
+			: 'border-gray-200'}"
 >
 	<div class="flex flex-col gap-2 sm:flex-row sm:items-center">
 		<div class="flex min-w-0 items-center gap-2 sm:flex-1">
@@ -75,6 +79,14 @@
 	{#if item.flagged}
 		<p class="mt-1 pl-6 text-xs text-yellow-800">
 			Looks like a non-product line — review before saving
+		</p>
+	{/if}
+
+	<!-- Deliberately not a flag: a suspected duplicate stays checked, because two identical
+	     rows on one receipt are common and unticking a real line is the costlier mistake. -->
+	{#if item.possible_duplicate}
+		<p class="mt-1 pl-6 text-xs text-sky-800">
+			May repeat the line above from the previous photo — untick it if it is the same purchase
 		</p>
 	{/if}
 </div>

@@ -17,6 +17,7 @@
 		"test:client": "vitest run --project client",
 		"test:client:head": "vitest --project client --browser.headless=false",
 		"db:migrate": "tsx scripts/migrate.ts",
+		"smoke:parse": "tsx --tsconfig scripts/tsconfig.json scripts/smoke-parse.ts",
 		"test:watch": "vitest"
 	},
 	"devDependencies": {

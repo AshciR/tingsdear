@@ -23,8 +23,22 @@ function makeParsed(overrides: Partial<ParsedReceipt> = {}): ParsedReceipt {
 		supermarket: { name: 'HI-LO' },
 		purchase_date: '2026-01-15',
 		line_items: [
-			{ name: 'Milk 2L', quantity: 1, unit_price: 3.99, total: 3.99, flagged: false },
-			{ name: 'Bread', quantity: 1, unit_price: 2.5, total: 2.5, flagged: false }
+			{
+				name: 'Milk 2L',
+				quantity: 1,
+				unit_price: 3.99,
+				total: 3.99,
+				flagged: false,
+				possible_duplicate: false
+			},
+			{
+				name: 'Bread',
+				quantity: 1,
+				unit_price: 2.5,
+				total: 2.5,
+				flagged: false,
+				possible_duplicate: false
+			}
 		],
 		currency: 'JMD',
 		confidence: 'high',
@@ -71,8 +85,22 @@ describe('POST /api/receipts/save', () => {
 			// Given a parsed receipt where one line item is flagged
 			const parsed = makeParsed({
 				line_items: [
-					{ name: 'Milk 2L', quantity: 1, unit_price: 3.99, total: 3.99, flagged: false },
-					{ name: 'SUBTOTAL', quantity: 1, unit_price: 9.99, total: 9.99, flagged: true }
+					{
+						name: 'Milk 2L',
+						quantity: 1,
+						unit_price: 3.99,
+						total: 3.99,
+						flagged: false,
+						possible_duplicate: false
+					},
+					{
+						name: 'SUBTOTAL',
+						quantity: 1,
+						unit_price: 9.99,
+						total: 9.99,
+						flagged: true,
+						possible_duplicate: false
+					}
 				]
 			});
 

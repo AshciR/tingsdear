@@ -1,0 +1,10 @@
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"$env/dynamic/private": ["./env-shim.ts"],
+			"$lib/*": ["../src/lib/*"]
+		}
+	}
+}
