@@ -63,6 +63,37 @@ describe('VerifyView', () => {
 		await expect.element(screen.getByText(/2 of 3 will be saved/u)).toBeInTheDocument();
 	});
 
+	it('still counts a suspected duplicate as being saved', async () => {
+		// Given two lines, one of which may repeat the previous photo at a seam
+		const receipt = makeReceipt({
+			line_items: [
+				makeLineItem({ name: 'Milk' }),
+				makeLineItem({ name: 'Milk', possible_duplicate: true })
+			]
+		});
+
+		// When the verify view is rendered
+		const screen = render(VerifyView, { receipt, error: null, saving: false, onConfirm: vi.fn() });
+
+		// Then it is pointed out but left in — dropping a real second purchase is the worse
+		// mistake, so the user makes the call
+		await expect.element(screen.getByText(/2 of 2 will be saved/u)).toBeInTheDocument();
+		await expect.element(screen.getByText(/1 line looks like a repeat/u)).toBeInTheDocument();
+	});
+
+	it('says nothing about duplicates when no line looks repeated', async () => {
+		// Given two ordinary lines
+		const receipt = makeReceipt({
+			line_items: [makeLineItem({ name: 'Milk' }), makeLineItem({ name: 'Bread' })]
+		});
+
+		// When the verify view is rendered
+		const screen = render(VerifyView, { receipt, error: null, saving: false, onConfirm: vi.fn() });
+
+		// Then the seam hint stays out of the way
+		expect(screen.getByText(/looks like a repeat/u).query()).toBeNull();
+	});
+
 	it('removes a line the user deletes', async () => {
 		// Given a receipt with two lines
 		const receipt = makeReceipt({
@@ -177,5 +208,13 @@ function makeReceipt(overrides: Partial<ParsedReceipt> = {}) {
 }
 
 function makeLineItem(overrides: Partial<ParsedReceipt['line_items'][number]> = {}) {
-	return { name: 'Milk', quantity: 1, unit_price: 2.5, total: 2.5, flagged: false, ...overrides };
+	return {
+		name: 'Milk',
+		quantity: 1,
+		unit_price: 2.5,
+		total: 2.5,
+		flagged: false,
+		possible_duplicate: false,
+		...overrides
+	};
 }

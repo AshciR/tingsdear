@@ -160,4 +160,5 @@ rather than here — decide when Part 4 is scoped.
   Multi-part is an explicit user action here.
 - Stitching images into one tall composite before parsing.
 - De-duplicating overlapping line items where consecutive photos capture the
-  same rows — the user resolves that in the verify step.
+  same rows — the user resolves that in the verify step. _Revisited: it happened
+  often enough to want a proper fix. See `plan/03-3-seam-duplicates.md`._

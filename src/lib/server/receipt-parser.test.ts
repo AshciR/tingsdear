@@ -88,6 +88,31 @@ describe('parseReceipt', () => {
 		);
 	});
 
+	it('flags a non-product line without calling it a duplicate', async () => {
+		// Given a response whose second line is a subtotal
+		const body = `"purchase_date":"2026-03-14","line_items":[{"name":"Grace Coconut Milk 400ml","quantity":1,"unit_price":385,"total":385},{"name":"Sub-Total","quantity":1,"unit_price":385,"total":385}],"currency":"JMD","confidence":"high"}`;
+
+		// When it is parsed
+		const result = await parseReceipt(onePart(), fakeClient(body));
+
+		// Then only the subtotal is flagged, and neither line is a suspected duplicate
+		expect(result.line_items.map((li) => li.flagged)).toEqual([false, true]);
+		expect(result.line_items.every((li) => !li.possible_duplicate)).toBe(true);
+	});
+
+	it('marks the later copy of a line repeated across a photo seam', async () => {
+		// Given two photographs whose seam repeats one row
+		const body = `"purchase_date":"2026-03-14","line_items":[{"name":"Forka Oats 400G","quantity":1,"unit_price":304.27,"total":304.27,"image":1},{"name":"Forka Oats 400G","quantity":1,"unit_price":304.27,"total":304.27,"image":2}],"currency":"JMD","confidence":"high"}`;
+
+		// When they are parsed together
+		const result = await parseReceipt([part('a'), part('b')], fakeClient(body));
+
+		// Then the repeat is marked but stays includable — `flagged` is untouched
+		expect(result.line_items.map((li) => li.possible_duplicate)).toEqual([false, true]);
+		expect(result.line_items.every((li) => !li.flagged)).toBe(true);
+		expect(result.line_items[1].image).toBe(2);
+	});
+
 	it('throws when given no images at all', async () => {
 		// Given / When / Then
 		await expect(parseReceipt([], fakeClient(validBody))).rejects.toThrow(/no images/);

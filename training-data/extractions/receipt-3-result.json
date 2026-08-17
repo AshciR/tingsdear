@@ -1,0 +1,672 @@
+{
+  "supermarket": {
+    "name": "General Food Supermarket",
+    "branch": "Shop 9 Liguanea Plaza",
+    "address": "134 Old Hope Road",
+    "city": "Kingston",
+    "region": "St. Andrew",
+    "country": "Jamaica"
+  },
+  "purchase_date": "2025-02-23",
+  "line_items": [
+    {
+      "name": "White Rain 3/Wash C/Wave 3",
+      "quantity": 1,
+      "unit_price": 429.33,
+      "total": 429.33,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "White Rain Men Shnt H/Spri",
+      "quantity": 1,
+      "unit_price": 429.33,
+      "total": 429.33,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "White Rain Men Shnt H/Spri",
+      "quantity": 1,
+      "unit_price": 417.07,
+      "total": 417.07,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Rhins Garbage Bag Large 30",
+      "quantity": 1,
+      "unit_price": 840.28,
+      "total": 840.28,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Joyceplus S/Gel R/Bry Pmg",
+      "quantity": 1,
+      "unit_price": 603.4,
+      "total": 603.4,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Acionol Garbage Cleanser",
+      "quantity": 1,
+      "unit_price": 476.78,
+      "total": 476.78,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Gatorade Pwj Lemon Lime 1",
+      "quantity": 1,
+      "unit_price": 5200,
+      "total": 5200,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "J.F.Mills Cream Wheat Cere",
+      "quantity": 1,
+      "unit_price": 235,
+      "total": 235,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sophie Bathroom Tissue 400s",
+      "quantity": 1,
+      "unit_price": 95.15,
+      "total": 95.15,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sophie Bathroom Tissue 400s",
+      "quantity": 1,
+      "unit_price": 95.15,
+      "total": 95.15,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sophie Bathroom Tissue 400s",
+      "quantity": 1,
+      "unit_price": 90.59,
+      "total": 90.59,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sophie Bathroom Tissue 400s",
+      "quantity": 1,
+      "unit_price": 93.63,
+      "total": 93.63,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sophie Bathroom Tissue 400s",
+      "quantity": 1,
+      "unit_price": 93.63,
+      "total": 93.63,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sophie Bathroom Tissue 400s",
+      "quantity": 1,
+      "unit_price": 93.63,
+      "total": 93.63,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sophie Bathroom Tissue 400s",
+      "quantity": 1,
+      "unit_price": 93.63,
+      "total": 93.63,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sophie Pet",
+      "quantity": 1,
+      "unit_price": 94.61,
+      "total": 94.61,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "J.F.Mills All Purpose Flou",
+      "quantity": 1,
+      "unit_price": 321.67,
+      "total": 321.67,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Kendel Long Grain Rice 4K",
+      "quantity": 1,
+      "unit_price": 2336,
+      "total": 2336,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Betapac Curry Powder 450g",
+      "quantity": 1,
+      "unit_price": 1375.68,
+      "total": 1375.68,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Bread Basket Bulla 2pk",
+      "quantity": 1,
+      "unit_price": 225,
+      "total": 225,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Best Taste Bulla 2pk",
+      "quantity": 1,
+      "unit_price": 225,
+      "total": 225,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Thomas Leith Shred Callalo",
+      "quantity": 1,
+      "unit_price": 261,
+      "total": 261,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Thomas Leith Shred Callalo",
+      "quantity": 1,
+      "unit_price": 261,
+      "total": 261,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Orchid Paper Towel",
+      "quantity": 1,
+      "unit_price": 247.5,
+      "total": 247.5,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Grace Mixed Vegetables 240",
+      "quantity": 1,
+      "unit_price": 236.88,
+      "total": 236.88,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Grace Mixed Vegetables 240",
+      "quantity": 1,
+      "unit_price": 229.3,
+      "total": 229.3,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Grace Whl Kernel Swt Corn",
+      "quantity": 1,
+      "unit_price": 243.14,
+      "total": 243.14,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Grace Whl Kernel Swt Corn",
+      "quantity": 1,
+      "unit_price": 235.36,
+      "total": 235.36,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Butter Beans 400g",
+      "quantity": 1,
+      "unit_price": 239.74,
+      "total": 239.74,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Grace Whl Kernel Swt Corn",
+      "quantity": 1,
+      "unit_price": 239.25,
+      "total": 239.25,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Grace Corned Beef 340g",
+      "quantity": 1,
+      "unit_price": 536.44,
+      "total": 536.44,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Grace Baked Beans 300g",
+      "quantity": 1,
+      "unit_price": 244.11,
+      "total": 244.11,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Butter Beans 400g",
+      "quantity": 1,
+      "unit_price": 239.74,
+      "total": 239.74,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Grace Corned Beef - Low Sa",
+      "quantity": 1,
+      "unit_price": 503.96,
+      "total": 503.96,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Covebay Plastic Cups 1202",
+      "quantity": 1,
+      "unit_price": 247.5,
+      "total": 247.5,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Orchid Paper Towel",
+      "quantity": 1,
+      "unit_price": 322.27,
+      "total": 322.27,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Shavlot S/Sup Moringa Tea",
+      "quantity": 1,
+      "unit_price": 700,
+      "total": 700,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Coffee Ts Bamhy Mini 8s",
+      "quantity": 1,
+      "unit_price": 700,
+      "total": 700,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Coffee Ts Bamhy Mini 8s",
+      "quantity": 1,
+      "unit_price": 690,
+      "total": 690,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Coffee Ts Bamhy Mini 8s",
+      "quantity": 1,
+      "unit_price": 732.03,
+      "total": 732.03,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Forka Oats 400g",
+      "quantity": 1,
+      "unit_price": 304.27,
+      "total": 304.27,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "J.F.Mills Festival Mix",
+      "quantity": 1,
+      "unit_price": 616.04,
+      "total": 616.04,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Grace Mixed Vegetables 240",
+      "quantity": 1,
+      "unit_price": 213.09,
+      "total": 213.09,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Butter Beans 400g",
+      "quantity": 1,
+      "unit_price": 228.22,
+      "total": 228.22,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sweet Potato",
+      "quantity": 1.73,
+      "unit_price": 1078,
+      "total": 1864.94,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Potato Irish",
+      "quantity": 1.665,
+      "unit_price": 1078,
+      "total": 1794.97,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Lasoy Milk-Free 80g",
+      "quantity": 1,
+      "unit_price": 200.12,
+      "total": 200.12,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Lasoy Milk-Free 80g",
+      "quantity": 1,
+      "unit_price": 200.12,
+      "total": 200.12,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Lasoy Milk-Free 80g",
+      "quantity": 1,
+      "unit_price": 190.52,
+      "total": 190.52,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Lasoy Milk-Free 80g",
+      "quantity": 1,
+      "unit_price": 195.92,
+      "total": 195.92,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Lasoy Milk-Free 80g",
+      "quantity": 1,
+      "unit_price": 196.92,
+      "total": 196.92,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Lasoy Milk-Free 80g",
+      "quantity": 1,
+      "unit_price": 196.92,
+      "total": 196.92,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Lasoy Milk-Free 80g",
+      "quantity": 1,
+      "unit_price": 196.92,
+      "total": 196.92,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Lasoy Vanilla 80g",
+      "quantity": 1,
+      "unit_price": 201.35,
+      "total": 201.35,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Lasoy Vanilla 80g",
+      "quantity": 1,
+      "unit_price": 201.35,
+      "total": 201.35,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Lasoy Vanilla 80g",
+      "quantity": 1,
+      "unit_price": 191.69,
+      "total": 191.69,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Lasoy Vanilla 80g",
+      "quantity": 1,
+      "unit_price": 198.13,
+      "total": 198.13,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Lasoy Malt 80g",
+      "quantity": 1,
+      "unit_price": 201.35,
+      "total": 201.35,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Lasoy Malt 80g",
+      "quantity": 1,
+      "unit_price": 201.35,
+      "total": 201.35,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Lasco Lasoy Malt 80g",
+      "quantity": 1,
+      "unit_price": 191.69,
+      "total": 191.69,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Holiday Cheeze Stiks 40g",
+      "quantity": 1,
+      "unit_price": 64.16,
+      "total": 64.16,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Holiday Cheeze Stiks 40g",
+      "quantity": 1,
+      "unit_price": 64.16,
+      "total": 64.16,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "B/Kist S/W Cookies S/Bry L",
+      "quantity": 1,
+      "unit_price": 56.94,
+      "total": 56.94,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "B/Kist S/W Cookies S/Bry L",
+      "quantity": 1,
+      "unit_price": 56.94,
+      "total": 56.94,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "B/Kist S/W Cookies S/Bry L",
+      "quantity": 1,
+      "unit_price": 54.21,
+      "total": 54.21,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "B/Kist S/W Cookies S/Bry L",
+      "quantity": 1,
+      "unit_price": 56.03,
+      "total": 56.03,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "B/Kist S/W Cookies S/Bry L",
+      "quantity": 1,
+      "unit_price": 56.03,
+      "total": 56.03,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "B/Kist Vanilla S/Wich Ckie",
+      "quantity": 1,
+      "unit_price": 53.23,
+      "total": 53.23,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "B/Kist Vanilla S/Wich Ckie",
+      "quantity": 1,
+      "unit_price": 56.03,
+      "total": 56.03,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "B/Kist Vanilla S/Wich Ckie",
+      "quantity": 1,
+      "unit_price": 56.03,
+      "total": 56.03,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "B/Kist Vanilla S/Wich Ckie",
+      "quantity": 1,
+      "unit_price": 56.03,
+      "total": 56.03,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "B/Kist Vanilla S/Wich Ckie",
+      "quantity": 1,
+      "unit_price": 56.03,
+      "total": 56.03,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "B/Kist Vanilla S/Wich Ckie",
+      "quantity": 1,
+      "unit_price": 56.03,
+      "total": 56.03,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    }
+  ],
+  "currency": "JMD",
+  "confidence": "medium"
+}

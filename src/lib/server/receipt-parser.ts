@@ -2,6 +2,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { env } from '$env/dynamic/private';
 import { z } from 'zod';
 import { STORE_NAME_REQUIRED } from '$lib/receipt-messages';
+import { markSeamDuplicates } from './receipt-seams.ts';
 
 const supermarketFields = z.object({
 	name: z.string().optional(),
@@ -25,7 +26,12 @@ export const parsedReceiptSchema = z.object({
 			quantity: z.number(),
 			unit_price: z.number(),
 			total: z.number(),
-			flagged: z.boolean().default(false)
+			// Which photograph this line was read from, 1-based. Optional: a single-image parse
+			// has no seams, and a response that omits it still validates — seam detection then
+			// has nothing to work with and leaves every line alone.
+			image: z.number().int().min(1).optional(),
+			flagged: z.boolean().default(false),
+			possible_duplicate: z.boolean().default(false)
 		})
 	),
 	currency: z.string().length(3),
@@ -74,10 +80,13 @@ continues where image 1 ended, and so on. Treat them as one continuous receipt a
 
 - The store header — name, branch, address — is printed once, at the top, so it appears **only
   on the first image**. Apply it to the whole receipt.
-- Consecutive photos often **overlap**, repeating a line or two at the seam. If the same
-  product at the same price appears at the end of one image and the start of the next, it is
-  one purchase — record it **once**. Genuinely repeated purchases (the same product listed
-  twice within a single image) stay as two lines.
+- Consecutive photos often **overlap**, repeating a line or two at the seam. Do **not** try to
+  merge those repeats. Transcribe every line you can see in every image, exactly as it appears
+  there. If a line is visible at the end of image 2 and again at the start of image 3, emit it
+  **twice** — once for each image. Sorting out which repeats are one purchase is handled later,
+  and it can only be done if you report what each photo actually shows.
+- Tag every line with \`image\`: the 1-based index of the photograph you read it from. This is
+  the only record of where one photo ends and the next begins, so it must be accurate.
 - Read the line items in image order, so the output preserves the order printed on the paper.
 
 ## Your task
@@ -110,7 +119,8 @@ Then return a single JSON object matching the schema below. Return ONLY the JSON
       "name": "string",
       "quantity": number,
       "unit_price": number,
-      "total": number
+      "total": number,
+      "image": number
     }
   ],
   "currency": "JMD" | "USD" | "<other ISO-4217 code>",
@@ -131,6 +141,8 @@ Then return a single JSON object matching the schema below. Return ONLY the JSON
 **purchase_date**: Always ISO format \`YYYY-MM-DD\`. Jamaican receipts commonly print dates as DD/MM/YYYY or DD-MM-YYYY — interpret them as day-first, not month-first. If the date is ambiguous or missing, use today's date and set confidence to at most "medium".
 
 **line_items**: One entry per purchased product. Skip subtotals, taxes (GCT), discounts, totals, change due, payment method, loyalty messages, **section/department headers** (e.g. "Grocery-Foods", "Grocery Non-Foods", "Produce", "Dairy", "Meat"), and **package/bundle pricing rows** (e.g. "Package Price", "Package Price Discount"). If a single line shows a quantity multiplier (e.g. "2 @ 250.00"), record \`quantity: 2\`, \`unit_price: 250.00\`, \`total: 500.00\`. If quantity isn't shown, default to \`1\` and set \`unit_price\` equal to \`total\`. Strip trailing product codes, SKUs, and department numbers from \`name\` — keep just the human-readable product description, title-cased.
+
+**image**: The 1-based index of the photograph this line was read from — \`1\` for the first image you were given, \`2\` for the second, and so on. Omit it when you were given only one image. Never guess: if the same line appears in two photos, that is two entries with two different \`image\` values, not one entry.
 
 **unit_price** and **total**: Numeric values, no currency symbols, no thousand separators. Use a period as the decimal mark.
 
@@ -242,10 +254,35 @@ Output:
 }
 \`\`\`
 
+### Example 6 — Two photos of one receipt, overlapping at the seam
+
+Input: Two images. Image 1 ends with "Sophie Bathroom Tissue 400s" and "Forka Oats 400G". Image 2 was taken slightly higher up the paper, so it **starts** with those same two lines before continuing.
+
+Note both what is repeated and what is not: the two "Sophie Bathroom Tissue 400s" lines within image 1 are two separate purchases printed twice on the paper, and both are recorded. The seam repeat is recorded too, tagged with the image it appeared in — do not drop it.
+
+Output:
+\`\`\`json
+{
+  "supermarket": { "name": "General Food Supermarket" },
+  "purchase_date": "2026-07-04",
+  "line_items": [
+    { "name": "Sophie Bathroom Tissue 400s", "quantity": 1, "unit_price": 93.63, "total": 93.63, "image": 1 },
+    { "name": "Sophie Bathroom Tissue 400s", "quantity": 1, "unit_price": 93.63, "total": 93.63, "image": 1 },
+    { "name": "Forka Oats 400G", "quantity": 1, "unit_price": 304.27, "total": 304.27, "image": 1 },
+    { "name": "Sophie Bathroom Tissue 400s", "quantity": 1, "unit_price": 93.63, "total": 93.63, "image": 2 },
+    { "name": "Forka Oats 400G", "quantity": 1, "unit_price": 304.27, "total": 304.27, "image": 2 },
+    { "name": "J.F. Mills Festival Mix", "quantity": 1, "unit_price": 616.04, "total": 616.04, "image": 2 }
+  ],
+  "currency": "JMD",
+  "confidence": "high"
+}
+\`\`\`
+
 ## Reminders
 
 - Output ONLY the JSON object. No \`\`\`json fences. No "Here is the parsed receipt:". Nothing before or after.
 - Numbers are numbers, not strings. \`385.00\`, not \`"385.00"\`.
+- Given several images, every line carries an \`image\` index, and lines repeated at a seam are recorded once per image. Do not merge them and do not leave the index off.
 - The user will verify your output before it's saved — it's better to include a flagged-but-imperfect line than to silently drop it.`;
 
 type AnthropicLike = Pick<Anthropic, 'messages'>;
@@ -307,13 +344,18 @@ export async function parseReceipt(
 	if (!result.success) {
 		throw new Error(`Receipt parser: response did not match schema: ${result.error.message}`);
 	}
-	return {
-		...result.data,
-		line_items: result.data.line_items.map((item) => ({
-			...item,
-			flagged: NON_ITEM_PATTERN.test(item.name.trim())
-		}))
-	};
+	return { ...result.data, line_items: annotate(result.data.line_items) };
+}
+
+// Two independent signals, deliberately kept apart. `flagged` means "not a product, leave it
+// out of the save"; `possible_duplicate` means "this may be the previous photo's line again"
+// and does not exclude anything on its own.
+function annotate(items: ParsedReceipt['line_items']): ParsedReceipt['line_items'] {
+	const flagged = items.map((item) => ({
+		...item,
+		flagged: NON_ITEM_PATTERN.test(item.name.trim())
+	}));
+	return markSeamDuplicates(flagged);
 }
 
 function toFileBlock(part: ReceiptPart) {

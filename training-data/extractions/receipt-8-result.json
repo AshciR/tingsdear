@@ -1,0 +1,590 @@
+{
+  "supermarket": {
+    "name": "Sovereign Supermarket",
+    "address": "106 Hope Road Kingston 6",
+    "city": "Kingston",
+    "region": "St. Andrew",
+    "country": "Jamaica"
+  },
+  "purchase_date": "2026-05-15",
+  "line_items": [
+    {
+      "name": "Sovereign Eco Shopping Bag",
+      "quantity": 1,
+      "unit_price": 195,
+      "total": 195,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sophie Hand Towel 100 She",
+      "quantity": 1,
+      "unit_price": 257.02,
+      "total": 257.02,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sophie Hand Towel 100 She",
+      "quantity": 1,
+      "unit_price": 257.02,
+      "total": 257.02,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Viva Splk Watr Peach 500ml",
+      "quantity": 1,
+      "unit_price": 118.54,
+      "total": 118.54,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Viva Splk Watr Peach 500ml",
+      "quantity": 1,
+      "unit_price": 118.54,
+      "total": 118.54,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Viva Splk Water Orig Lime 3",
+      "quantity": 1,
+      "unit_price": 86.03,
+      "total": 86.03,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Viva Splk Watr Peach 500ml",
+      "quantity": 1,
+      "unit_price": 118.54,
+      "total": 118.54,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Viva Splk Water Orig Lime 3",
+      "quantity": 1,
+      "unit_price": 86.03,
+      "total": 86.03,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Viva Splk Z/S Pom&Blueb",
+      "quantity": 1,
+      "unit_price": 86.03,
+      "total": 86.03,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Viva Splk Z/S Pom&Blueb",
+      "quantity": 1,
+      "unit_price": 86.03,
+      "total": 86.03,
+      "image": 1,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Viva Splk Z/S Pom&Blueb",
+      "quantity": 1,
+      "unit_price": 86.02,
+      "total": 86.02,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Viva Splk Z/S Pom&Blueb",
+      "quantity": 1,
+      "unit_price": 86.03,
+      "total": 86.03,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Viva Splk Watr Strawberry",
+      "quantity": 1,
+      "unit_price": 118.54,
+      "total": 118.54,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Viva Splk Watr Strawberry",
+      "quantity": 1,
+      "unit_price": 118.54,
+      "total": 118.54,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Viva Splk Watr Strawberry",
+      "quantity": 1,
+      "unit_price": 118.54,
+      "total": 118.54,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Viva Splk Water Orig Lime 3",
+      "quantity": 1,
+      "unit_price": 86.02,
+      "total": 86.02,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Rhino Ezee Tie Garbage Bag",
+      "quantity": 1,
+      "unit_price": 404.79,
+      "total": 404.79,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sunshine Cheeze Curls 33g",
+      "quantity": 1,
+      "unit_price": 63.12,
+      "total": 63.12,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sunshine Cheese Balls 35g",
+      "quantity": 1,
+      "unit_price": 63.12,
+      "total": 63.12,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Cherry Berries Sweet 30g",
+      "quantity": 1,
+      "unit_price": 67.62,
+      "total": 67.62,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Holiday Cheese Puff 20g",
+      "quantity": 1,
+      "unit_price": 63.12,
+      "total": 63.12,
+      "image": 2,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Holiday Cheese Puff 20g",
+      "quantity": 1,
+      "unit_price": 63.12,
+      "total": 63.12,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": true
+    },
+    {
+      "name": "National Cream Thins Sour",
+      "quantity": 1,
+      "unit_price": 113.35,
+      "total": 113.35,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "National Cream Thins Sour",
+      "quantity": 1,
+      "unit_price": 113.35,
+      "total": 113.35,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "National Cream Thins Sour",
+      "quantity": 1,
+      "unit_price": 113.35,
+      "total": 113.35,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Holiday Cheese Stiks 40g",
+      "quantity": 1,
+      "unit_price": 67.63,
+      "total": 67.63,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Holiday Cheese Puff 20g",
+      "quantity": 1,
+      "unit_price": 63.12,
+      "total": 63.12,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Excelsior Cheese Krunchies",
+      "quantity": 1,
+      "unit_price": 58.61,
+      "total": 58.61,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Holiday Cheese Stiks 40g",
+      "quantity": 1,
+      "unit_price": 67.63,
+      "total": 67.63,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "National Cream Thins Sour",
+      "quantity": 1,
+      "unit_price": 113.35,
+      "total": 113.35,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Holiday Chick N Chips 25g",
+      "quantity": 1,
+      "unit_price": 67.63,
+      "total": 67.63,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Cherry Berries Sweet 30g",
+      "quantity": 1,
+      "unit_price": 67.61,
+      "total": 67.61,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "St Mary Banana Chips Orig.",
+      "quantity": 1,
+      "unit_price": 104.78,
+      "total": 104.78,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "St Mary Banana Chips Orig.",
+      "quantity": 1,
+      "unit_price": 104.78,
+      "total": 104.78,
+      "image": 3,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Victory Garbage Bags 20s S",
+      "quantity": 1,
+      "unit_price": 241,
+      "total": 241,
+      "image": 4,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Cherry Berries Sweet 30g",
+      "quantity": 1,
+      "unit_price": 67.61,
+      "total": 67.61,
+      "image": 4,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Excelsior Water Crackers/c",
+      "quantity": 1,
+      "unit_price": 124.42,
+      "total": 124.42,
+      "image": 4,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Excelsior Water Crackers/c",
+      "quantity": 1,
+      "unit_price": 124.42,
+      "total": 124.42,
+      "image": 4,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sunshine Cheeze Curls 33g",
+      "quantity": 1,
+      "unit_price": 63.12,
+      "total": 63.12,
+      "image": 4,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sunshine Cheese Balls 35g",
+      "quantity": 1,
+      "unit_price": 63.12,
+      "total": 63.12,
+      "image": 4,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Holiday Cheese Stiks 40g",
+      "quantity": 1,
+      "unit_price": 67.62,
+      "total": 67.62,
+      "image": 4,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "St Mary Banana Chips Orig.",
+      "quantity": 1,
+      "unit_price": 104.77,
+      "total": 104.77,
+      "image": 4,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Holiday Cheese Stiks 40g",
+      "quantity": 1,
+      "unit_price": 67.62,
+      "total": 67.62,
+      "image": 4,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "National Cream Thins Sour",
+      "quantity": 1,
+      "unit_price": 113.34,
+      "total": 113.34,
+      "image": 4,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Excelsior Cheese Krunchies",
+      "quantity": 1,
+      "unit_price": 58.61,
+      "total": 58.61,
+      "image": 4,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Holiday Chick N Chips 25g",
+      "quantity": 1,
+      "unit_price": 67.62,
+      "total": 67.62,
+      "image": 4,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Holiday Chick N Chips 25g",
+      "quantity": 1,
+      "unit_price": 67.62,
+      "total": 67.62,
+      "image": 4,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Excelsior Water Crackers/c",
+      "quantity": 1,
+      "unit_price": 124.41,
+      "total": 124.41,
+      "image": 4,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sunshine Cheese Balls 35g",
+      "quantity": 1,
+      "unit_price": 63.12,
+      "total": 63.12,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Sunshine Cheeze Curls 33g",
+      "quantity": 1,
+      "unit_price": 63.12,
+      "total": 63.12,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "National Cream Thins Sour",
+      "quantity": 1,
+      "unit_price": 113.34,
+      "total": 113.34,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Holiday Cheese Stiks 40g",
+      "quantity": 1,
+      "unit_price": 67.62,
+      "total": 67.62,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Excelsior Cheese Krunchies",
+      "quantity": 1,
+      "unit_price": 58.6,
+      "total": 58.6,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Holiday Cheese Stiks 40g",
+      "quantity": 1,
+      "unit_price": 67.62,
+      "total": 67.62,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Nestle Nesquik Cereal 230g",
+      "quantity": 1,
+      "unit_price": 602.16,
+      "total": 602.16,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Toufayan Spinach Wrap Doug",
+      "quantity": 1,
+      "unit_price": 673.75,
+      "total": 673.75,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "St Mary Banana Chips Orig.",
+      "quantity": 1,
+      "unit_price": 104.77,
+      "total": 104.77,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Kzh Metal Eating Spoon 12p",
+      "quantity": 1,
+      "unit_price": 750,
+      "total": 750,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Kzh Metal Eating Fork 12pk",
+      "quantity": 1,
+      "unit_price": 750,
+      "total": 750,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "St Mary Banana Chips Orig.",
+      "quantity": 1,
+      "unit_price": 104.77,
+      "total": 104.77,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "St Mary Banana Chips Orig.",
+      "quantity": 1,
+      "unit_price": 104.77,
+      "total": 104.77,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Anchor Brand Ginger Extrac",
+      "quantity": 1,
+      "unit_price": 226.6,
+      "total": 226.6,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Glad S/s Grater Flat",
+      "quantity": 1,
+      "unit_price": 288,
+      "total": 288,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    },
+    {
+      "name": "Plunger Black With Stick H",
+      "quantity": 1,
+      "unit_price": 612,
+      "total": 612,
+      "image": 5,
+      "flagged": false,
+      "possible_duplicate": false
+    }
+  ],
+  "currency": "JMD",
+  "confidence": "high"
+}
