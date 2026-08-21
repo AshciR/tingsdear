@@ -2,7 +2,7 @@ import { render } from 'vitest-browser-svelte';
 import { describe, it, expect, vi } from 'vitest';
 import VerifyView from './VerifyView.svelte';
 import type { ParsedReceipt } from '$lib/receipt-client';
-import { STORE_NAME_REQUIRED } from '$lib/receipt-messages';
+import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipt-messages';
 
 describe('VerifyView', () => {
 	it('shows what the parser made of the receipt', async () => {
@@ -17,7 +17,7 @@ describe('VerifyView', () => {
 		await expect.element(screen.getByText(/currency JMD/u)).toBeInTheDocument();
 	});
 
-	it('shows the parsed store and purchase date for correction', async () => {
+	it('shows the parsed supermarket and purchase date for correction', async () => {
 		// Given a receipt from a named branch
 		const receipt = makeReceipt({
 			supermarket: { name: 'Hi-Lo', branch: 'Barbican', city: 'Kingston' },
@@ -34,8 +34,8 @@ describe('VerifyView', () => {
 		await expect.element(screen.getByLabelText('Purchase date')).toHaveValue('2026-03-04');
 	});
 
-	it('writes a corrected store name back to the receipt', async () => {
-		// Given a store name the parser misread
+	it('writes a corrected supermarket name back to the receipt', async () => {
+		// Given a supermarket name the parser misread
 		const receipt = makeReceipt({ supermarket: { name: 'HI LO FOOD STRS' } });
 		const screen = render(VerifyView, { receipt, error: null, saving: false, onConfirm: vi.fn() });
 
@@ -152,8 +152,8 @@ describe('VerifyView', () => {
 		await expect.element(screen.getByRole('button', { name: 'Saving…' })).toBeDisabled();
 	});
 
-	it('cannot be confirmed while the store name is empty', async () => {
-		// Given a continuation page of a split receipt, which carries no store header
+	it('cannot be confirmed while the supermarket name is empty', async () => {
+		// Given a continuation page of a split receipt, which carries no supermarket header
 		const receipt = makeReceipt({ supermarket: {} });
 
 		// When the verify view is rendered
@@ -161,11 +161,11 @@ describe('VerifyView', () => {
 
 		// Then saving is blocked and the user is told what to do about it
 		await expect.element(screen.getByRole('button', { name: 'Confirm and save' })).toBeDisabled();
-		await expect.element(screen.getByText(STORE_NAME_REQUIRED)).toBeInTheDocument();
+		await expect.element(screen.getByText(SUPERMARKET_NAME_REQUIRED)).toBeInTheDocument();
 	});
 
-	it('can be confirmed once the user types a store name', async () => {
-		// Given a receipt with no store name
+	it('can be confirmed once the user types a supermarket name', async () => {
+		// Given a receipt with no supermarket name
 		const receipt = makeReceipt({ supermarket: {} });
 		const screen = render(VerifyView, { receipt, error: null, saving: false, onConfirm: vi.fn() });
 
@@ -173,7 +173,7 @@ describe('VerifyView', () => {
 		await screen.getByLabelText('Name').fill('General Food Supermarket');
 
 		// Then the warning clears and the receipt can be saved
-		expect(screen.getByText(STORE_NAME_REQUIRED).query()).toBeNull();
+		expect(screen.getByText(SUPERMARKET_NAME_REQUIRED).query()).toBeNull();
 		await expect.element(screen.getByRole('button', { name: 'Confirm and save' })).toBeEnabled();
 	});
 
@@ -192,7 +192,7 @@ describe('VerifyView', () => {
 	});
 });
 
-// The view mutates the receipt it is handed — `bind:value` on the store fields, push/splice on
+// The view mutates the receipt it is handed — `bind:value` on the supermarket fields, push/splice on
 // the line items — and in the real app the page owns that object as reactive state. Hand out a
 // $state proxy so added and deleted rows actually re-render, as they do in production.
 function makeReceipt(overrides: Partial<ParsedReceipt> = {}) {

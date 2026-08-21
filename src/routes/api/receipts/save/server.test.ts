@@ -130,7 +130,7 @@ describe('POST /api/receipts/save', () => {
 
 	it('returns 400 when the supermarket has no name', async () => {
 		await withRollback(async (db) => {
-			// Given a continuation page of a split receipt — parsed fine, but no store header
+			// Given a continuation page of a split receipt — parsed fine, but no supermarket header
 			const headerless = makeParsed({ supermarket: {} });
 
 			// When / Then — it must not save under an invented chain
@@ -138,9 +138,9 @@ describe('POST /api/receipts/save', () => {
 		});
 	});
 
-	it('returns 400 when the store name is only whitespace', async () => {
+	it('returns 400 when the supermarket name is only whitespace', async () => {
 		await withRollback(async (db) => {
-			// Given a receipt whose store name is blank after trimming
+			// Given a receipt whose supermarket name is blank after trimming
 			const blank = makeParsed({ supermarket: { name: '   ' } });
 
 			// When / Then
@@ -148,7 +148,7 @@ describe('POST /api/receipts/save', () => {
 		});
 	});
 
-	it('writes no rows when the store name is missing', async () => {
+	it('writes no rows when the supermarket name is missing', async () => {
 		await withRollback(async (db) => {
 			// Given a nameless receipt and an empty database
 			const headerless = makeParsed({ supermarket: {} });

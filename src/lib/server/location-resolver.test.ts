@@ -13,7 +13,7 @@ import {
 
 describe('normalizeChainName', () => {
 	it('reduces two descriptions of one chain to the same form', () => {
-		// Given two Super Valu branches whose headers describe the store differently
+		// Given two Super Valu branches whose headers describe the supermarket differently
 		// When each name is normalized
 		// Then both collapse onto the same chain
 		expect(normalizeChainName('Super Valu Fresh Foods')).toBe('super valu');
@@ -205,7 +205,7 @@ describe('resolveSupermarket', () => {
 	it('returns a usable result for a chain it has never seen', async () => {
 		await withRollback(async (db) => {
 			// Given an empty database
-			// When a receipt names an unknown store
+			// When a receipt names an unknown supermarket
 			const resolved = await resolveSupermarket(db, {
 				name: 'Brand New Grocers',
 				city: 'Kingston'

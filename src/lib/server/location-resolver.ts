@@ -20,7 +20,7 @@ export type SupermarketQuery = {
 export type LocationCandidate = {
 	location: SupermarketLocation | null;
 	score: number;
-	reason: 'geo' | 'address' | 'branch' | 'new';
+	reason: 'geo' | 'address' | 'branch-name' | 'city-region' | 'new';
 };
 
 export type ResolvedSupermarket = {
@@ -30,8 +30,8 @@ export type ResolvedSupermarket = {
 };
 
 // At or above HIGH the verify UI pre-selects the candidate; between LOW and HIGH it shows it as a
-// suggestion but still defaults to "new branch". Never auto-merge below HIGH: a wrong merge
-// silently fuses two stores' price histories and is hard to unwind.
+// suggestion but still defaults to "new location". Never auto-merge below HIGH: a wrong merge
+// silently fuses two supermarkets' price histories and is hard to unwind.
 export const HIGH_CONFIDENCE = 0.8;
 export const LOW_CONFIDENCE = 0.25;
 
@@ -43,7 +43,7 @@ export async function resolveSupermarket(
 ): Promise<ResolvedSupermarket> {
 	const typed = supermarket.name?.trim() ?? '';
 	const chain = typed ? await findChainByName(db, typed) : null;
-	if (!chain) return { chainId: null, chainName: typed, candidates: [newBranchCandidate()] };
+	if (!chain) return { chainId: null, chainName: typed, candidates: [newLocationCandidate()] };
 
 	const locations = await loadChainLocations(db, chain.id);
 	return {
@@ -95,7 +95,7 @@ const BRANCH_MATCH = 0.6;
 const CITY_REGION_MATCH = 0.3;
 const GEO_MATCH = 0.95;
 
-// Two receipts from points this close are the same store for any practical purpose — a plaza is
+// Two receipts from points this close are the same supermarket for any practical purpose — a plaza is
 // bigger than this, but two distinct supermarkets in one plaza are not.
 const GEO_MATCH_METERS = 150;
 
@@ -112,7 +112,7 @@ async function loadChainLocations(db: Db, chainId: number): Promise<SupermarketL
 	return db.select().from(supermarketLocation).where(eq(supermarketLocation.chainId, chainId));
 }
 
-// Every scored location, best first, with "new branch" always available last — the user can
+// Every scored location, best first, with "new location" always available last — the user can
 // always reject every suggestion.
 function rankCandidates(
 	locations: SupermarketLocation[],
@@ -122,7 +122,7 @@ function rankCandidates(
 		.map((location) => scoreLocation(location, query))
 		.filter((candidate): candidate is LocationCandidate => candidate !== null)
 		.sort((a, b) => b.score - a.score);
-	return [...scored, newBranchCandidate()];
+	return [...scored, newLocationCandidate()];
 }
 
 // Strongest signal wins outright rather than accumulating: a matching address already settles it,
@@ -133,9 +133,10 @@ function scoreLocation(
 ): LocationCandidate | null {
 	if (matchesGeo(location, query)) return { location, score: GEO_MATCH, reason: 'geo' };
 	if (matchesAddress(location, query)) return { location, score: ADDRESS_MATCH, reason: 'address' };
-	if (matchesBranch(location, query)) return { location, score: BRANCH_MATCH, reason: 'branch' };
+	if (matchesBranch(location, query))
+		return { location, score: BRANCH_MATCH, reason: 'branch-name' };
 	if (matchesCityRegion(location, query))
-		return { location, score: CITY_REGION_MATCH, reason: 'branch' };
+		return { location, score: CITY_REGION_MATCH, reason: 'city-region' };
 	return null;
 }
 
@@ -182,7 +183,7 @@ export function distanceMeters(
 	return 2 * EARTH_RADIUS_M * Math.asin(Math.sqrt(h));
 }
 
-function newBranchCandidate(): LocationCandidate {
+function newLocationCandidate(): LocationCandidate {
 	return { location: null, score: 0, reason: 'new' };
 }
 

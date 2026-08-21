@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { env } from '$env/dynamic/private';
 import { z } from 'zod';
-import { STORE_NAME_REQUIRED } from '$lib/receipt-messages';
+import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipt-messages';
 import { markSeamDuplicates } from './receipt-seams.ts';
 
 const supermarketFields = z.object({
@@ -13,7 +13,7 @@ const supermarketFields = z.object({
 	country: z.string().optional()
 });
 
-// The parser keeps every field optional: "this page has no store header" is a legitimate
+// The parser keeps every field optional: "this page has no supermarket header" is a legitimate
 // parse result for part 3 of a 5-part receipt.
 const supermarketSchema = supermarketFields.default({});
 
@@ -40,12 +40,12 @@ export const parsedReceiptSchema = z.object({
 
 export type ParsedReceipt = z.infer<typeof parsedReceiptSchema>;
 
-// Saving is a stricter boundary than parsing: a blank store name would otherwise be filed
+// Saving is a stricter boundary than parsing: a blank supermarket name would otherwise be filed
 // under an invented chain, mixing unrelated supermarkets into one price history. Note the
 // absent `.default({})` — an omitted `supermarket` key must fail here, not default to `{}`.
 export const receiptSaveSchema = parsedReceiptSchema.extend({
 	supermarket: supermarketFields.extend({
-		name: z.string().trim().min(1, STORE_NAME_REQUIRED)
+		name: z.string().trim().min(1, SUPERMARKET_NAME_REQUIRED)
 	})
 });
 
