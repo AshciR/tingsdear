@@ -163,6 +163,64 @@ describe('saveReceipt', () => {
 		});
 	});
 
+	it('matches a shortened store name against the existing chain', async () => {
+		await withRollback(async (db) => {
+			// Given a chain saved under its full name
+			await saveReceipt(db, makeReceipt({ supermarket: { name: 'General Food Supermarket' } }));
+
+			// When a later receipt prints only the short form
+			const result = await saveReceipt(
+				db,
+				makeReceipt({
+					supermarket: { name: 'General Food' },
+					line_items: [{ name: 'Soap', unit_price: 1 }]
+				})
+			);
+
+			// Then it reuses the chain instead of minting a near-duplicate
+			expect((await countRows(db)).chains).toBe(1);
+			expect(result.chainCreated).toBe(false);
+		});
+	});
+
+	it('saves against the location the user picked at verify', async () => {
+		await withRollback(async (db) => {
+			// Given a receipt already saved, so one location exists
+			const first = await saveReceipt(db, makeReceipt());
+
+			// When a second receipt names that location explicitly
+			const result = await saveReceipt(
+				db,
+				makeReceipt({
+					supermarket: { name: 'HI-LO', branch: 'Somewhere Else' },
+					location_id: first.locationId
+				})
+			);
+
+			// Then the chosen row is reused rather than a branch created from the receipt text
+			expect(result.locationId).toBe(first.locationId);
+			expect(result.locationCreated).toBe(false);
+			expect((await countRows(db)).locations).toBe(1);
+		});
+	});
+
+	it('refuses a location belonging to a different chain', async () => {
+		await withRollback(async (db) => {
+			// Given a location created under one chain
+			const other = await saveReceipt(db, makeReceipt({ supermarket: { name: 'MegaMart' } }));
+
+			// When a receipt for a different chain points at that location
+			const crossed = makeReceipt({
+				supermarket: { name: 'HI-LO' },
+				location_id: other.locationId
+			});
+
+			// Then the save is refused rather than filing prices under another chain's branch
+			await expect(saveReceipt(db, crossed)).rejects.toThrow('belongs to another chain');
+			expect((await countRows(db)).locations).toBe(1);
+		});
+	});
+
 	it('rejects a receipt whose store name is blank', async () => {
 		await withRollback(async (db) => {
 			// Given a receipt whose store name is whitespace only

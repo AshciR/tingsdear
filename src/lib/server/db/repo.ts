@@ -1,6 +1,7 @@
 import { and, eq, sql } from 'drizzle-orm';
 import type { Db } from './index.ts';
 import { STORE_NAME_REQUIRED } from '$lib/receipt-messages';
+import { normalizeChainName } from '../location-resolver.ts';
 import { item, manufacturer, price, supermarketChain, supermarketLocation } from './schema.ts';
 
 type Tx = Parameters<Parameters<Db['transaction']>[0]>[0];
@@ -19,6 +20,10 @@ export type ReceiptSaveRequest = {
 		region?: string;
 		country?: string;
 	};
+	// The location the user picked at verify, from the candidates resolveSupermarket ranked.
+	// Absent when the caller skipped resolution — then the supermarket fields are used to
+	// find-or-create a location, as before.
+	location_id?: number;
 	purchase_date: string;
 	line_items: ReceiptSaveLineItem[];
 };
@@ -43,7 +48,7 @@ export async function saveReceipt(db: Db, receipt: ReceiptSaveRequest): Promise<
 	return db.transaction(async (tx) => {
 		const unknownMfrId = await findOrCreateUnknownManufacturer(tx);
 		const chain = await findOrCreateChain(tx, chainName);
-		const location = await findOrCreateLocation(tx, chain.id, receipt.supermarket);
+		const location = await resolveLocation(tx, chain.id, receipt);
 		const timestamp = new Date(`${receipt.purchase_date}T00:00:00Z`);
 
 		// Sequential, not Promise.all: a transaction is pinned to one connection, so
@@ -87,11 +92,14 @@ async function findOrCreateUnknownManufacturer(tx: Tx): Promise<number> {
 	return inserted[0].id;
 }
 
+// Matched on the normalized form, so "General Food" lands on the existing "General Food
+// Supermarket" instead of minting a near-duplicate chain. The user's own spelling is still what
+// gets stored in `name`; the database derives normalized_name from it.
 async function findOrCreateChain(tx: Tx, name: string): Promise<{ id: number; created: boolean }> {
 	const existing = await tx
 		.select({ id: supermarketChain.id })
 		.from(supermarketChain)
-		.where(sql`lower(${supermarketChain.name}) = lower(${name})`)
+		.where(eq(supermarketChain.normalizedName, normalizeChainName(name)))
 		.limit(1);
 	if (existing[0]) return { id: existing[0].id, created: false };
 	const inserted = await tx
@@ -99,6 +107,37 @@ async function findOrCreateChain(tx: Tx, name: string): Promise<{ id: number; cr
 		.values({ name })
 		.returning({ id: supermarketChain.id });
 	return { id: inserted[0].id, created: true };
+}
+
+// A location the user chose at verify is used as-is; anything else falls back to matching on the
+// extracted fields. The chain check is not paranoia — a candidate list goes stale as soon as the
+// user edits the store name, and filing prices under another chain's branch is unrecoverable.
+async function resolveLocation(
+	tx: Tx,
+	chainId: number,
+	receipt: ReceiptSaveRequest
+): Promise<{ id: number; created: boolean }> {
+	if (receipt.location_id === undefined) {
+		return findOrCreateLocation(tx, chainId, receipt.supermarket);
+	}
+	return useExistingLocation(tx, chainId, receipt.location_id);
+}
+
+async function useExistingLocation(
+	tx: Tx,
+	chainId: number,
+	locationId: number
+): Promise<{ id: number; created: boolean }> {
+	const existing = await tx
+		.select({ id: supermarketLocation.id, chainId: supermarketLocation.chainId })
+		.from(supermarketLocation)
+		.where(eq(supermarketLocation.id, locationId))
+		.limit(1);
+	if (!existing[0]) throw new Error(`No such supermarket location: ${locationId}`);
+	if (existing[0].chainId !== chainId) {
+		throw new Error(`Location ${locationId} belongs to another chain`);
+	}
+	return { id: existing[0].id, created: false };
 }
 
 async function findOrCreateLocation(
