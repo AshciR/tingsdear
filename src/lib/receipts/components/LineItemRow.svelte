@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ParsedReceipt } from '$lib/receipt-client';
+	import type { ParsedReceipt } from '$lib/receipts/client';
 
 	type LineItem = ParsedReceipt['line_items'][number];
 

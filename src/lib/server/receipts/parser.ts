@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { env } from '$env/dynamic/private';
 import { z } from 'zod';
-import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipt-messages';
+import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipts/messages';
 import { markSeamDuplicates } from './seams.ts';
 
 const supermarketFields = z.object({

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SaveReceiptResult } from '$lib/receipt-client';
+	import type { SaveReceiptResult } from '$lib/receipts/client';
 
 	let { result, onReset }: { result: SaveReceiptResult; onReset: () => void } = $props();
 

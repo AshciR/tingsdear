@@ -1,8 +1,8 @@
 import { render } from 'vitest-browser-svelte';
 import { describe, it, expect, vi } from 'vitest';
 import VerifyView from './VerifyView.svelte';
-import type { ParsedReceipt } from '$lib/receipt-client';
-import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipt-messages';
+import type { ParsedReceipt } from '$lib/receipts/client';
+import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipts/messages';
 
 describe('VerifyView', () => {
 	it('shows what the parser made of the receipt', async () => {

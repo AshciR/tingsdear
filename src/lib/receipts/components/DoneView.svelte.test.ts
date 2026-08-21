@@ -1,7 +1,7 @@
 import { render } from 'vitest-browser-svelte';
 import { describe, it, expect, vi } from 'vitest';
 import DoneView from './DoneView.svelte';
-import type { SaveReceiptResult } from '$lib/receipt-client';
+import type { SaveReceiptResult } from '$lib/receipts/client';
 
 describe('DoneView', () => {
 	it('reports how many prices were saved', async () => {

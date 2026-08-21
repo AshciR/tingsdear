@@ -2,7 +2,7 @@ import { error, json } from '@sveltejs/kit';
 import type { z } from 'zod';
 import type { RequestHandler } from './$types';
 import { receiptSaveSchema, type ReceiptSaveBody } from '$lib/server/receipts/parser';
-import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipt-messages';
+import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipts/messages';
 import { saveReceipt, type ReceiptSaveRequest } from '$lib/server/receipts/save';
 
 export const POST: RequestHandler = async ({ request, locals }) => {

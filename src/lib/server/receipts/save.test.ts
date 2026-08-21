@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { sql } from 'drizzle-orm';
 import { withRollback } from '../../../test-setup/with-rollback.ts';
 import type { Db } from '../db/index.ts';
-import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipt-messages';
+import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipts/messages';
 import { saveReceipt, type ReceiptSaveRequest } from './save.ts';
 import { item, manufacturer, price, supermarketChain, supermarketLocation } from '../db/schema.ts';
 
