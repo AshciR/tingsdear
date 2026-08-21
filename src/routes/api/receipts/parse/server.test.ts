@@ -2,9 +2,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 const { parseReceiptMock } = vi.hoisted(() => ({ parseReceiptMock: vi.fn() }));
 
-vi.mock('$lib/server/receipt-parser', async () => {
-	const actual = await vi.importActual<typeof import('$lib/server/receipt-parser')>(
-		'$lib/server/receipt-parser'
+vi.mock('$lib/server/receipts/parser', async () => {
+	const actual = await vi.importActual<typeof import('$lib/server/receipts/parser')>(
+		'$lib/server/receipts/parser'
 	);
 	return { ...actual, parseReceipt: parseReceiptMock };
 });

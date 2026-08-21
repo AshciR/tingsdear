@@ -1,8 +1,8 @@
 import { and, eq, sql } from 'drizzle-orm';
-import type { Db } from './index.ts';
+import type { Db } from '../db/index.ts';
 import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipt-messages';
-import { normalizeChainName } from '../location-resolver.ts';
-import { item, manufacturer, price, supermarketChain, supermarketLocation } from './schema.ts';
+import { normalizeChainName } from '../supermarkets/naming.ts';
+import { item, manufacturer, price, supermarketChain, supermarketLocation } from '../db/schema.ts';
 
 type Tx = Parameters<Parameters<Db['transaction']>[0]>[0];
 

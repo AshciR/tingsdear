@@ -1,5 +1,5 @@
-import type { ParsedReceipt } from '$lib/server/receipt-parser';
-import type { SaveReceiptResult } from '$lib/server/db/repo';
+import type { ParsedReceipt } from '$lib/server/receipts/parser';
+import type { SaveReceiptResult } from '$lib/server/receipts/save';
 import { downscaleImages } from '$lib/image-downscale';
 
 export type { ParsedReceipt, SaveReceiptResult };

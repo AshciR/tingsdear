@@ -5,7 +5,7 @@ import {
 	parseReceipt,
 	type ReceiptMediaType,
 	type ReceiptPart
-} from '../src/lib/server/receipt-parser.ts';
+} from '../src/lib/server/receipts/parser.ts';
 
 const MEDIA_TYPES: Record<string, ReceiptMediaType> = {
 	'.jpg': 'image/jpeg',

@@ -1,4 +1,4 @@
-import type { ParsedReceipt } from './receipt-parser.ts';
+import type { ParsedReceipt } from './parser.ts';
 
 type LineItem = ParsedReceipt['line_items'][number];
 

@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { sql } from 'drizzle-orm';
 import { withRollback } from '../../../../test-setup/with-rollback.ts';
 import type { Db } from '$lib/server/db/index';
-import type { ParsedReceipt } from '$lib/server/receipt-parser';
+import type { ParsedReceipt } from '$lib/server/receipts/parser';
 import { item, price, supermarketChain, supermarketLocation } from '$lib/server/db/schema';
 import { POST } from './+server.ts';
 
