@@ -24,7 +24,7 @@ describe('DoneView', () => {
 		await expect.element(screen.getByText('Bread')).toBeInTheDocument();
 	});
 
-	it('says when the store was newly created', async () => {
+	it('says when the supermarket was newly created', async () => {
 		// Given a receipt from a chain and location seen for the first time
 		const result = makeResult({
 			chainId: 7,
@@ -36,12 +36,12 @@ describe('DoneView', () => {
 		// When the done view is rendered
 		const screen = render(DoneView, { result, onReset: vi.fn() });
 
-		// Then the user can tell the store was added rather than reused
+		// Then the user can tell the supermarket was added rather than reused
 		await expect.element(screen.getByText(/Chain #7 \(new chain\)/u)).toBeInTheDocument();
 		await expect.element(screen.getByText(/Location #12 \(new location\)/u)).toBeInTheDocument();
 	});
 
-	it('says when the store was matched to an existing one', async () => {
+	it('says when the supermarket was matched to an existing one', async () => {
 		// Given a receipt from a chain and location already on file
 		const result = makeResult({
 			chainId: 7,

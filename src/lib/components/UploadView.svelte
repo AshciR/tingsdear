@@ -46,7 +46,7 @@
 <section class="space-y-4">
 	<h1 class="text-2xl font-semibold">Scan a receipt</h1>
 	<p class="text-sm text-gray-600">
-		Too long for one photo? Add each part in order — the store name is only on the first.
+		Too long for one photo? Add each part in order — the supermarket name is only on the first.
 	</p>
 
 	<div class="flex gap-2">

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ParsedReceipt } from '$lib/receipt-client';
-	import { STORE_NAME_REQUIRED } from '$lib/receipt-messages';
+	import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipt-messages';
 	import LineItemRow from './LineItemRow.svelte';
 
 	let {
@@ -15,13 +15,13 @@
 		onConfirm: () => void;
 	} = $props();
 
-	type StoreField = {
+	type SupermarketField = {
 		key: keyof ParsedReceipt['supermarket'];
 		label: string;
 		required?: boolean;
 	};
 
-	const STORE_FIELDS: StoreField[] = [
+	const SUPERMARKET_FIELDS: SupermarketField[] = [
 		{ key: 'name', label: 'Name', required: true },
 		{ key: 'branch', label: 'Branch' },
 		{ key: 'address', label: 'Address' },
@@ -30,9 +30,9 @@
 		{ key: 'country', label: 'Country' }
 	];
 
-	// The save route rejects a blank store name outright — a receipt filed under an invented
+	// The save route rejects a blank supermarket name outright — a receipt filed under an invented
 	// chain poisons the price history — so block the round-trip here and say why.
-	const hasStoreName = $derived((receipt.supermarket.name ?? '').trim().length > 0);
+	const hasSupermarketName = $derived((receipt.supermarket.name ?? '').trim().length > 0);
 
 	const included = $derived(receipt.line_items.filter((li) => !li.flagged).length);
 
@@ -70,9 +70,9 @@
 	</header>
 
 	<fieldset class="space-y-2">
-		<legend class="text-sm font-medium text-gray-700">Store</legend>
+		<legend class="text-sm font-medium text-gray-700">Supermarket</legend>
 		<div class="grid grid-cols-2 gap-2">
-			{#each STORE_FIELDS as field (field.key)}
+			{#each SUPERMARKET_FIELDS as field (field.key)}
 				<label class="text-xs text-gray-600 {field.key === 'address' ? 'col-span-2' : ''}">
 					{field.label}
 					<input
@@ -85,9 +85,9 @@
 				</label>
 			{/each}
 		</div>
-		{#if !hasStoreName}
+		{#if !hasSupermarketName}
 			<p class="rounded border border-amber-300 bg-amber-50 p-2 text-xs text-amber-900">
-				{STORE_NAME_REQUIRED}
+				{SUPERMARKET_NAME_REQUIRED}
 			</p>
 		{/if}
 	</fieldset>
@@ -134,7 +134,7 @@
 
 	<button
 		type="button"
-		disabled={saving || !hasStoreName}
+		disabled={saving || !hasSupermarketName}
 		onclick={onConfirm}
 		class="rounded bg-green-600 px-4 py-2 text-white disabled:bg-gray-300"
 	>

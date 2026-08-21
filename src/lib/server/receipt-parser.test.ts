@@ -31,8 +31,8 @@ describe('parseReceipt', () => {
 	});
 
 	it('defaults supermarket to an empty object when absent (continuation page)', async () => {
-		const noStore = `"purchase_date":"2026-06-01","line_items":[{"name":"Grace Tomato Ketchup 400g","quantity":1,"unit_price":310,"total":310}],"currency":"JMD","confidence":"high"}`;
-		const result = await parseReceipt(onePart(), fakeClient(noStore));
+		const noSupermarket = `"purchase_date":"2026-06-01","line_items":[{"name":"Grace Tomato Ketchup 400g","quantity":1,"unit_price":310,"total":310}],"currency":"JMD","confidence":"high"}`;
+		const result = await parseReceipt(onePart(), fakeClient(noSupermarket));
 		expect(result.supermarket).toEqual({});
 	});
 

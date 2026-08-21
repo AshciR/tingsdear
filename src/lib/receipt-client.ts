@@ -5,7 +5,7 @@ import { downscaleImages } from '$lib/image-downscale';
 export type { ParsedReceipt, SaveReceiptResult };
 
 // One receipt, in reading order. A long receipt spans several photos and only the first
-// carries the store header, so the parts go to the parser together, in the order given.
+// carries the supermarket header, so the parts go to the parser together, in the order given.
 export async function parseReceiptFiles(
 	files: File[],
 	fetchImpl: typeof fetch = fetch

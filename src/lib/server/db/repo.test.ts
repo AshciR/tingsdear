@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { sql } from 'drizzle-orm';
 import { withRollback } from '../../../test-setup/with-rollback.ts';
 import type { Db } from './index.ts';
-import { STORE_NAME_REQUIRED } from '$lib/receipt-messages';
+import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipt-messages';
 import { saveReceipt, type ReceiptSaveRequest } from './repo.ts';
 import { item, manufacturer, price, supermarketChain, supermarketLocation } from './schema.ts';
 
@@ -163,7 +163,7 @@ describe('saveReceipt', () => {
 		});
 	});
 
-	it('matches a shortened store name against the existing chain', async () => {
+	it('matches a shortened supermarket name against the existing chain', async () => {
 		await withRollback(async (db) => {
 			// Given a chain saved under its full name
 			await saveReceipt(db, makeReceipt({ supermarket: { name: 'General Food Supermarket' } }));
@@ -221,13 +221,13 @@ describe('saveReceipt', () => {
 		});
 	});
 
-	it('rejects a receipt whose store name is blank', async () => {
+	it('rejects a receipt whose supermarket name is blank', async () => {
 		await withRollback(async (db) => {
-			// Given a receipt whose store name is whitespace only
+			// Given a receipt whose supermarket name is whitespace only
 			const nameless = makeReceipt({ supermarket: { name: '  ' } });
 
 			// When / Then — it throws instead of inventing a chain, and writes nothing
-			await expect(saveReceipt(db, nameless)).rejects.toThrow(STORE_NAME_REQUIRED);
+			await expect(saveReceipt(db, nameless)).rejects.toThrow(SUPERMARKET_NAME_REQUIRED);
 			expect((await countRows(db)).chains).toBe(0);
 		});
 	});

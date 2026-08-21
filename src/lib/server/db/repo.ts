@@ -1,6 +1,6 @@
 import { and, eq, sql } from 'drizzle-orm';
 import type { Db } from './index.ts';
-import { STORE_NAME_REQUIRED } from '$lib/receipt-messages';
+import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipt-messages';
 import { normalizeChainName } from '../location-resolver.ts';
 import { item, manufacturer, price, supermarketChain, supermarketLocation } from './schema.ts';
 
@@ -74,7 +74,7 @@ export async function saveReceipt(db: Db, receipt: ReceiptSaveRequest): Promise<
 // supermarkets into one price history, silently and irreversibly.
 function requireChainName(supermarket: ReceiptSaveRequest['supermarket']): string {
 	const name = supermarket.name?.trim();
-	if (!name) throw new Error(STORE_NAME_REQUIRED);
+	if (!name) throw new Error(SUPERMARKET_NAME_REQUIRED);
 	return name;
 }
 
@@ -111,7 +111,7 @@ async function findOrCreateChain(tx: Tx, name: string): Promise<{ id: number; cr
 
 // A location the user chose at verify is used as-is; anything else falls back to matching on the
 // extracted fields. The chain check is not paranoia — a candidate list goes stale as soon as the
-// user edits the store name, and filing prices under another chain's branch is unrecoverable.
+// user edits the supermarket name, and filing prices under another chain's location is unrecoverable.
 async function resolveLocation(
 	tx: Tx,
 	chainId: number,
