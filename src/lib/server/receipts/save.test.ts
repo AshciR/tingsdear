@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { sql } from 'drizzle-orm';
 import { withRollback } from '../../../test-setup/with-rollback.ts';
-import type { Db } from './index.ts';
+import type { Db } from '../db/index.ts';
 import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipt-messages';
-import { saveReceipt, type ReceiptSaveRequest } from './repo.ts';
-import { item, manufacturer, price, supermarketChain, supermarketLocation } from './schema.ts';
+import { saveReceipt, type ReceiptSaveRequest } from './save.ts';
+import { item, manufacturer, price, supermarketChain, supermarketLocation } from '../db/schema.ts';
 
 describe('saveReceipt', () => {
 	it('creates chain, location, items, prices, and unknown manufacturer on first save', async () => {

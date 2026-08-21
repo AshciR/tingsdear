@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { markSeamDuplicates } from './receipt-seams.ts';
+import { markSeamDuplicates } from './seams.ts';
 
 describe('markSeamDuplicates', () => {
 	it('leaves a run of identical items within one photo alone', () => {

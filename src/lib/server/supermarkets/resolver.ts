@@ -1,6 +1,7 @@
 import { eq } from 'drizzle-orm';
-import type { Db } from './db/index.ts';
-import { supermarketChain, supermarketLocation } from './db/schema.ts';
+import type { Db } from '../db/index.ts';
+import { supermarketChain, supermarketLocation } from '../db/schema.ts';
+import { collapse, normalizeAddress, normalizeChainName } from './naming.ts';
 
 export type SupermarketLocation = typeof supermarketLocation.$inferSelect;
 
@@ -52,43 +53,6 @@ export async function resolveSupermarket(
 		candidates: rankCandidates(locations, supermarket)
 	};
 }
-
-// Both "Super Valu Fresh Foods" and "Super Valu Home Centre" reduce to `super valu`, so a receipt
-// naming either resolves to the one chain row. Mirrored in SQL by normalize_chain_name() — the
-// two are pinned together by a test, so change them together.
-export function normalizeChainName(raw: string): string {
-	const base = collapse(raw);
-	const stripped = base.replace(CHAIN_STOPWORDS, '').trim();
-	// A chain genuinely called "Supermarket" must not normalize away to nothing.
-	return stripped || base;
-}
-
-export function normalizeAddress(raw: string): string {
-	return collapse(raw)
-		.split(' ')
-		.map((token) => STREET_SUFFIXES[token] ?? token)
-		.join(' ');
-}
-
-// Trailing descriptors that distinguish branches of one chain rather than distinct chains. The
-// source is shared verbatim with the SQL function, so it stays POSIX-compatible: no non-capturing
-// groups, no lookarounds.
-const CHAIN_STOPWORDS = new RegExp(
-	'( (supermarkets?|super market|food stores?|fresh foods?|home cent(re|er)|wholesalers?|ltd|limited|inc))+$'
-);
-
-const STREET_SUFFIXES: Record<string, string> = {
-	road: 'rd',
-	street: 'st',
-	avenue: 'ave',
-	drive: 'dr',
-	boulevard: 'blvd',
-	highway: 'hwy',
-	lane: 'ln',
-	suite: 'unit',
-	ste: 'unit',
-	apt: 'unit'
-};
 
 const ADDRESS_MATCH = 0.9;
 const BRANCH_MATCH = 0.6;
@@ -185,13 +149,4 @@ export function distanceMeters(
 
 function newLocationCandidate(): LocationCandidate {
 	return { location: null, score: 0, reason: 'new' };
-}
-
-// Lowercase, punctuation to spaces, whitespace collapsed. The SQL mirror is the same two
-// regexp_replace calls, so keep this character class in step with normalize_chain_name().
-function collapse(raw: string): string {
-	return raw
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, ' ')
-		.trim();
 }

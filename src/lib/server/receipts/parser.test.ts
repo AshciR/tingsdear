@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { parseReceipt } from './receipt-parser.ts';
+import { parseReceipt } from './parser.ts';
 
 function fakeClient(text: string) {
 	return {
