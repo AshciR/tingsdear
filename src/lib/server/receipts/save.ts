@@ -1,6 +1,6 @@
 import { and, eq, sql } from 'drizzle-orm';
 import type { Db } from '../db/index.ts';
-import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipt-messages';
+import { requireChainName } from './invariants.ts';
 import { normalizeChainName } from '../supermarkets/naming.ts';
 import { item, manufacturer, price, supermarketChain, supermarketLocation } from '../db/schema.ts';
 
@@ -67,15 +67,6 @@ export async function saveReceipt(db: Db, receipt: ReceiptSaveRequest): Promise<
 			lineItems
 		};
 	});
-}
-
-// Checked before the transaction opens so a nameless receipt writes nothing at all. There is
-// deliberately no placeholder here: filing prices under an invented chain merges unrelated
-// supermarkets into one price history, silently and irreversibly.
-function requireChainName(supermarket: ReceiptSaveRequest['supermarket']): string {
-	const name = supermarket.name?.trim();
-	if (!name) throw new Error(SUPERMARKET_NAME_REQUIRED);
-	return name;
 }
 
 async function findOrCreateUnknownManufacturer(tx: Tx): Promise<number> {
