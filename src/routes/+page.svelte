@@ -1,13 +1,13 @@
 <script lang="ts">
-	import UploadView from '$lib/components/UploadView.svelte';
-	import VerifyView from '$lib/components/VerifyView.svelte';
-	import DoneView from '$lib/components/DoneView.svelte';
+	import UploadView from '$lib/receipts/components/UploadView.svelte';
+	import VerifyView from '$lib/receipts/components/VerifyView.svelte';
+	import DoneView from '$lib/receipts/components/DoneView.svelte';
 	import {
 		parseReceiptFiles,
 		saveReceipt,
 		type ParsedReceipt,
 		type SaveReceiptResult
-	} from '$lib/receipt-client';
+	} from '$lib/receipts/client';
 
 	let view = $state<'upload' | 'parsing' | 'verify' | 'done'>('upload');
 	// One receipt, in reading order — a long one takes several photos to capture.

@@ -1,4 +1,4 @@
-import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipt-messages';
+import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipts/messages';
 
 // Rules a receipt must satisfy before any of it is written. They live outside save.ts so the
 // transaction reads as orchestration only, and so they can be exercised without a database.

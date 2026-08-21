@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { ParsedReceipt } from '$lib/receipt-client';
-	import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipt-messages';
+	import type { ParsedReceipt } from '$lib/receipts/client';
+	import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipts/messages';
 	import LineItemRow from './LineItemRow.svelte';
 
 	let {
