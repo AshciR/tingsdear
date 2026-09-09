@@ -2,6 +2,11 @@ import { eq } from 'drizzle-orm';
 import type { Db } from '../db/index.ts';
 import { supermarketChain, supermarketLocation } from '../db/schema.ts';
 import { collapse, normalizeAddress, normalizeChainName } from './naming.ts';
+// The scores below are calibrated against these, and the verify screen pre-selects by them, so
+// they live in a browser-safe module both sides can import.
+import { HIGH_CONFIDENCE, LOW_CONFIDENCE } from '$lib/supermarkets/candidates';
+
+export { HIGH_CONFIDENCE, LOW_CONFIDENCE };
 
 export type SupermarketLocation = typeof supermarketLocation.$inferSelect;
 
@@ -29,12 +34,6 @@ export type ResolvedSupermarket = {
 	chainName: string;
 	candidates: LocationCandidate[];
 };
-
-// At or above HIGH the verify UI pre-selects the candidate; between LOW and HIGH it shows it as a
-// suggestion but still defaults to "new location". Never auto-merge below HIGH: a wrong merge
-// silently fuses two supermarkets' price histories and is hard to unwind.
-export const HIGH_CONFIDENCE = 0.8;
-export const LOW_CONFIDENCE = 0.25;
 
 // Resolution only ever reads. The chain row is created at save from what the user confirms, so
 // an abandoned verify leaves nothing behind.

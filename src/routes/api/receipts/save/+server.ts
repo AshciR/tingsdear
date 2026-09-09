@@ -24,6 +24,7 @@ function validationMessage(err: z.ZodError): string {
 function toSaveRequest(parsed: ReceiptSaveBody): ReceiptSaveRequest {
 	return {
 		supermarket: parsed.supermarket,
+		location_id: parsed.location_id,
 		purchase_date: parsed.purchase_date,
 		line_items: parsed.line_items
 			.filter((li) => !li.flagged)

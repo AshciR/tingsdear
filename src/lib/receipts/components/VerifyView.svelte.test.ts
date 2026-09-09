@@ -1,8 +1,9 @@
 import { render } from 'vitest-browser-svelte';
 import { describe, it, expect, vi } from 'vitest';
 import VerifyView from './VerifyView.svelte';
-import type { ParsedReceipt } from '$lib/receipts/client';
+import type { ParsedReceipt, ResolvedSupermarket } from '$lib/receipts/client';
 import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipts/messages';
+import { HIGH_CONFIDENCE, preselectedLocationId } from '$lib/supermarkets/candidates';
 
 describe('VerifyView', () => {
 	it('shows what the parser made of the receipt', async () => {
@@ -177,6 +178,144 @@ describe('VerifyView', () => {
 		await expect.element(screen.getByRole('button', { name: 'Confirm and save' })).toBeEnabled();
 	});
 
+	it('offers the branches already on file for this chain', async () => {
+		// Given a chain with two known branches
+		const resolution = makeResolution([
+			{ id: 7, name: 'Constant Spring', score: 0.9, reason: 'address' },
+			{ id: 8, name: 'Liguanea', score: 0.3, reason: 'city-region' }
+		]);
+
+		// When the verify view is rendered
+		const screen = render(VerifyView, {
+			receipt: makeReceipt(),
+			resolution,
+			selectedLocationId: preselectedLocationId(resolution),
+			error: null,
+			saving: false,
+			onConfirm: vi.fn()
+		});
+
+		// Then the user can file the receipt against either one, or against neither
+		const picker = screen.getByLabelText('Branch on file');
+		await expect.element(picker).toBeInTheDocument();
+		await expect
+			.element(screen.getByRole('option', { name: /Constant Spring/u }))
+			.toBeInTheDocument();
+		await expect.element(screen.getByRole('option', { name: /Liguanea/u })).toBeInTheDocument();
+		await expect.element(screen.getByRole('option', { name: '+ New branch' })).toBeInTheDocument();
+	});
+
+	it('starts on a confidently matched branch so the prices join that store', async () => {
+		// Given a branch matched on its full address
+		const resolution = makeResolution([
+			{ id: 7, name: 'Constant Spring', score: HIGH_CONFIDENCE, reason: 'address' }
+		]);
+
+		// When the view opens on the pre-selection the page computed
+		const screen = render(VerifyView, {
+			receipt: makeReceipt(),
+			resolution,
+			selectedLocationId: preselectedLocationId(resolution),
+			error: null,
+			saving: false,
+			onConfirm: vi.fn()
+		});
+
+		// Then that branch is what the user is about to save under
+		await expect.element(screen.getByLabelText('Branch on file')).toHaveValue('7');
+	});
+
+	it('leaves a merely suggested branch unselected rather than merging into it', async () => {
+		// Given a branch matched on city alone — suggestive, not conclusive
+		const resolution = makeResolution([
+			{ id: 7, name: 'Constant Spring', score: 0.3, reason: 'city-region' }
+		]);
+
+		// When the view opens
+		const screen = render(VerifyView, {
+			receipt: makeReceipt(),
+			resolution,
+			selectedLocationId: preselectedLocationId(resolution),
+			error: null,
+			saving: false,
+			onConfirm: vi.fn()
+		});
+
+		// Then it is offered, but a new branch is what gets saved unless the user says otherwise
+		await expect
+			.element(screen.getByRole('option', { name: /Constant Spring/u }))
+			.toBeInTheDocument();
+		await expect.element(screen.getByLabelText('Branch on file')).toHaveValue('new');
+	});
+
+	it('tells the parent which branch the user picked', async () => {
+		// Given two branches to choose between
+		const onSelectLocation = vi.fn();
+		const screen = render(VerifyView, {
+			receipt: makeReceipt(),
+			resolution: makeResolution([
+				{ id: 7, name: 'Constant Spring', score: 0.3, reason: 'city-region' },
+				{ id: 8, name: 'Liguanea', score: 0.3, reason: 'city-region' }
+			]),
+			selectedLocationId: null,
+			error: null,
+			saving: false,
+			onConfirm: vi.fn(),
+			onSelectLocation
+		});
+
+		// When the user picks the second one
+		await screen
+			.getByLabelText('Branch on file')
+			.selectOptions(screen.getByRole('option', { name: /Liguanea/u }));
+
+		// Then the parent is told to save under it
+		expect(onSelectLocation).toHaveBeenCalledWith(8);
+	});
+
+	it('drops the picked branch and re-resolves when the chain name is corrected', async () => {
+		// Given a branch selected under the parsed chain name
+		const onSelectLocation = vi.fn();
+		const onSupermarketChange = vi.fn();
+		const screen = render(VerifyView, {
+			receipt: makeReceipt({ supermarket: { name: 'HI LO' } }),
+			resolution: makeResolution([
+				{ id: 7, name: 'Constant Spring', score: 0.9, reason: 'address' }
+			]),
+			selectedLocationId: 7,
+			error: null,
+			saving: false,
+			onConfirm: vi.fn(),
+			onSelectLocation,
+			onSupermarketChange
+		});
+
+		// When the user corrects the chain to a different supermarket entirely
+		await screen.getByLabelText('Name').fill('MegaMart');
+
+		// Then the stale branch is released at once, before it can be saved under the wrong chain
+		expect(onSelectLocation).toHaveBeenCalledWith(null);
+
+		// And once the edit is committed, the branches are looked up again for the new name
+		await screen.getByLabelText('Purchase date').click();
+		expect(onSupermarketChange).toHaveBeenCalledOnce();
+	});
+
+	it('hides the branch picker when this chain has no branches yet', async () => {
+		// Given a first-ever receipt from an unknown chain
+		const screen = render(VerifyView, {
+			receipt: makeReceipt(),
+			resolution: makeResolution([]),
+			selectedLocationId: null,
+			error: null,
+			saving: false,
+			onConfirm: vi.fn()
+		});
+
+		// Then there is nothing to choose between, so nothing is asked
+		expect(screen.getByLabelText('Branch on file').query()).toBeNull();
+	});
+
 	it('shows the error the parent reports and still allows a retry', async () => {
 		// Given a save that failed upstream
 		const screen = render(VerifyView, {
@@ -205,6 +344,23 @@ function makeReceipt(overrides: Partial<ParsedReceipt> = {}) {
 		...overrides
 	});
 	return receipt;
+}
+
+// Shaped like what /api/receipts/resolve returns: the scored branches, best first, with the
+// "new branch" option the resolver always appends.
+function makeResolution(
+	branches: { id: number; name: string; score: number; reason: string }[]
+): ResolvedSupermarket {
+	const candidates = branches.map(({ id, name, score, reason }) => ({
+		location: { id, name, address: null, city: 'Kingston' },
+		score,
+		reason
+	}));
+	return {
+		chainId: 1,
+		chainName: 'Hi-Lo',
+		candidates: [...candidates, { location: null, score: 0, reason: 'new' }]
+	} as ResolvedSupermarket;
 }
 
 function makeLineItem(overrides: Partial<ParsedReceipt['line_items'][number]> = {}) {

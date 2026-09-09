@@ -1,8 +1,9 @@
 import type { ParsedReceipt } from '$lib/server/receipts/parser';
 import type { SaveReceiptResult } from '$lib/server/receipts/save';
+import type { LocationCandidate, ResolvedSupermarket } from '$lib/server/supermarkets/resolver';
 import { downscaleImages } from '$lib/image-downscale';
 
-export type { ParsedReceipt, SaveReceiptResult };
+export type { ParsedReceipt, SaveReceiptResult, LocationCandidate, ResolvedSupermarket };
 
 // One receipt, in reading order. A long receipt spans several photos and only the first
 // carries the supermarket header, so the parts go to the parser together, in the order given.
@@ -16,14 +17,32 @@ export async function parseReceiptFiles(
 	return readJson<ParsedReceipt>(res, 'Could not read the receipt');
 }
 
+// Which existing branches this supermarket text could be. Cheap enough to call again whenever
+// the user edits the name at verify — unlike parsing, there is no model call behind it.
+export async function resolveSupermarket(
+	supermarket: ParsedReceipt['supermarket'],
+	fetchImpl: typeof fetch = fetch
+): Promise<ResolvedSupermarket> {
+	const res = await fetchImpl('/api/receipts/resolve', {
+		method: 'POST',
+		headers: { 'content-type': 'application/json' },
+		body: JSON.stringify(normalizeSupermarket(supermarket))
+	});
+	return readJson<ResolvedSupermarket>(res, 'Could not look up the supermarket');
+}
+
+// `locationId` is the branch the user picked from those candidates; null means "none of these",
+// and the server falls back to matching on the supermarket text.
 export async function saveReceipt(
 	receipt: ParsedReceipt,
+	locationId: number | null = null,
 	fetchImpl: typeof fetch = fetch
 ): Promise<SaveReceiptResult> {
+	const body = { ...normalizeReceipt(receipt), location_id: locationId ?? undefined };
 	const res = await fetchImpl('/api/receipts/save', {
 		method: 'POST',
 		headers: { 'content-type': 'application/json' },
-		body: JSON.stringify(normalizeReceipt(receipt))
+		body: JSON.stringify(body)
 	});
 	return readJson<SaveReceiptResult>(res, 'Could not save the receipt');
 }

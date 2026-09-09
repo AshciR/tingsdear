@@ -17,6 +17,13 @@ const supermarketFields = z.object({
 // parse result for part 3 of a 5-part receipt.
 const supermarketSchema = supermarketFields.default({});
 
+// What the resolve route accepts. Every field optional and `{}` allowed on purpose: a
+// continuation page with no header is a legitimate thing to ask about, and the answer is
+// "nothing matches, make a new one" rather than an error.
+export const supermarketResolveSchema = supermarketSchema;
+
+export type SupermarketResolveBody = z.infer<typeof supermarketResolveSchema>;
+
 export const parsedReceiptSchema = z.object({
 	supermarket: supermarketSchema,
 	purchase_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
@@ -46,7 +53,10 @@ export type ParsedReceipt = z.infer<typeof parsedReceiptSchema>;
 export const receiptSaveSchema = parsedReceiptSchema.extend({
 	supermarket: supermarketFields.extend({
 		name: z.string().trim().min(1, SUPERMARKET_NAME_REQUIRED)
-	})
+	}),
+	// The branch the user picked from the resolved candidates. Absent means "none of these" —
+	// save then find-or-creates a location from the supermarket text, as it always did.
+	location_id: z.number().int().positive().optional()
 });
 
 export type ReceiptSaveBody = z.infer<typeof receiptSaveSchema>;

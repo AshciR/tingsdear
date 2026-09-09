@@ -1,18 +1,30 @@
 <script lang="ts">
-	import type { ParsedReceipt } from '$lib/receipts/client';
+	import type { ParsedReceipt, ResolvedSupermarket } from '$lib/receipts/client';
 	import { SUPERMARKET_NAME_REQUIRED } from '$lib/receipts/messages';
+	import { describeCandidate, existingCandidates } from '$lib/supermarkets/candidates';
 	import LineItemRow from './LineItemRow.svelte';
 
 	let {
 		receipt,
+		resolution = null,
+		selectedLocationId = null,
 		error,
 		saving,
-		onConfirm
+		onConfirm,
+		onSelectLocation = () => {},
+		onSupermarketChange = () => {}
 	}: {
 		receipt: ParsedReceipt;
+		// The branches this supermarket text could already be, best first. Null while the lookup
+		// is in flight or after it failed — the picker just hides, and save falls back to
+		// matching on the text, so a resolve outage never blocks a save.
+		resolution?: ResolvedSupermarket | null;
+		selectedLocationId?: number | null;
 		error: string | null;
 		saving: boolean;
 		onConfirm: () => void;
+		onSelectLocation?: (locationId: number | null) => void;
+		onSupermarketChange?: () => void;
 	} = $props();
 
 	type SupermarketField = {
@@ -34,6 +46,8 @@
 	// chain poisons the price history — so block the round-trip here and say why.
 	const hasSupermarketName = $derived((receipt.supermarket.name ?? '').trim().length > 0);
 
+	const branches = $derived(existingCandidates(resolution));
+
 	const included = $derived(receipt.line_items.filter((li) => !li.flagged).length);
 
 	// Suspected seam duplicates stay checked, so they don't move the saved count — they are
@@ -43,6 +57,29 @@
 	const duplicateHint = $derived(
 		`${duplicates} ${duplicates === 1 ? 'line looks' : 'lines look'} like a repeat from where two photos overlap. They are still ticked — untick any that is the same purchase read twice.`
 	);
+
+	// Option values cross the DOM as strings, so "none of these" needs a sentinel rather than a
+	// falsy id that would be indistinguishable from an unset select.
+	const NEW_BRANCH = 'new';
+
+	function toLocationId(value: string): number | null {
+		return value === NEW_BRANCH ? null : Number(value);
+	}
+
+	// Two different costs, so two different moments. Releasing the branch is free and cannot wait:
+	// the instant the name diverges, a branch picked under the old one may belong to another chain
+	// entirely, and the save route rejects that outright.
+	function releaseBranch(key: SupermarketField['key']) {
+		if (key !== 'name') return;
+		onSelectLocation(null);
+	}
+
+	// Looking up the new name costs a round trip, so it waits for the edit to be committed rather
+	// than firing on every keystroke.
+	function reresolve(key: SupermarketField['key']) {
+		if (key !== 'name') return;
+		onSupermarketChange();
+	}
 
 	function addRow() {
 		receipt.line_items.push({
@@ -80,6 +117,8 @@
 						required={field.required}
 						aria-required={field.required}
 						bind:value={receipt.supermarket[field.key]}
+						oninput={() => releaseBranch(field.key)}
+						onchange={() => reresolve(field.key)}
 						class="mt-0.5 w-full rounded border border-gray-300 p-1 text-sm text-black"
 					/>
 				</label>
@@ -88,6 +127,26 @@
 		{#if !hasSupermarketName}
 			<p class="rounded border border-amber-300 bg-amber-50 p-2 text-xs text-amber-900">
 				{SUPERMARKET_NAME_REQUIRED}
+			</p>
+		{/if}
+
+		{#if branches.length > 0}
+			<label class="block text-xs text-gray-600">
+				Branch on file
+				<select
+					value={selectedLocationId === null ? NEW_BRANCH : String(selectedLocationId)}
+					onchange={(e) => onSelectLocation(toLocationId(e.currentTarget.value))}
+					class="mt-0.5 w-full rounded border border-gray-300 p-1 text-sm text-black"
+				>
+					{#each branches as candidate (candidate.location!.id)}
+						<option value={String(candidate.location!.id)}>{describeCandidate(candidate)}</option>
+					{/each}
+					<option value={NEW_BRANCH}>+ New branch</option>
+				</select>
+			</label>
+			<p class="text-xs text-gray-500">
+				Pick the branch this receipt came from so its prices join that store's history. Choose "+
+				New branch" if none of these is it.
 			</p>
 		{/if}
 	</fieldset>
