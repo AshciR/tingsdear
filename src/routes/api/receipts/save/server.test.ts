@@ -46,6 +46,22 @@ function makeParsed(overrides: Partial<ParsedReceipt> = {}): ParsedReceipt {
 	};
 }
 
+async function seedChain(db: Db, name: string): Promise<number> {
+	const [row] = await db
+		.insert(supermarketChain)
+		.values({ name })
+		.returning({ id: supermarketChain.id });
+	return row.id;
+}
+
+async function seedLocation(db: Db, chainId: number, address: string): Promise<number> {
+	const [row] = await db
+		.insert(supermarketLocation)
+		.values({ chainId, name: 'Constant Spring', address })
+		.returning({ id: supermarketLocation.id });
+	return row.id;
+}
+
 async function countRows(db: Db) {
 	const [chains] = await db.select({ c: sql<number>`count(*)::int` }).from(supermarketChain);
 	const [locations] = await db.select({ c: sql<number>`count(*)::int` }).from(supermarketLocation);
@@ -159,6 +175,42 @@ describe('POST /api/receipts/save', () => {
 			// Then nothing was persisted — in particular no chain named "Unknown"
 			expect(await countRows(db)).toEqual({ chains: 0, locations: 0, items: 0, prices: 0 });
 			expect(await countChainsNamed(db, 'Unknown')).toBe(0);
+		});
+	});
+
+	it('files the receipt under the branch the user picked, inventing no new one', async () => {
+		await withRollback(async (db) => {
+			// Given a branch on file, and a second receipt from it whose header reads differently
+			const chainId = await seedChain(db, 'HI-LO');
+			const locationId = await seedLocation(db, chainId, '144 Constant Spring Rd');
+			const parsed = makeParsed({
+				supermarket: { name: 'HI-LO', branch: 'Constant Spring Plaza', address: 'Shop 7' }
+			});
+
+			// When the user confirms it is that same branch
+			const res = await invoke(jsonRequest({ ...parsed, location_id: locationId }), db);
+
+			// Then the prices join the existing store instead of forking it
+			expect(res.status).toBe(200);
+			const body = await res.json();
+			expect(body.locationId).toBe(locationId);
+			expect(body.locationCreated).toBe(false);
+			expect((await countRows(db)).locations).toBe(1);
+		});
+	});
+
+	it('refuses a branch belonging to a different chain', async () => {
+		await withRollback(async (db) => {
+			// Given a branch of one chain, and a receipt from another
+			const otherChainId = await seedChain(db, 'MegaMart');
+			const otherLocationId = await seedLocation(db, otherChainId, '2 Hope Rd');
+			const parsed = makeParsed({ supermarket: { name: 'HI-LO' } });
+
+			// When a stale candidate id points at the wrong chain's branch
+			// Then the save fails rather than filing HI-LO prices under MegaMart
+			await expect(
+				invoke(jsonRequest({ ...parsed, location_id: otherLocationId }), db)
+			).rejects.toBeDefined();
 		});
 	});
 
